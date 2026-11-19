@@ -4,7 +4,7 @@ package duckdb
 
 import (
 	types "zeroparse.dev/alpha-parsers/duckdb/types"
-	rt "zeroparse.dev/zp/pkg/runtime/golib"
+	rt "zeroparse.dev/zp/pkg/runtime/libgo"
 )
 
 var rules []*rt.Rule

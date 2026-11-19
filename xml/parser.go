@@ -4,7 +4,7 @@ package xml
 
 import (
 	types "zeroparse.dev/alpha-parsers/xml/types"
-	rt "zeroparse.dev/zp/pkg/runtime/golib"
+	rt "zeroparse.dev/zp/pkg/runtime/libgo"
 	zpvalue "zeroparse.dev/zp/pkg/runtime/value"
 )
 

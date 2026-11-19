@@ -4,7 +4,7 @@ package python
 
 import (
 	types "zeroparse.dev/alpha-parsers/python/types"
-	rt "zeroparse.dev/zp/pkg/runtime/golib"
+	rt "zeroparse.dev/zp/pkg/runtime/libgo"
 )
 
 var rules []*rt.Rule

@@ -4,7 +4,7 @@ package golang
 
 import (
 	types "zeroparse.dev/alpha-parsers/golang/types"
-	rt "zeroparse.dev/zp/pkg/runtime/golib"
+	rt "zeroparse.dev/zp/pkg/runtime/libgo"
 )
 
 var rules []*rt.Rule

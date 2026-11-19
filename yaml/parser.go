@@ -4,7 +4,7 @@ package yaml
 
 import (
 	types "zeroparse.dev/alpha-parsers/yaml/types"
-	rt "zeroparse.dev/zp/pkg/runtime/golib"
+	rt "zeroparse.dev/zp/pkg/runtime/libgo"
 	zpvalue "zeroparse.dev/zp/pkg/runtime/value"
 )
 
