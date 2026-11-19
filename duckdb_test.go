@@ -2,22 +2,14 @@ package parsers_test
 
 import (
 	"fmt"
-	"os"
 	"testing"
 
-	"zeroparse.dev/zp/core"
-	"zeroparse.dev/zp/engine"
+	"zeroparse.dev/zp/pkg/runtime"
+	"zeroparse.dev/zp/pkg/runtime/input"
 )
 
 func TestDuckDBKeywordNames(t *testing.T) {
-	src, err := os.ReadFile("duckdb/duckdb.zp")
-	if err != nil {
-		t.Fatal(err)
-	}
-	p, err := engine.CompileSource(string(src), "main")
-	if err != nil {
-		t.Fatal(err)
-	}
+	bs := backends(t, "duckdb/duckdb.zp")
 	for _, tc := range []struct {
 		sql string
 		ok  bool
@@ -30,11 +22,11 @@ func TestDuckDBKeywordNames(t *testing.T) {
 		{"SELECT 1 iN", false}, {"SELECT 1 iNt", false},
 		{"SELECT 1 iNtentionally", true},
 	} {
-		for _, backend := range []engine.Backend{engine.Closure, engine.Bytecode, engine.BytecodeIterative} {
-			for _, unit := range []core.PositionUnit{core.CodePoints, core.Bytes} {
-				_, err := p.Parse(tc.sql, engine.WithBackend(backend), engine.WithUnit(unit))
+		for _, b := range bs {
+			for _, unit := range []input.PositionUnit{input.CodePoints, input.Bytes} {
+				_, err := b.p.Parse(tc.sql, runtime.WithUnit(unit))
 				if (err == nil) != tc.ok {
-					t.Errorf("Parse(%q, backend=%v, unit=%v): %v", tc.sql, backend, unit, err)
+					t.Errorf("Parse(%q, backend=%s, unit=%v): %v", tc.sql, b.name, unit, err)
 				}
 			}
 		}
@@ -42,14 +34,7 @@ func TestDuckDBKeywordNames(t *testing.T) {
 }
 
 func TestDuckDBSetofTypes(t *testing.T) {
-	src, err := os.ReadFile("duckdb/duckdb.zp")
-	if err != nil {
-		t.Fatal(err)
-	}
-	p, err := engine.CompileSource(string(src), "main")
-	if err != nil {
-		t.Fatal(err)
-	}
+	bs := backends(t, "duckdb/duckdb.zp")
 	for _, tc := range []struct {
 		typ string
 		ok  bool
@@ -65,11 +50,11 @@ func TestDuckDBSetofTypes(t *testing.T) {
 	} {
 		for _, template := range []string{"SELECT CAST(NULL AS %s)", "SELECT NULL::%s", "CREATE TABLE t (x %s)"} {
 			sql := fmt.Sprintf(template, tc.typ)
-			for _, backend := range []engine.Backend{engine.Closure, engine.Bytecode, engine.BytecodeIterative} {
-				for _, unit := range []core.PositionUnit{core.CodePoints, core.Bytes} {
-					_, err := p.Parse(sql, engine.WithBackend(backend), engine.WithUnit(unit))
+			for _, b := range bs {
+				for _, unit := range []input.PositionUnit{input.CodePoints, input.Bytes} {
+					_, err := b.p.Parse(sql, runtime.WithUnit(unit))
 					if (err == nil) != tc.ok {
-						t.Errorf("Parse(%q, backend=%v, unit=%v): %v", sql, backend, unit, err)
+						t.Errorf("Parse(%q, backend=%s, unit=%v): %v", sql, b.name, unit, err)
 					}
 				}
 			}
@@ -78,14 +63,7 @@ func TestDuckDBSetofTypes(t *testing.T) {
 }
 
 func TestDuckDBFrameBounds(t *testing.T) {
-	src, err := os.ReadFile("duckdb/duckdb.zp")
-	if err != nil {
-		t.Fatal(err)
-	}
-	p, err := engine.CompileSource(string(src), "main")
-	if err != nil {
-		t.Fatal(err)
-	}
+	bs := backends(t, "duckdb/duckdb.zp")
 	for _, tc := range []struct {
 		bound string
 		ok    bool
@@ -127,11 +105,11 @@ func TestDuckDBFrameBounds(t *testing.T) {
 	} {
 		for _, frameUnit := range []string{"ROWS", "RANGE", "GROUPS"} {
 			sql := fmt.Sprintf(`SELECT sum("é") OVER (ORDER BY i %s %s)`, frameUnit, tc.bound)
-			for _, backend := range []engine.Backend{engine.Closure, engine.Bytecode, engine.BytecodeIterative} {
-				for _, unit := range []core.PositionUnit{core.CodePoints, core.Bytes} {
-					_, err := p.Parse(sql, engine.WithBackend(backend), engine.WithUnit(unit))
+			for _, b := range bs {
+				for _, unit := range []input.PositionUnit{input.CodePoints, input.Bytes} {
+					_, err := b.p.Parse(sql, runtime.WithUnit(unit))
 					if (err == nil) != tc.ok {
-						t.Errorf("Parse(%q, backend=%v, unit=%v): %v", sql, backend, unit, err)
+						t.Errorf("Parse(%q, backend=%s, unit=%v): %v", sql, b.name, unit, err)
 					}
 				}
 			}

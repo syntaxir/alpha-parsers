@@ -4,13 +4,13 @@ package json
 
 import (
 	types "zeroparse.dev/alpha-parsers/json/types"
-	rt "zeroparse.dev/zp/codegen/go/lib"
-	"zeroparse.dev/zp/core"
+	rt "zeroparse.dev/zp/pkg/runtime/golib"
+	zpvalue "zeroparse.dev/zp/pkg/runtime/value"
 )
 
 // Parse parses the whole input with the rule main. Options select position units, depth, cancellation and compute limits.
 // If the parse recovered from errors with #recover, it returns the node together with SyntaxErrors.
-func Parse(input string, opts ...rt.ParseOption) (*core.Node, error) {
+func Parse(input string, opts ...rt.ParseOption) (*zpvalue.Node, error) {
 	return rt.RunParse(rules[0], input, opts)
 }
 
@@ -30,7 +30,7 @@ var zpGrammar = rt.NewGrammar(100000)
 
 // ParseRule parses the whole input with the start rule name, a rule marked @start; an empty
 // name selects the grammar's default start rule.
-func ParseRule(name, input string, opts ...rt.ParseOption) (*core.Node, error) {
+func ParseRule(name, input string, opts ...rt.ParseOption) (*zpvalue.Node, error) {
 	o, err := rt.ResolveOptions(zpGrammar, opts)
 	if err != nil {
 		return nil, err
@@ -454,10 +454,10 @@ func init() {
 	trules[0].Entry = u0
 }
 
-func e1(p *rt.Parser, _ int) (*core.Node, bool) {
+func e1(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var ok bool
-	var v2 *core.Node
+	var v2 *zpvalue.Node
 	if _, ok = r18(p); !ok {
 		goto fail
 	}
@@ -477,10 +477,10 @@ fail:
 	return nil, false
 }
 
-func e2(p *rt.Parser, _ int) (*core.Node, bool) {
+func e2(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var x1 rt.Mark
-	var v2, v8, v11, v14, v16, v18, v21 *core.Node
+	var v2, v8, v11, v14, v16, v18, v21 *zpvalue.Node
 	var x4 rune
 	var x5, ok bool
 	x1 = p.Mark()
@@ -559,11 +559,11 @@ fail:
 	return nil, false
 }
 
-func e5(p *rt.Parser, _ int) (*core.Node, bool) {
+func e5(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var ok bool
 	var x2 rt.Mark
-	var v3, v6 *core.Node
+	var v3, v6 *zpvalue.Node
 	if (p.Pos < len(p.In) && p.In[p.Pos] == 123) && p.Control.Take(1) {
 		p.Pos++
 	} else if _, ok = p.MatchLiteral(lit3, "{", 5, false); !ok {
@@ -596,11 +596,11 @@ fail:
 	return nil, false
 }
 
-func e8(p *rt.Parser, _ int) (*core.Node, bool) {
+func e8(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var x3, x4 int
 	var ok bool
-	var v2, v11, v12 *core.Node
+	var v2, v11, v12 *zpvalue.Node
 	var x5, x6 *rt.CaptureFrame
 	var x8 rt.Mark
 	if v2, ok = p.Call(rules[4], 0); !ok {
@@ -648,10 +648,10 @@ fail:
 	return nil, false
 }
 
-func e10(p *rt.Parser, _ int) (*core.Node, bool) {
+func e10(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var ok bool
-	var v2, v4 *core.Node
+	var v2, v4 *zpvalue.Node
 	if v2, ok = p.Call(rules[7], 0); !ok {
 		goto fail
 	}
@@ -676,11 +676,11 @@ fail:
 	return nil, false
 }
 
-func e13(p *rt.Parser, _ int) (*core.Node, bool) {
+func e13(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var ok bool
 	var x2 rt.Mark
-	var v3, v6 *core.Node
+	var v3, v6 *zpvalue.Node
 	if (p.Pos < len(p.In) && p.In[p.Pos] == 91) && p.Control.Take(1) {
 		p.Pos++
 	} else if _, ok = p.MatchLiteral(lit11, "[", 6, false); !ok {
@@ -713,11 +713,11 @@ fail:
 	return nil, false
 }
 
-func e15(p *rt.Parser, _ int) (*core.Node, bool) {
+func e15(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var x3, x4 int
 	var ok bool
-	var v2, v11, v12 *core.Node
+	var v2, v11, v12 *zpvalue.Node
 	var x5, x6 *rt.CaptureFrame
 	var x8 rt.Mark
 	if v2, ok = p.Call(rules[1], 0); !ok {
@@ -765,10 +765,10 @@ fail:
 	return nil, false
 }
 
-func e17(p *rt.Parser, _ int) (*core.Node, bool) {
+func e17(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var ok bool
-	var v2 *core.Node
+	var v2 *zpvalue.Node
 	if (p.Pos < len(p.In) && p.In[p.Pos] == 34) && p.Control.Take(1) {
 		p.Pos++
 	} else if _, ok = p.MatchLiteral(lit16, "\"", 7, false); !ok {
@@ -788,13 +788,13 @@ fail:
 	return nil, false
 }
 
-func e18(p *rt.Parser, _ int) (*core.Node, bool) {
+func e18(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var x1, x3, size, x10 int
 	var x2, ok, x12 bool
 	var x5, x7 rt.Mark
 	var ch, x11 rune
-	var v15 *core.Node
+	var v15 *zpvalue.Node
 	x1 = p.Pos
 	x3 = p.Pos
 	x2 = p.RunHot(3)
@@ -870,12 +870,12 @@ func e18(p *rt.Parser, _ int) (*core.Node, bool) {
 	return v15, true
 }
 
-func e20(p *rt.Parser, _ int) (*core.Node, bool) {
+func e20(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var x1 int
 	var x2, x5, x8 rt.Mark
 	var ok bool
-	var v11 *core.Node
+	var v11 *zpvalue.Node
 	x1 = p.Pos
 	x2 = p.Mark()
 	if (p.Pos < len(p.In) && p.In[p.Pos] == 45) && p.Control.Take(1) {
@@ -912,13 +912,13 @@ fail:
 	return nil, false
 }
 
-func e23(p *rt.Parser, _ int) (*core.Node, bool) {
+func e23(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var x1 int
 	var x2 rt.Mark
 	var x4 rune
 	var x5, ok bool
-	var v10 *core.Node
+	var v10 *zpvalue.Node
 	x1 = p.Pos
 	x2 = p.Mark()
 	if p.Pos < len(p.In) {
@@ -959,11 +959,11 @@ fail:
 	return nil, false
 }
 
-func e25(p *rt.Parser, _ int) (*core.Node, bool) {
+func e25(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var x1 int
 	var ok bool
-	var v2 *core.Node
+	var v2 *zpvalue.Node
 	x1 = p.Pos
 	if (p.Pos+4 <= len(p.In) && p.In[p.Pos] == 110 && p.In[p.Pos+1] == 117 && p.In[p.Pos+2] == 108 && p.In[p.Pos+3] == 108) && p.Control.Take(4) {
 		p.Pos += 4
@@ -976,7 +976,7 @@ fail:
 	return nil, false
 }
 
-func r8(p *rt.Parser) (*core.Node, bool) {
+func r8(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
@@ -993,7 +993,7 @@ func r8(p *rt.Parser) (*core.Node, bool) {
 	return v, ok
 }
 
-func r11(p *rt.Parser) (*core.Node, bool) {
+func r11(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
@@ -1010,7 +1010,7 @@ func r11(p *rt.Parser) (*core.Node, bool) {
 	return v, ok
 }
 
-func r15(p *rt.Parser) (*core.Node, bool) {
+func r15(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
@@ -1027,7 +1027,7 @@ func r15(p *rt.Parser) (*core.Node, bool) {
 	return v, ok
 }
 
-func r16(p *rt.Parser) (*core.Node, bool) {
+func r16(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
@@ -1044,9 +1044,9 @@ func r16(p *rt.Parser) (*core.Node, bool) {
 	return v, ok
 }
 
-func r18(p *rt.Parser) (*core.Node, bool) {
+func r18(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
-	var v *core.Node
+	var v *zpvalue.Node
 	var ch rune
 	var size, x1, x2 int
 	var ok bool
@@ -1076,10 +1076,10 @@ func r18(p *rt.Parser) (*core.Node, bool) {
 	return v, true
 }
 
-func r19(p *rt.Parser) (*core.Node, bool) {
+func r19(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, x1, size int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ok, x4 bool
 	var x3, ch rune
 	start = p.Pos
@@ -1148,10 +1148,10 @@ fail:
 	return nil, false
 }
 
-func r20(p *rt.Parser) (*core.Node, bool) {
+func r20(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, x1, size, x9, x10 int
-	var v *core.Node
+	var v *zpvalue.Node
 	var x3, ch rune
 	var x4, ok bool
 	start = p.Pos
@@ -1225,10 +1225,10 @@ fail:
 	return nil, false
 }
 
-func r21(p *rt.Parser) (*core.Node, bool) {
+func r21(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, size, x1, x2 int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ok bool
 	var ch rune
 	start = p.Pos
@@ -1269,10 +1269,10 @@ fail:
 	return nil, false
 }
 
-func r22(p *rt.Parser) (*core.Node, bool) {
+func r22(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, size, x1, x4, x5 int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ch rune
 	var ok bool
 	start = p.Pos
@@ -1335,10 +1335,10 @@ fail:
 	return nil, false
 }
 
-func r23(p *rt.Parser) (*core.Node, bool) {
+func r23(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, size int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ch rune
 	var ok bool
 	start = p.Pos
@@ -1360,9 +1360,9 @@ fail:
 	return nil, false
 }
 
-func e35(p *rt.Parser, _ int) (*core.Node, bool) {
+func e35(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
-	var v *core.Node
+	var v *zpvalue.Node
 	var ok bool
 	if _, ok = q17(p); !ok {
 		goto fail
@@ -1383,7 +1383,7 @@ fail:
 	return nil, false
 }
 
-func e36(p *rt.Parser, _ int) (*core.Node, bool) {
+func e36(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var x1 rt.Mark
 	var x3 rune
@@ -1458,7 +1458,7 @@ fail:
 	return nil, false
 }
 
-func e37(p *rt.Parser, _ int) (*core.Node, bool) {
+func e37(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var ok bool
 	if _, ok = p.Call(recRules[7], 0); !ok {
@@ -1483,7 +1483,7 @@ fail:
 	return nil, false
 }
 
-func e38(p *rt.Parser, _ int) (*core.Node, bool) {
+func e38(p *rt.Parser, _ int) (*zpvalue.Node, bool) {
 	p.Spend()
 	var ok bool
 	if (p.Pos < len(p.In) && p.In[p.Pos] == 34) && p.Control.Take(1) {
@@ -1504,10 +1504,10 @@ fail:
 	return nil, false
 }
 
-func q2(p *rt.Parser) (*core.Node, bool) {
+func q2(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, x1 int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ok bool
 	start = p.Pos
 	p.Enter()
@@ -1544,10 +1544,10 @@ fail:
 	return nil, false
 }
 
-func q3(p *rt.Parser) (*core.Node, bool) {
+func q3(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, x2, x4 int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ok, x1 bool
 	start = p.Pos
 	p.Enter()
@@ -1606,10 +1606,10 @@ fail:
 	return nil, false
 }
 
-func q5(p *rt.Parser) (*core.Node, bool) {
+func q5(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, x1 int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ok bool
 	start = p.Pos
 	p.Enter()
@@ -1646,10 +1646,10 @@ fail:
 	return nil, false
 }
 
-func q6(p *rt.Parser) (*core.Node, bool) {
+func q6(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, x2, x4 int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ok, x1 bool
 	start = p.Pos
 	p.Enter()
@@ -1708,9 +1708,9 @@ fail:
 	return nil, false
 }
 
-func q8(p *rt.Parser) (*core.Node, bool) {
+func q8(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
-	var v *core.Node
+	var v *zpvalue.Node
 	var x1, ok, x11 bool
 	var x2, x4, x6, size, x9 int
 	var ch, x10 rune
@@ -1788,10 +1788,10 @@ func q8(p *rt.Parser) (*core.Node, bool) {
 	return v, true
 }
 
-func q9(p *rt.Parser) (*core.Node, bool) {
+func q9(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, x1, size int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ok, x4 bool
 	var x3, ch rune
 	start = p.Pos
@@ -1860,10 +1860,10 @@ fail:
 	return nil, false
 }
 
-func q10(p *rt.Parser) (*core.Node, bool) {
+func q10(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, size int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ch rune
 	var ok bool
 	start = p.Pos
@@ -1885,10 +1885,10 @@ fail:
 	return nil, false
 }
 
-func q11(p *rt.Parser) (*core.Node, bool) {
+func q11(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, x1, x4, x7 int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ok bool
 	start = p.Pos
 	x1 = p.Pos
@@ -1927,10 +1927,10 @@ fail:
 	return nil, false
 }
 
-func q12(p *rt.Parser) (*core.Node, bool) {
+func q12(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, x1, size, x9, x10 int
-	var v *core.Node
+	var v *zpvalue.Node
 	var x3, ch rune
 	var x4, ok bool
 	start = p.Pos
@@ -2004,10 +2004,10 @@ fail:
 	return nil, false
 }
 
-func q13(p *rt.Parser) (*core.Node, bool) {
+func q13(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, size, x1, x2 int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ok bool
 	var ch rune
 	start = p.Pos
@@ -2048,10 +2048,10 @@ fail:
 	return nil, false
 }
 
-func q14(p *rt.Parser) (*core.Node, bool) {
+func q14(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, size, x1, x4, x5 int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ch rune
 	var ok bool
 	start = p.Pos
@@ -2114,10 +2114,10 @@ fail:
 	return nil, false
 }
 
-func q15(p *rt.Parser) (*core.Node, bool) {
+func q15(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start, x1 int
-	var v *core.Node
+	var v *zpvalue.Node
 	var x3 rune
 	var x4, ok bool
 	start = p.Pos
@@ -2161,10 +2161,10 @@ fail:
 	return nil, false
 }
 
-func q16(p *rt.Parser) (*core.Node, bool) {
+func q16(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
 	var start int
-	var v *core.Node
+	var v *zpvalue.Node
 	var ok bool
 	start = p.Pos
 	if (p.Pos+4 <= len(p.In) && p.In[p.Pos] == 110 && p.In[p.Pos+1] == 117 && p.In[p.Pos+2] == 108 && p.In[p.Pos+3] == 108) && p.Control.Take(4) {
@@ -2179,9 +2179,9 @@ fail:
 	return nil, false
 }
 
-func q17(p *rt.Parser) (*core.Node, bool) {
+func q17(p *rt.Parser) (*zpvalue.Node, bool) {
 	p.Spend()
-	var v *core.Node
+	var v *zpvalue.Node
 	var ch rune
 	var size, x1, x2 int
 	var ok bool
@@ -3302,4 +3302,4 @@ fail:
 
 const _ = types.ZPSchema_a9bcd9d1b71f161a
 
-const _ = rt.Protocol20
+const _ = rt.Protocol21

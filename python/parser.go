@@ -4,7 +4,7 @@ package python
 
 import (
 	types "zeroparse.dev/alpha-parsers/python/types"
-	rt "zeroparse.dev/zp/codegen/go/lib"
+	rt "zeroparse.dev/zp/pkg/runtime/golib"
 )
 
 var rules []*rt.Rule
@@ -35643,4 +35643,4 @@ fail:
 
 const _ = types.ZPSchema_674b8dab8d98d65a
 
-const _ = rt.Protocol20
+const _ = rt.Protocol21

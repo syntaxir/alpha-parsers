@@ -4,7 +4,7 @@ package cel
 
 import (
 	types "zeroparse.dev/alpha-parsers/cel/types"
-	rt "zeroparse.dev/zp/codegen/go/lib"
+	rt "zeroparse.dev/zp/pkg/runtime/golib"
 )
 
 var rules []*rt.Rule
@@ -6253,4 +6253,4 @@ fail:
 
 const _ = types.ZPSchema_b6502f89b49491a9
 
-const _ = rt.Protocol20
+const _ = rt.Protocol21

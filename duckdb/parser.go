@@ -4,7 +4,7 @@ package duckdb
 
 import (
 	types "zeroparse.dev/alpha-parsers/duckdb/types"
-	rt "zeroparse.dev/zp/codegen/go/lib"
+	rt "zeroparse.dev/zp/pkg/runtime/golib"
 )
 
 var rules []*rt.Rule
@@ -88463,4 +88463,4 @@ fail:
 
 const _ = types.ZPSchema_88bd805078878ceb
 
-const _ = rt.Protocol20
+const _ = rt.Protocol21

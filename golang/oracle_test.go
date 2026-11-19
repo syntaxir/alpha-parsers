@@ -9,19 +9,21 @@ import (
 	"testing"
 
 	"zeroparse.dev/alpha-parsers/golang"
-	"zeroparse.dev/zp/core"
-	"zeroparse.dev/zp/engine"
+	"zeroparse.dev/zp/pkg/compiler"
+	"zeroparse.dev/zp/pkg/grammar"
+	"zeroparse.dev/zp/pkg/runtime"
+	"zeroparse.dev/zp/pkg/runtime/input"
 )
 
 // The generated parser has only the typed entry point, so the check that it agrees with the grammar does not
-// rest on other entry points of the same generated code: the oracle is the engine's interpreter, which runs
+// rest on other entry points of the same generated code: the oracle is the reference parser, which runs
 // golang.zp itself.
-var interpreter = sync.OnceValue(func() *engine.Parser {
+var interpreter = sync.OnceValue(func() runtime.Parser {
 	src, err := os.ReadFile("golang.zp")
 	if err != nil {
 		panic(err)
 	}
-	p, err := engine.CompileSource(string(src), "main")
+	p, err := compiler.NewReferenceParser(grammar.FromBytes("golang.zp", src), compiler.WithStart("main"))
 	if err != nil {
 		panic(err)
 	}
@@ -52,14 +54,14 @@ func spanOf(v any) (start, end int, ok bool) {
 // interpreterDiff compares ParseValue with the interpreter p, in both position units: they must accept the same input
 // with the same error (message, line, column and offset), and the value must cover the range of p's node. It
 // returns what differs, or "".
-func interpreterDiff(src string, p *engine.Parser) string {
+func interpreterDiff(src string, p runtime.Parser) string {
 	for _, unit := range []struct {
 		name string
 		g    golang.PositionUnit
-		i    core.PositionUnit
-	}{{"code points", golang.CodePoints, core.CodePoints}, {"bytes", golang.Bytes, core.Bytes}} {
+		i    input.PositionUnit
+	}{{"code points", golang.CodePoints, input.CodePoints}, {"bytes", golang.Bytes, input.Bytes}} {
 		v, gerr := golang.ParseValue(src, golang.WithUnit(unit.g))
-		n, ierr := p.Parse(src, engine.WithUnit(unit.i))
+		n, ierr := p.Parse(src, runtime.WithUnit(unit.i))
 		if (gerr == nil) != (ierr == nil) || (gerr != nil && gerr.Error() != ierr.Error()) {
 			return fmt.Sprintf("%q (%s): ParseValue: %v; interpreter: %v", src, unit.name, gerr, ierr)
 		}
@@ -91,7 +93,7 @@ func TestInterpreterOracle(t *testing.T) {
 	if mutated == string(src) {
 		t.Fatal("the mutation did not apply")
 	}
-	other, err := engine.CompileSource(mutated, "main")
+	other, err := compiler.NewReferenceParser(grammar.FromString("golang.zp", mutated), compiler.WithStart("main"))
 	if err != nil {
 		t.Fatal(err)
 	}
