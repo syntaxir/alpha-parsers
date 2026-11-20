@@ -665,6 +665,12 @@ func r4(p *rt.Parser) (*zpvalue.Node, bool) {
 L6:
 	p.Pos = x1
 L5:
+	if p.Pos < len(p.In) {
+		p.Control.Take(1)
+		x3, _, x4 = p.In[p.Pos], 1, true
+	} else {
+		x3, _, x4 = p.Peek()
+	}
 	if !(x4 && (x3 == 10)) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 14)
 		goto L7
@@ -1058,6 +1064,12 @@ func q3(p *rt.Parser) (*zpvalue.Node, bool) {
 L6:
 	p.Pos = x1
 L5:
+	if p.Pos < len(p.In) {
+		p.Control.Take(1)
+		x3, _, x4 = p.In[p.Pos], 1, true
+	} else {
+		x3, _, x4 = p.Peek()
+	}
 	if !(x4 && (x3 == 10)) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 14)
 		goto L7
@@ -1516,6 +1528,12 @@ func s4(p *rt.TParser) (any, bool) {
 L6:
 	p.Pos = x1
 L5:
+	if p.Pos < len(p.In) {
+		p.Control.Take(1)
+		x3, _, x4 = p.In[p.Pos], 1, true
+	} else {
+		x3, _, x4 = p.Peek()
+	}
 	if !(x4 && (x3 == 10)) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 14)
 		goto L7
