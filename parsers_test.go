@@ -16,7 +16,7 @@ import (
 
 var update = flag.Bool("update", false, "update golden files")
 
-// generation is a sxir gen command of generate.go.
+// generation is an sxir gen command of generate.go.
 type generation struct {
 	grammar, module, out string
 	hasTypes             bool
