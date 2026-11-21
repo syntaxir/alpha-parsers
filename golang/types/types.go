@@ -2695,7 +2695,7 @@ func tb5(v *IntLit) any {
 // is no named node type. It is for generated parsers.
 var SXIRNodeTypes [7]uint16
 
-// SXIRSchema_55e6fdda92ef36bc ties the parser package to this package: the parser refers to it once, so a
+// SXIRSchema_a0e20bb2a2898ce3 ties the parser package to this package: the parser refers to it once, so a
 // parser and a types package generated from different schemas do not compile together.
 // It is for generated parsers; not a stable API.
-const SXIRSchema_55e6fdda92ef36bc = 0
+const SXIRSchema_a0e20bb2a2898ce3 = 0

@@ -538,6 +538,8 @@ func tv6(a *tslabs, v any) *types.Null {
 
 type tslabs struct {
 	control         *rt.BudgetControl
+	result          bool
+	steps           uint64
 	tAlias          rt.Chunk[types.Alias]
 	tBinaryExpr     rt.Chunk[types.BinaryExpr]
 	tCallExpr       rt.Chunk[types.CallExpr]
@@ -573,10 +575,19 @@ type tslabs struct {
 }
 
 func (a *tslabs) SetBudgetControl(c *rt.BudgetControl) { a.control = c }
+
 func (a *tslabs) spend() {
-	if a.control != nil {
-		a.control.Charge(1)
+	if a.control == nil {
+		return
 	}
+	if a.result {
+		a.steps++
+		if a.steps%256 == 0 {
+			a.control.Check()
+		}
+		return
+	}
+	a.control.Charge(1)
 }
 
 func (a *tslabs) MemoryBytes() uint64 {
@@ -589,7 +600,7 @@ func (a *tslabs) MemoryBytes() uint64 {
 // It builds the values directly, without the nodes Parse returns.
 func ParseValue(input string, opts ...rt.ParseOption) (*types.File, error) {
 	a := &tslabs{}
-	return rt.TParse(trules[0], input, opts, a, func(v any) *types.File { return rt.TAs[*types.File](v) })
+	return rt.TParse(trules[0], input, opts, a, func(v any) *types.File { a.result = true; return rt.TAs[*types.File](v) })
 }
 
 // ParseRuleValue parses the whole input with the named start rule and returns its typed value; an empty
@@ -606,7 +617,7 @@ func ParseRuleValue(name, input string, opts ...rt.ParseOption) (any, error) {
 	switch name {
 	case "main", "":
 		a := &tslabs{}
-		return rt.TParseResolved(trules[0], input, o, a, func(v any) *types.File { return rt.TAs[*types.File](v) })
+		return rt.TParseResolved(trules[0], input, o, a, func(v any) *types.File { a.result = true; return rt.TAs[*types.File](v) })
 	default:
 		return nil, sxirGrammar.StartError(name)
 	}
@@ -1253,7 +1264,7 @@ func init() {
 						return nil, tf8
 					}
 				}
-				tk9 := c.P.Kids(tm1)
+				tk9 := c.P.ElemsAbove(tm1)
 				tn10 := c.P.TermHull(c, false, tk9)
 				tv11 := tmk_CallExpr(c, true, (c.Lhs), any(tn10))
 				return tv11, nil
@@ -1604,7 +1615,7 @@ L75:
 					c.TermRaise(tf8)
 				}
 			}
-			tk9 := c.P.Kids(tm1)
+			tk9 := c.P.ElemsAbove(tm1)
 			tn10 := c.P.TermHull(c, false, tk9)
 			tm11 := len(c.P.KidStack)
 			ti12, tf12 := c.P.TermItems("map", k21)
@@ -1624,7 +1635,7 @@ L75:
 					c.TermRaise(tf18)
 				}
 			}
-			tk19 := c.P.Kids(tm11)
+			tk19 := c.P.ElemsAbove(tm11)
 			tn20 := c.P.TermHull(c, false, tk19)
 			tm21 := len(c.P.KidStack)
 			ti22, tf22 := c.P.TermItems("map", k47)
@@ -1644,7 +1655,7 @@ L75:
 					c.TermRaise(tf28)
 				}
 			}
-			tk29 := c.P.Kids(tm21)
+			tk29 := c.P.ElemsAbove(tm21)
 			tn30 := c.P.TermHull(c, false, tk29)
 			ti31, tf31 := c.P.TermItems("map", k64)
 			if tf31 != nil {
@@ -1672,7 +1683,7 @@ L75:
 			if tf38 != nil {
 				c.TermRaise(tf38)
 			}
-			tk39 := c.P.Kids(tm33)
+			tk39 := c.P.ElemsAbove(tm33)
 			tn40 := c.P.TermHull(c, false, tk39)
 			tv41 := tmk_File(c, true, any(tn40))
 			tr54 = tv41
@@ -2008,7 +2019,7 @@ L2:
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tv5 := tmk_ImportDecl(c, true, any(nil), any(tn4))
 			tr58 = tv5
@@ -4893,7 +4904,7 @@ func i57(p *rt.TParser) (any, bool) {
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tv5 := tmk_StructLit(c, true, any(tn4))
 			tr80 = tv5
@@ -6024,7 +6035,7 @@ L23:
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tv5 := tmk_Comprehension(c, true, any(tn4), k15, k18)
 			tr92 = tv5
@@ -6113,7 +6124,7 @@ L22:
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tv6 := tmk_Comprehension(c, true, any(tn5), k14, k17)
 			tr93 = tv6
@@ -7215,7 +7226,7 @@ func i97(p *rt.TParser) (any, bool) {
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tv6 := tmk_ListLit(c, true, any(tn5))
 			tr108 = tv6
@@ -11733,7 +11744,7 @@ func i167(p *rt.TParser) (any, bool) {
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tm5 := len(c.P.KidStack)
 			tf6 := c.P.TermPushItems(c, "concat", any(tn4))
@@ -11744,7 +11755,7 @@ func i167(p *rt.TParser) (any, bool) {
 			if tf7 != nil {
 				c.TermRaise(tf7)
 			}
-			tk8 := c.P.Kids(tm5)
+			tk8 := c.P.ElemsAbove(tm5)
 			tn9 := c.P.TermHull(c, false, tk8)
 			tv10 := tmk_Interpolation(c, true, any(tn9))
 			tr127 = tv10
@@ -11844,7 +11855,7 @@ func i169(p *rt.TParser) (any, bool) {
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tm6 := len(c.P.KidStack)
 			tf7 := c.P.TermPushItems(c, "concat", any(tn5))
@@ -11855,7 +11866,7 @@ func i169(p *rt.TParser) (any, bool) {
 			if tf8 != nil {
 				c.TermRaise(tf8)
 			}
-			tk9 := c.P.Kids(tm6)
+			tk9 := c.P.ElemsAbove(tm6)
 			tn10 := c.P.TermHull(c, false, tk9)
 			tr128 = any(tn10)
 		}
@@ -11908,7 +11919,7 @@ func i170(p *rt.TParser) (any, bool) {
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tr129 = any(tn5)
 		}
@@ -12196,7 +12207,7 @@ func i176(p *rt.TParser) (any, bool) {
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tm5 := len(c.P.KidStack)
 			tf6 := c.P.TermPushItems(c, "concat", any(tn4))
@@ -12207,7 +12218,7 @@ func i176(p *rt.TParser) (any, bool) {
 			if tf7 != nil {
 				c.TermRaise(tf7)
 			}
-			tk8 := c.P.Kids(tm5)
+			tk8 := c.P.ElemsAbove(tm5)
 			tn9 := c.P.TermHull(c, false, tk8)
 			tv10 := tmk_Interpolation(c, true, any(tn9))
 			tr134 = tv10
@@ -12307,7 +12318,7 @@ func i178(p *rt.TParser) (any, bool) {
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tm6 := len(c.P.KidStack)
 			tf7 := c.P.TermPushItems(c, "concat", any(tn5))
@@ -12318,7 +12329,7 @@ func i178(p *rt.TParser) (any, bool) {
 			if tf8 != nil {
 				c.TermRaise(tf8)
 			}
-			tk9 := c.P.Kids(tm6)
+			tk9 := c.P.ElemsAbove(tm6)
 			tn10 := c.P.TermHull(c, false, tk9)
 			tr135 = any(tn10)
 		}
@@ -12371,7 +12382,7 @@ func i179(p *rt.TParser) (any, bool) {
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tr136 = any(tn5)
 		}
@@ -14107,7 +14118,7 @@ L3:
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tm5 := len(c.P.KidStack)
 			tf6 := c.P.TermPushItems(c, "concat", any(tn4))
@@ -14118,7 +14129,7 @@ L3:
 			if tf7 != nil {
 				c.TermRaise(tf7)
 			}
-			tk8 := c.P.Kids(tm5)
+			tk8 := c.P.ElemsAbove(tm5)
 			tn9 := c.P.TermHull(c, false, tk8)
 			tv10 := tmk_Interpolation(c, true, any(tn9))
 			tr161 = tv10
@@ -14239,7 +14250,7 @@ L3:
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tm5 := len(c.P.KidStack)
 			tf6 := c.P.TermPushItems(c, "concat", any(tn4))
@@ -14250,7 +14261,7 @@ L3:
 			if tf7 != nil {
 				c.TermRaise(tf7)
 			}
-			tk8 := c.P.Kids(tm5)
+			tk8 := c.P.ElemsAbove(tm5)
 			tn9 := c.P.TermHull(c, false, tk8)
 			tv10 := tmk_Interpolation(c, true, any(tn9))
 			tr163 = tv10
@@ -14352,7 +14363,7 @@ func i199(p *rt.TParser) (any, bool) {
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tm6 := len(c.P.KidStack)
 			tf7 := c.P.TermPushItems(c, "concat", any(tn5))
@@ -14363,7 +14374,7 @@ func i199(p *rt.TParser) (any, bool) {
 			if tf8 != nil {
 				c.TermRaise(tf8)
 			}
-			tk9 := c.P.Kids(tm6)
+			tk9 := c.P.ElemsAbove(tm6)
 			tn10 := c.P.TermHull(c, false, tk9)
 			tr164 = any(tn10)
 		}
@@ -14416,7 +14427,7 @@ func i200(p *rt.TParser) (any, bool) {
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tr165 = any(tn5)
 		}
@@ -15222,7 +15233,7 @@ L3:
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tm5 := len(c.P.KidStack)
 			tf6 := c.P.TermPushItems(c, "concat", any(tn4))
@@ -15233,7 +15244,7 @@ L3:
 			if tf7 != nil {
 				c.TermRaise(tf7)
 			}
-			tk8 := c.P.Kids(tm5)
+			tk8 := c.P.ElemsAbove(tm5)
 			tn9 := c.P.TermHull(c, false, tk8)
 			tv10 := tmk_Interpolation(c, true, any(tn9))
 			tr175 = tv10
@@ -15354,7 +15365,7 @@ L3:
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tm5 := len(c.P.KidStack)
 			tf6 := c.P.TermPushItems(c, "concat", any(tn4))
@@ -15365,7 +15376,7 @@ L3:
 			if tf7 != nil {
 				c.TermRaise(tf7)
 			}
-			tk8 := c.P.Kids(tm5)
+			tk8 := c.P.ElemsAbove(tm5)
 			tn9 := c.P.TermHull(c, false, tk8)
 			tv10 := tmk_Interpolation(c, true, any(tn9))
 			tr177 = tv10
@@ -15467,7 +15478,7 @@ func i212(p *rt.TParser) (any, bool) {
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tm6 := len(c.P.KidStack)
 			tf7 := c.P.TermPushItems(c, "concat", any(tn5))
@@ -15478,7 +15489,7 @@ func i212(p *rt.TParser) (any, bool) {
 			if tf8 != nil {
 				c.TermRaise(tf8)
 			}
-			tk9 := c.P.Kids(tm6)
+			tk9 := c.P.ElemsAbove(tm6)
 			tn10 := c.P.TermHull(c, false, tk9)
 			tr178 = any(tn10)
 		}
@@ -15531,7 +15542,7 @@ func i213(p *rt.TParser) (any, bool) {
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tr179 = any(tn5)
 		}
@@ -21897,6 +21908,6 @@ fail:
 	return nil, false
 }
 
-const _ = types.SXIRSchema_46d8b5ab79879be3
+const _ = types.SXIRSchema_151ce161dc21b0ae
 
-const _ = rt.Protocol21
+const _ = rt.Protocol24

@@ -645,6 +645,8 @@ func tv17(a *tslabs, v any) *types.YesNo {
 
 type tslabs struct {
 	control       *rt.BudgetControl
+	result        bool
+	steps         uint64
 	tAttDef       rt.Chunk[types.AttDef]
 	tAttlistDecl  rt.Chunk[types.AttlistDecl]
 	tAttribute    rt.Chunk[types.Attribute]
@@ -674,10 +676,19 @@ type tslabs struct {
 }
 
 func (a *tslabs) SetBudgetControl(c *rt.BudgetControl) { a.control = c }
+
 func (a *tslabs) spend() {
-	if a.control != nil {
-		a.control.Charge(1)
+	if a.control == nil {
+		return
 	}
+	if a.result {
+		a.steps++
+		if a.steps%256 == 0 {
+			a.control.Check()
+		}
+		return
+	}
+	a.control.Charge(1)
 }
 
 func (a *tslabs) MemoryBytes() uint64 {
@@ -690,7 +701,7 @@ func (a *tslabs) MemoryBytes() uint64 {
 // It builds the values directly, without the nodes Parse returns.
 func ParseValue(input string, opts ...rt.ParseOption) (*types.Document, error) {
 	a := &tslabs{}
-	return rt.TParse(trules[0], input, opts, a, func(v any) *types.Document { return rt.TAs[*types.Document](v) })
+	return rt.TParse(trules[0], input, opts, a, func(v any) *types.Document { a.result = true; return rt.TAs[*types.Document](v) })
 }
 
 // ParseRuleValue parses the whole input with the named start rule and returns its typed value; an empty
@@ -707,7 +718,7 @@ func ParseRuleValue(name, input string, opts ...rt.ParseOption) (any, error) {
 	switch name {
 	case "main", "":
 		a := &tslabs{}
-		return rt.TParseResolved(trules[0], input, o, a, func(v any) *types.Document { return rt.TAs[*types.Document](v) })
+		return rt.TParseResolved(trules[0], input, o, a, func(v any) *types.Document { a.result = true; return rt.TAs[*types.Document](v) })
 	default:
 		return nil, sxirGrammar.StartError(name)
 	}
@@ -1081,7 +1092,7 @@ func init() {
 		if tf4 != nil {
 			return nil, tf4
 		}
-		tk5 := c.P.Kids(tm2)
+		tk5 := c.P.ElemsAbove(tm2)
 		tn6 := c.P.TermHull(c, false, tk5)
 		tf7 := any(tn6)
 		tf8 := c.Cap(2)
@@ -1176,7 +1187,7 @@ func init() {
 		if tf4 != nil {
 			return nil, tf4
 		}
-		tk5 := c.P.Kids(tm3)
+		tk5 := c.P.ElemsAbove(tm3)
 		tn6 := c.P.TermHull(c, false, tk5)
 		tf7 := any(tn6)
 		tn8 := c.TermStruct("Doctype", 3)
@@ -1273,7 +1284,7 @@ func init() {
 				return nil, tf8
 			}
 		}
-		tk9 := c.P.Kids(tm1)
+		tk9 := c.P.ElemsAbove(tm1)
 		tn10 := c.P.TermHull(c, false, tk9)
 		tf11 := any(tn10)
 		tn12 := c.TermStruct("Mixed", 1)
@@ -1296,7 +1307,7 @@ func init() {
 		if tf3 != nil {
 			return nil, tf3
 		}
-		tk4 := c.P.Kids(tm1)
+		tk4 := c.P.ElemsAbove(tm1)
 		tn5 := c.P.TermHull(c, false, tk4)
 		tf6 := any(tn5)
 		tf7 := c.Cap(2)
@@ -1323,7 +1334,7 @@ func init() {
 		if tf3 != nil {
 			return nil, tf3
 		}
-		tk4 := c.P.Kids(tm1)
+		tk4 := c.P.ElemsAbove(tm1)
 		tn5 := c.P.TermHull(c, false, tk4)
 		tf6 := any(tn5)
 		tf7 := c.Cap(2)
@@ -1408,7 +1419,7 @@ func init() {
 		if tf3 != nil {
 			return nil, tf3
 		}
-		tk4 := c.P.Kids(tm1)
+		tk4 := c.P.ElemsAbove(tm1)
 		tn5 := c.P.TermHull(c, false, tk4)
 		tf6 := any(tn5)
 		tn7 := c.TermStruct("NotationType", 1)
@@ -1431,7 +1442,7 @@ func init() {
 		if tf3 != nil {
 			return nil, tf3
 		}
-		tk4 := c.P.Kids(tm1)
+		tk4 := c.P.ElemsAbove(tm1)
 		tn5 := c.P.TermHull(c, false, tk4)
 		tf6 := any(tn5)
 		tn7 := c.TermStruct("Enumeration", 1)
@@ -1538,7 +1549,7 @@ func init() {
 		if tf5 != nil {
 			return nil, tf5
 		}
-		tk6 := c.P.Kids(tm4)
+		tk6 := c.P.ElemsAbove(tm4)
 		tn7 := c.P.TermHull(c, false, tk6)
 		tf8 := any(tn7)
 		tn9 := c.TermStruct("Element", 3)
@@ -1966,6 +1977,7 @@ func e14(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -2094,6 +2106,7 @@ func e18(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -2290,18 +2303,19 @@ func e29(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		p.RunBegin(1, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Mark()
 		x7 = p.Mark()
 		x10 = p.Pos
 		x11 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -2593,18 +2607,19 @@ func e35(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		p.RunBegin(2, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Mark()
 		x7 = p.Mark()
 		x10 = p.Pos
 		x11 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -3120,6 +3135,7 @@ func e53(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -3153,6 +3169,7 @@ func e55(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -3256,6 +3273,7 @@ func e58(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -3289,6 +3307,7 @@ func e60(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -3508,13 +3527,13 @@ func e75(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		p.RunBegin(3, true, false)
 	}
 	for {
-		p.Spend()
 		if x6 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x8 = p.Mark()
 		x5 = p.Frame
 		x4 = p.NewFrame(len(scope70))
@@ -4694,17 +4713,18 @@ func e116(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		p.RunBegin(9, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Mark()
 		x7 = p.Mark()
 		x10 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -4765,17 +4785,18 @@ func e118(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		p.RunBegin(10, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Mark()
 		x7 = p.Mark()
 		x10 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -5181,17 +5202,18 @@ func e131(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		p.RunBegin(12, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Mark()
 		x7 = p.Mark()
 		x10 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -5252,17 +5274,18 @@ func e133(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		p.RunBegin(13, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Mark()
 		x7 = p.Mark()
 		x10 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -5488,7 +5511,6 @@ func e140(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	}
 	x4 = 0
 	for {
-		p.Spend()
 		if x2 {
 			if x4 >= 1 {
 				if p.SkipHit() {
@@ -5497,11 +5519,13 @@ func e140(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Mark()
 		x7 = p.Mark()
 		x10 = p.Pos
 		x11 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -5627,18 +5651,19 @@ func e145(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		p.RunBegin(15, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Mark()
 		x7 = p.Mark()
 		x10 = p.Pos
 		x11 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -5786,6 +5811,7 @@ func e149(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	x8 = p.Pos
 	x9 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -5835,6 +5861,7 @@ L6:
 	x12 = p.Pos
 	x13 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -5920,6 +5947,7 @@ func e153(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -5959,7 +5987,6 @@ func e154(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	}
 	x4 = 0
 	for {
-		p.Spend()
 		if x2 {
 			if x4 >= 1 {
 				if p.SkipHit() {
@@ -5968,6 +5995,7 @@ func e154(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Mark()
 		if _, ok = r79(p); !ok {
 			goto L6
@@ -6622,6 +6650,7 @@ func r69(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func r74(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var ch rune
 	var size, x1, x2 int
@@ -6629,6 +6658,7 @@ func r74(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -6654,6 +6684,7 @@ func r74(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func r75(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, size, x1, x2 int
 	var v *sxirvalue.Node
 	var ch rune
@@ -6662,6 +6693,7 @@ func r75(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -6693,6 +6725,7 @@ fail:
 
 func r77(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, size, x1, x2 int
 	var v *sxirvalue.Node
 	var ch rune
@@ -6712,6 +6745,7 @@ func r77(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -6740,6 +6774,7 @@ fail:
 
 func r79(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, size int
 	var v *sxirvalue.Node
 	var ch rune
@@ -6765,6 +6800,7 @@ fail:
 
 func r80(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, size, x7, x8, x11, x12 int
 	var v *sxirvalue.Node
 	var x3, ch rune
@@ -6789,6 +6825,7 @@ func r80(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x7 = p.Pos
 	x8 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -6838,6 +6875,7 @@ L5:
 	x11 = p.Pos
 	x12 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -6879,6 +6917,7 @@ fail:
 }
 
 func r81(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start int
 	var v *sxirvalue.Node
@@ -7456,13 +7495,13 @@ func e178(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		p.RunBegin(3, true, false)
 	}
 	for {
-		p.Spend()
 		if x6 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x8 = p.Mark()
 		x5 = p.Frame
 		x4 = p.NewFrame(len(scope177))
@@ -7598,7 +7637,6 @@ func e180(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	}
 	x5 = 0
 	for {
-		p.Spend()
 		if x3 {
 			if x5 >= 1 {
 				if p.SkipHit() {
@@ -7607,6 +7645,7 @@ func e180(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x6 = p.Mark()
 		x2 = p.Frame
 		x1 = p.NewFrame(len(scope179))
@@ -7693,13 +7732,13 @@ func e182(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		p.RunBegin(5, false, false)
 	}
 	for {
-		p.Spend()
 		if x3 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x6 = p.Mark()
 		x2 = p.Frame
 		x1 = p.NewFrame(len(scope181))
@@ -7912,13 +7951,13 @@ func e186(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		p.RunBegin(11, false, false)
 	}
 	for {
-		p.Spend()
 		if x5 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x8 = p.Mark()
 		x4 = p.Frame
 		x3 = p.NewFrame(len(scope185))
@@ -8152,7 +8191,6 @@ func e189(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	}
 	x3 = 0
 	for {
-		p.Spend()
 		if x1 {
 			if x3 >= 1 {
 				if p.SkipHit() {
@@ -8161,6 +8199,7 @@ func e189(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x4 = p.Mark()
 		if _, ok = q70(p); !ok {
 			goto L5
@@ -8193,6 +8232,7 @@ fail:
 }
 
 func q2(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
@@ -8245,6 +8285,7 @@ fail:
 
 func q3(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x4 int
 	var v *sxirvalue.Node
 	var ok bool
@@ -8287,6 +8328,7 @@ fail:
 }
 
 func q4(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
@@ -8368,6 +8410,7 @@ fail:
 
 func q5(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, size, x1, x2 int
 	var v *sxirvalue.Node
 	var ok bool
@@ -8381,6 +8424,7 @@ func q5(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -8411,6 +8455,7 @@ fail:
 }
 
 func q6(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
@@ -8492,6 +8537,7 @@ fail:
 
 func q7(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, size, x1, x2 int
 	var v *sxirvalue.Node
 	var ch rune
@@ -8511,6 +8557,7 @@ func q7(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -8538,6 +8585,7 @@ fail:
 }
 
 func q8(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
@@ -8619,6 +8667,7 @@ fail:
 
 func q9(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
 	var x3 rune
@@ -8674,6 +8723,7 @@ fail:
 
 func q12(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var x1, ok, x12 bool
 	var x2, x4, x6, size, x9, x10 int
@@ -8684,18 +8734,19 @@ func q12(p *rt.Parser) (*sxirvalue.Node, bool) {
 		p.RunBegin(1, false, false)
 	}
 	for {
-		p.Spend()
 		if x1 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x4 = p.Pos
 		x6 = p.Pos
 		x9 = p.Pos
 		x10 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -8774,6 +8825,7 @@ func q12(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func q14(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var x1, ok, x12 bool
 	var x2, x4, x6, size, x9, x10, x15 int
@@ -8784,18 +8836,19 @@ func q14(p *rt.Parser) (*sxirvalue.Node, bool) {
 		p.RunBegin(2, false, false)
 	}
 	for {
-		p.Spend()
 		if x1 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x4 = p.Pos
 		x6 = p.Pos
 		x9 = p.Pos
 		x10 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -8879,6 +8932,7 @@ func q14(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func q15(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x4 int
 	var v *sxirvalue.Node
 	var ok bool
@@ -8941,6 +8995,7 @@ fail:
 
 func q16(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x2 int
 	var v *sxirvalue.Node
 	var ok bool
@@ -8973,6 +9028,7 @@ fail:
 }
 
 func q17(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
@@ -9099,6 +9155,7 @@ fail:
 
 func q18(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start int
 	var v *sxirvalue.Node
 	var ok bool
@@ -9124,6 +9181,7 @@ fail:
 }
 
 func q21(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start int
 	var v *sxirvalue.Node
@@ -9153,6 +9211,7 @@ fail:
 
 func q23(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var ch rune
 	var size, x1, x2 int
@@ -9160,6 +9219,7 @@ func q23(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -9185,6 +9245,7 @@ func q23(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func q24(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var ch rune
 	var size, x1, x2 int
@@ -9192,6 +9253,7 @@ func q24(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -9217,6 +9279,7 @@ func q24(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func q26(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var ch rune
 	var size, x1, x2 int
@@ -9224,6 +9287,7 @@ func q26(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -9249,6 +9313,7 @@ func q26(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func q27(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var ch rune
 	var size, x1, x2 int
@@ -9256,6 +9321,7 @@ func q27(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -9280,6 +9346,7 @@ func q27(p *rt.Parser) (*sxirvalue.Node, bool) {
 }
 
 func q28(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start int
 	var v *sxirvalue.Node
@@ -9316,6 +9383,7 @@ fail:
 }
 
 func q29(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
@@ -9419,6 +9487,7 @@ fail:
 
 func q30(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start int
 	var v *sxirvalue.Node
 	var ok bool
@@ -9434,6 +9503,7 @@ fail:
 }
 
 func q31(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start int
 	var v *sxirvalue.Node
@@ -9452,6 +9522,7 @@ fail:
 }
 
 func q36(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
@@ -9476,6 +9547,7 @@ fail:
 }
 
 func q37(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, size int
 	var v *sxirvalue.Node
@@ -9502,6 +9574,7 @@ fail:
 
 func q38(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x2, x4 int
 	var v *sxirvalue.Node
 	var ok, x1 bool
@@ -9521,13 +9594,13 @@ func q38(p *rt.Parser) (*sxirvalue.Node, bool) {
 		p.RunBegin(6, false, false)
 	}
 	for {
-		p.Spend()
 		if x1 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x4 = p.Pos
 		if _, ok = q72(p); !ok {
 			goto L5
@@ -9566,6 +9639,7 @@ fail:
 }
 
 func q39(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1, x5 int
 	var v *sxirvalue.Node
@@ -9618,6 +9692,7 @@ fail:
 
 func q40(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
 	var x3 rune
@@ -9669,6 +9744,7 @@ fail:
 
 func q41(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start int
 	var v *sxirvalue.Node
 	var ok bool
@@ -9684,6 +9760,7 @@ fail:
 }
 
 func q42(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
@@ -9741,6 +9818,7 @@ fail:
 }
 
 func q43(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
@@ -9897,6 +9975,7 @@ fail:
 
 func q44(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x2, x4 int
 	var v *sxirvalue.Node
 	var ok, x1 bool
@@ -9924,13 +10003,13 @@ func q44(p *rt.Parser) (*sxirvalue.Node, bool) {
 		p.RunBegin(7, false, false)
 	}
 	for {
-		p.Spend()
 		if x1 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x4 = p.Pos
 		if _, ok = q74(p); !ok {
 			goto L5
@@ -9978,6 +10057,7 @@ fail:
 
 func q45(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x2, x4 int
 	var v *sxirvalue.Node
 	var ok, x1 bool
@@ -9999,13 +10079,13 @@ func q45(p *rt.Parser) (*sxirvalue.Node, bool) {
 		p.RunBegin(8, false, false)
 	}
 	for {
-		p.Spend()
 		if x1 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x4 = p.Pos
 		if _, ok = q74(p); !ok {
 			goto L5
@@ -10052,6 +10132,7 @@ fail:
 }
 
 func q46(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
@@ -10103,6 +10184,7 @@ fail:
 }
 
 func q47(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1, x5 int
 	var v *sxirvalue.Node
@@ -10169,6 +10251,7 @@ fail:
 
 func q48(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
 	var ok bool
@@ -10225,6 +10308,7 @@ fail:
 
 func q50(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var x1, ok bool
 	var x2, x4, x6, size, x9 int
@@ -10235,17 +10319,18 @@ func q50(p *rt.Parser) (*sxirvalue.Node, bool) {
 		p.RunBegin(9, false, false)
 	}
 	for {
-		p.Spend()
 		if x1 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x4 = p.Pos
 		x6 = p.Pos
 		x9 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -10294,6 +10379,7 @@ func q50(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func q51(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var x1, ok bool
 	var x2, x4, x6, size, x9 int
@@ -10304,17 +10390,18 @@ func q51(p *rt.Parser) (*sxirvalue.Node, bool) {
 		p.RunBegin(10, false, false)
 	}
 	for {
-		p.Spend()
 		if x1 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x4 = p.Pos
 		x6 = p.Pos
 		x9 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -10363,6 +10450,7 @@ func q51(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func q52(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start int
 	var v *sxirvalue.Node
 	var ok bool
@@ -10398,6 +10486,7 @@ fail:
 }
 
 func q53(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
@@ -10450,6 +10539,7 @@ fail:
 
 func q54(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
 	var ok bool
@@ -10483,6 +10573,7 @@ fail:
 
 func q56(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start int
 	var v *sxirvalue.Node
 	var ok bool
@@ -10505,6 +10596,7 @@ fail:
 
 func q58(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var x1, ok bool
 	var x2, x4, x6, size, x9 int
@@ -10515,17 +10607,18 @@ func q58(p *rt.Parser) (*sxirvalue.Node, bool) {
 		p.RunBegin(12, false, false)
 	}
 	for {
-		p.Spend()
 		if x1 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x4 = p.Pos
 		x6 = p.Pos
 		x9 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -10574,6 +10667,7 @@ func q58(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func q59(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var x1, ok bool
 	var x2, x4, x6, size, x9 int
@@ -10584,17 +10678,18 @@ func q59(p *rt.Parser) (*sxirvalue.Node, bool) {
 		p.RunBegin(13, false, false)
 	}
 	for {
-		p.Spend()
 		if x1 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x4 = p.Pos
 		x6 = p.Pos
 		x9 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -10643,6 +10738,7 @@ func q59(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func q60(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var x2 int
 	var ok bool
@@ -10667,6 +10763,7 @@ func q60(p *rt.Parser) (*sxirvalue.Node, bool) {
 }
 
 func q61(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v *sxirvalue.Node
@@ -10698,6 +10795,7 @@ fail:
 }
 
 func q62(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1, x3 int
 	var v *sxirvalue.Node
@@ -10809,6 +10907,7 @@ fail:
 
 func q63(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x2, x3, x4, x6, size, x9, x10, x15 int
 	var v *sxirvalue.Node
 	var x1, ok, x12 bool
@@ -10821,7 +10920,6 @@ func q63(p *rt.Parser) (*sxirvalue.Node, bool) {
 	}
 	x3 = 0
 	for {
-		p.Spend()
 		if x1 {
 			if x3 >= 1 {
 				if p.SkipHit() {
@@ -10830,11 +10928,13 @@ func q63(p *rt.Parser) (*sxirvalue.Node, bool) {
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x4 = p.Pos
 		x6 = p.Pos
 		x9 = p.Pos
 		x10 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -10928,6 +11028,7 @@ fail:
 
 func q64(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start int
 	var v *sxirvalue.Node
 	var ok bool
@@ -10952,6 +11053,7 @@ fail:
 
 func q65(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var x1, ok, x12 bool
 	var x2, x4, x6, size, x9, x10, x15 int
@@ -10962,18 +11064,19 @@ func q65(p *rt.Parser) (*sxirvalue.Node, bool) {
 		p.RunBegin(15, false, false)
 	}
 	for {
-		p.Spend()
 		if x1 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x4 = p.Pos
 		x6 = p.Pos
 		x9 = p.Pos
 		x10 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -11057,6 +11160,7 @@ func q65(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func q67(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, size, x7, x8, x11, x12 int
 	var v *sxirvalue.Node
 	var x3, ch rune
@@ -11081,6 +11185,7 @@ func q67(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x7 = p.Pos
 	x8 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -11130,6 +11235,7 @@ L5:
 	x11 = p.Pos
 	x12 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -11171,6 +11277,7 @@ fail:
 }
 
 func q68(p *rt.Parser) (*sxirvalue.Node, bool) {
+	p.Spend()
 	p.Spend()
 	var start int
 	var v *sxirvalue.Node
@@ -11215,6 +11322,7 @@ func q69(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func q70(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, size int
 	var v *sxirvalue.Node
 	var ch rune
@@ -11240,6 +11348,7 @@ fail:
 
 func q72(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, size, x1, x2 int
 	var v *sxirvalue.Node
 	var ch rune
@@ -11248,6 +11357,7 @@ func q72(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -11279,6 +11389,7 @@ fail:
 
 func q74(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var v *sxirvalue.Node
 	var ch rune
 	var size, x1, x2 int
@@ -11286,6 +11397,7 @@ func q74(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -11311,6 +11423,7 @@ func q74(p *rt.Parser) (*sxirvalue.Node, bool) {
 
 func q75(p *rt.Parser) (*sxirvalue.Node, bool) {
 	p.Spend()
+	p.Spend()
 	var start, size, x1, x2 int
 	var v *sxirvalue.Node
 	var ch rune
@@ -11330,6 +11443,7 @@ func q75(p *rt.Parser) (*sxirvalue.Node, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -11360,6 +11474,7 @@ var trules []*rt.TRule
 
 // rule main
 func u0(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i0(p)
 	if !ok {
@@ -11443,7 +11558,7 @@ L19:
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tv6 := tmk_Document(c, true, k4, any(tn5), k14, k24, k27)
 			tr39 = tv6
@@ -11457,6 +11572,8 @@ fail:
 
 // rule misc_list
 func u1(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[1])
 	if !p.FirstCall(rules[1]) {
 		return p.CallMemo(trules[1], i1)
 	}
@@ -11523,6 +11640,7 @@ fail:
 
 func s2(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1 int
 	var v, v2, v8, v11 any
 	var x4 rune
@@ -11579,6 +11697,7 @@ fail:
 
 // rule xml_decl
 func u3(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i3(p)
 	if !ok {
@@ -11648,6 +11767,7 @@ fail:
 
 // rule version_info
 func u4(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i4(p)
 	if !ok {
@@ -11752,6 +11872,7 @@ fail:
 
 func s5(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, size, x2, x3 int
 	var v, v4, bv any
 	var ok bool
@@ -11766,6 +11887,7 @@ func s5(p *rt.TParser) (any, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -11803,6 +11925,7 @@ fail:
 
 // rule encoding_decl
 func u6(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i6(p)
 	if !ok {
@@ -11907,6 +12030,7 @@ fail:
 
 func s7(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, size, x2, x3 int
 	var v, v4, bv any
 	var ch rune
@@ -11927,6 +12051,7 @@ func s7(p *rt.TParser) (any, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -11961,6 +12086,7 @@ fail:
 
 // rule sd_decl
 func u8(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i8(p)
 	if !ok {
@@ -12065,6 +12191,7 @@ fail:
 
 func s9(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x2 int
 	var v, v10, bv any
 	var x4 rune
@@ -12127,6 +12254,8 @@ fail:
 
 // rule comment
 func u11(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[11])
 	if !p.FirstCall(rules[11]) {
 		return p.CallMemo(trules[11], i11)
 	}
@@ -12176,6 +12305,7 @@ fail:
 
 func s12(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x3, x5, x7, size, x10, x11 int
 	var v, v16, bv any
 	var x2, ok, x13 bool
@@ -12188,18 +12318,19 @@ func s12(p *rt.TParser) (any, bool) {
 		p.RunBegin(1, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Pos
 		x7 = p.Pos
 		x10 = p.Pos
 		x11 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -12284,6 +12415,8 @@ func s12(p *rt.TParser) (any, bool) {
 
 // rule pi
 func u13(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[13])
 	if !p.FirstCall(rules[13]) {
 		return p.CallMemo(trules[13], i13)
 	}
@@ -12511,6 +12644,7 @@ fail:
 
 func s14(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x3, x5, x7, size, x10, x11, x16 int
 	var v, v18, bv any
 	var x2, ok, x13 bool
@@ -12523,18 +12657,19 @@ func s14(p *rt.TParser) (any, bool) {
 		p.RunBegin(2, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Pos
 		x7 = p.Pos
 		x10 = p.Pos
 		x11 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -12624,6 +12759,7 @@ func s14(p *rt.TParser) (any, bool) {
 
 // rule doctype
 func u15(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i15(p)
 	if !ok {
@@ -12706,7 +12842,7 @@ L15:
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tv5 := tmk_Doctype(c, true, k1, k5, any(tn4))
 			tr48 = tv5
@@ -12720,6 +12856,7 @@ fail:
 
 // rule int_subset
 func u16(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i16(p)
 	if !ok {
@@ -12782,6 +12919,7 @@ fail:
 }
 
 func s17(p *rt.TParser) (any, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v, v2, v8, v11, v13, v16, v19, v22, v25 any
@@ -12918,6 +13056,7 @@ fail:
 
 func s18(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1 int
 	var v, v2, bv any
 	var ok bool
@@ -12951,6 +13090,8 @@ fail:
 
 // rule external_id
 func u19(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[19])
 	if !p.FirstCall(rules[19]) {
 		return p.CallMemo(trules[19], v19)
 	}
@@ -13015,6 +13156,8 @@ fail:
 
 // rule system_id
 func u20(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[20])
 	if !p.FirstCall(rules[20]) {
 		return p.CallMemo(trules[20], i20)
 	}
@@ -13060,6 +13203,7 @@ fail:
 
 // rule public_id
 func u21(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i21(p)
 	if !ok {
@@ -13109,6 +13253,8 @@ fail:
 
 // rule system_literal
 func u22(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[22])
 	if !p.FirstCall(rules[22]) {
 		return p.CallMemo(trules[22], i22)
 	}
@@ -13207,6 +13353,7 @@ fail:
 
 func s23(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, size, x2, x3 int
 	var v, v4, bv any
 	var ch rune
@@ -13216,6 +13363,7 @@ func s23(p *rt.TParser) (any, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -13247,6 +13395,7 @@ func s23(p *rt.TParser) (any, bool) {
 
 func s24(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, size, x2, x3 int
 	var v, v4, bv any
 	var ch rune
@@ -13256,6 +13405,7 @@ func s24(p *rt.TParser) (any, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -13287,6 +13437,8 @@ func s24(p *rt.TParser) (any, bool) {
 
 // rule pubid_literal
 func u25(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[25])
 	if !p.FirstCall(rules[25]) {
 		return p.CallMemo(trules[25], i25)
 	}
@@ -13385,6 +13537,7 @@ fail:
 
 func s26(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, size, x2, x3 int
 	var v, v4, bv any
 	var ch rune
@@ -13394,6 +13547,7 @@ func s26(p *rt.TParser) (any, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -13425,6 +13579,7 @@ func s26(p *rt.TParser) (any, bool) {
 
 func s27(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, size, x2, x3 int
 	var v, v4, bv any
 	var ch rune
@@ -13434,6 +13589,7 @@ func s27(p *rt.TParser) (any, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -13465,6 +13621,7 @@ func s27(p *rt.TParser) (any, bool) {
 
 // rule element_decl
 func u28(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i28(p)
 	if !ok {
@@ -13521,6 +13678,7 @@ fail:
 }
 
 func s29(p *rt.TParser) (any, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v, v2, v8, v11, v14, v17, v20 any
@@ -13632,6 +13790,7 @@ fail:
 
 func s30(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1 int
 	var v, v2, bv any
 	var ok bool
@@ -13654,6 +13813,7 @@ fail:
 }
 
 func s31(p *rt.TParser) (any, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v, v2, bv any
@@ -13680,6 +13840,7 @@ fail:
 
 // rule mixed
 func u32(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i32(p)
 	if !ok {
@@ -13714,13 +13875,13 @@ func i32(p *rt.TParser) (any, bool) {
 		p.RunBegin(3, true, false)
 	}
 	for {
-		p.Spend()
 		if x5 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x7 = p.Pos
 		k8 = nil
 		x10 = p.Pos
@@ -13847,7 +14008,7 @@ L19:
 					c.TermRaise(tf8)
 				}
 			}
-			tk9 := c.P.Kids(tm1)
+			tk9 := c.P.ElemsAbove(tm1)
 			tn10 := c.P.TermHull(c, false, tk9)
 			tv11 := tmk_Mixed(c, true, any(tn10))
 			tr56 = tv11
@@ -13861,6 +14022,8 @@ fail:
 
 // rule choice
 func u33(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[33])
 	if !p.FirstCall(rules[33]) {
 		return p.CallMemo(trules[33], i33)
 	}
@@ -13962,7 +14125,7 @@ L19:
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tv6 := tmk_Choice(c, true, any(tn5), k14)
 			tr57 = tv6
@@ -13978,6 +14141,8 @@ fail:
 
 // rule sequence
 func u34(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[34])
 	if !p.FirstCall(rules[34]) {
 		return p.CallMemo(trules[34], i34)
 	}
@@ -14074,7 +14239,7 @@ L19:
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tv6 := tmk_Sequence(c, true, any(tn5), k14)
 			tr58 = tv6
@@ -14090,6 +14255,8 @@ fail:
 
 // rule cp
 func u35(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[35])
 	if !p.FirstCall(rules[35]) {
 		return p.CallMemo(trules[35], v35)
 	}
@@ -14175,6 +14342,7 @@ fail:
 
 // rule name_particle
 func u36(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i36(p)
 	if !ok {
@@ -14222,6 +14390,7 @@ fail:
 
 func s37(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, size int
 	var v, v2, bv any
 	var ch rune
@@ -14254,6 +14423,7 @@ fail:
 
 // rule attlist_decl
 func u38(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i38(p)
 	if !ok {
@@ -14332,6 +14502,7 @@ fail:
 
 // rule att_def
 func u39(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i39(p)
 	if !ok {
@@ -14415,6 +14586,7 @@ fail:
 
 func s40(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x2 int
 	var v, v10, bv any
 	var x4 rune
@@ -14473,6 +14645,7 @@ fail:
 
 func s41(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1 int
 	var v, v2, bv any
 	var ok bool
@@ -14495,6 +14668,7 @@ fail:
 }
 
 func s42(p *rt.TParser) (any, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v, v2, v5, v10, v13 any
@@ -14558,6 +14732,7 @@ fail:
 }
 
 func s43(p *rt.TParser) (any, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1, x2 int
 	var v, v22, bv any
@@ -14721,6 +14896,7 @@ fail:
 
 // rule notation_type
 func u44(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i44(p)
 	if !ok {
@@ -14808,7 +14984,7 @@ func i44(p *rt.TParser) (any, bool) {
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tv6 := tmk_NotationType(c, true, any(tn5))
 			tr62 = tv6
@@ -14822,6 +14998,7 @@ fail:
 
 // rule enumeration
 func u45(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i45(p)
 	if !ok {
@@ -14903,7 +15080,7 @@ func i45(p *rt.TParser) (any, bool) {
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tv6 := tmk_Enumeration(c, true, any(tn5))
 			tr63 = tv6
@@ -14916,6 +15093,7 @@ fail:
 }
 
 func s46(p *rt.TParser) (any, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v, v2, v8, v11 any
@@ -14973,6 +15151,7 @@ fail:
 
 // rule ge_decl
 func u47(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i47(p)
 	if !ok {
@@ -15072,6 +15251,7 @@ fail:
 
 // rule pe_decl
 func u48(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i48(p)
 	if !ok {
@@ -15156,6 +15336,8 @@ fail:
 
 // rule entity_value
 func u49(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[49])
 	if !p.FirstCall(rules[49]) {
 		return p.CallMemo(trules[49], i49)
 	}
@@ -15254,6 +15436,7 @@ fail:
 
 func s50(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x3, x5, x7, size, x10 int
 	var v, v12, bv any
 	var x2, ok bool
@@ -15266,17 +15449,18 @@ func s50(p *rt.TParser) (any, bool) {
 		p.RunBegin(9, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Pos
 		x7 = p.Pos
 		x10 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -15331,6 +15515,7 @@ func s50(p *rt.TParser) (any, bool) {
 
 func s51(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x3, x5, x7, size, x10 int
 	var v, v12, bv any
 	var x2, ok bool
@@ -15343,17 +15528,18 @@ func s51(p *rt.TParser) (any, bool) {
 		p.RunBegin(10, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Pos
 		x7 = p.Pos
 		x10 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -15408,6 +15594,7 @@ func s51(p *rt.TParser) (any, bool) {
 
 // rule notation_decl
 func u52(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i52(p)
 	if !ok {
@@ -15465,6 +15652,7 @@ fail:
 
 func s53(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1 int
 	var v, v2, v8, v11 any
 	var x4 rune
@@ -15521,6 +15709,7 @@ fail:
 
 // rule public_notation
 func u54(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i54(p)
 	if !ok {
@@ -15577,6 +15766,8 @@ fail:
 
 // rule element
 func u55(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[55])
 	if !p.FirstCall(rules[55]) {
 		return p.CallMemo(trules[55], i55)
 	}
@@ -15740,7 +15931,7 @@ L19:
 			if tf4 != nil {
 				c.TermRaise(tf4)
 			}
-			tk5 := c.P.Kids(tm3)
+			tk5 := c.P.ElemsAbove(tm3)
 			tn6 := c.P.TermHull(c, false, tk5)
 			tv7 := tmk_Element(c, true, k1, tv2, any(tn6))
 			tr70 = tv7
@@ -15756,6 +15947,7 @@ fail:
 
 // rule attribute
 func u56(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i56(p)
 	if !ok {
@@ -15799,6 +15991,8 @@ fail:
 
 // rule att_value
 func u57(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[57])
 	if !p.FirstCall(rules[57]) {
 		return p.CallMemo(trules[57], i57)
 	}
@@ -15897,6 +16091,7 @@ fail:
 
 func s58(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x3, x5, x7, size, x10 int
 	var v, v12, bv any
 	var x2, ok bool
@@ -15909,17 +16104,18 @@ func s58(p *rt.TParser) (any, bool) {
 		p.RunBegin(12, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Pos
 		x7 = p.Pos
 		x10 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -15974,6 +16170,7 @@ func s58(p *rt.TParser) (any, bool) {
 
 func s59(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x3, x5, x7, size, x10 int
 	var v, v12, bv any
 	var x2, ok bool
@@ -15986,17 +16183,18 @@ func s59(p *rt.TParser) (any, bool) {
 		p.RunBegin(13, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Pos
 		x7 = p.Pos
 		x10 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -16051,6 +16249,7 @@ func s59(p *rt.TParser) (any, bool) {
 
 func s60(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x2, x4 int
 	var v, v6, v7, v8 any
 	var ok bool
@@ -16083,6 +16282,7 @@ func s60(p *rt.TParser) (any, bool) {
 }
 
 func s61(p *rt.TParser) (any, bool) {
+	p.Spend()
 	p.Spend()
 	var start, x1 int
 	var v, v2, v5, v7 any
@@ -16120,6 +16320,7 @@ fail:
 
 // rule markup
 func u62(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i62(p)
 	if !ok {
@@ -16255,6 +16456,7 @@ fail:
 
 func s63(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x3, x4, x5, x7, size, x10, x11, x16 int
 	var v, v18, bv any
 	var x2, ok, x13 bool
@@ -16268,7 +16470,6 @@ func s63(p *rt.TParser) (any, bool) {
 	}
 	x4 = 0
 	for {
-		p.Spend()
 		if x2 {
 			if x4 >= 1 {
 				if p.SkipHit() {
@@ -16277,11 +16478,13 @@ func s63(p *rt.TParser) (any, bool) {
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Pos
 		x7 = p.Pos
 		x10 = p.Pos
 		x11 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -16381,6 +16584,7 @@ fail:
 
 // rule cdsect
 func u64(p *rt.TParser) (any, bool) {
+	p.Spend()
 	start := p.Pos
 	v, ok := i64(p)
 	if !ok {
@@ -16425,6 +16629,7 @@ fail:
 
 func s65(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x3, x5, x7, size, x10, x11, x16 int
 	var v, v18, bv any
 	var x2, ok, x13 bool
@@ -16437,18 +16642,19 @@ func s65(p *rt.TParser) (any, bool) {
 		p.RunBegin(15, false, false)
 	}
 	for {
-		p.Spend()
 		if x2 {
 			if p.SkipHit() {
 				break
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Pos
 		x7 = p.Pos
 		x10 = p.Pos
 		x11 = 0
 		for {
+			p.Spend()
 			if p.Pos < len(p.In) {
 				p.Control.Take(1)
 				ch, size, ok = p.In[p.Pos], 1, true
@@ -16538,6 +16744,8 @@ func s65(p *rt.TParser) (any, bool) {
 
 // rule reference
 func u66(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[66])
 	if !p.FirstCall(rules[66]) {
 		return p.CallMemo(trules[66], v66)
 	}
@@ -16591,6 +16799,7 @@ fail:
 
 func s67(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, x2, size, x8, x9, x12, x13 int
 	var v, v14, bv any
 	var x4, ch rune
@@ -16616,6 +16825,7 @@ func s67(p *rt.TParser) (any, bool) {
 	x8 = p.Pos
 	x9 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -16665,6 +16875,7 @@ L6:
 	x12 = p.Pos
 	x13 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -16713,6 +16924,7 @@ fail:
 
 func s68(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1 int
 	var v, v2, bv any
 	var ok bool
@@ -16746,6 +16958,7 @@ fail:
 
 func s69(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, size, x2, x3 int
 	var v, v4, bv any
 	var ch rune
@@ -16766,6 +16979,7 @@ func s69(p *rt.TParser) (any, bool) {
 	x2 = p.Pos
 	x3 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -16800,6 +17014,8 @@ fail:
 
 // rule nmtoken
 func u71(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[71])
 	if !p.FirstCall(rules[71]) {
 		return p.CallMemo(trules[71], v71)
 	}
@@ -16820,7 +17036,6 @@ func v71(p *rt.TParser) (any, bool) {
 	}
 	x4 = 0
 	for {
-		p.Spend()
 		if x2 {
 			if x4 >= 1 {
 				if p.SkipHit() {
@@ -16829,6 +17044,7 @@ func v71(p *rt.TParser) (any, bool) {
 			}
 			p.SkipVisit()
 		}
+		p.Spend()
 		x5 = p.Pos
 		if _, ok = s79(p); !ok {
 			goto L6
@@ -16870,6 +17086,7 @@ fail:
 
 func s74(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var v any
 	var ch rune
 	var size, x1, x2 int
@@ -16877,6 +17094,7 @@ func s74(p *rt.TParser) (any, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -16902,6 +17120,7 @@ func s74(p *rt.TParser) (any, bool) {
 
 func s75(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, size, x1, x2 int
 	var v any
 	var ch rune
@@ -16910,6 +17129,7 @@ func s75(p *rt.TParser) (any, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -16941,6 +17161,8 @@ fail:
 
 // rule eq
 func u76(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[76])
 	if !p.FirstCall(rules[76]) {
 		return p.CallMemo(trules[76], v76)
 	}
@@ -16973,6 +17195,7 @@ fail:
 
 func s77(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, size, x1, x2 int
 	var v any
 	var ch rune
@@ -16992,6 +17215,7 @@ func s77(p *rt.TParser) (any, bool) {
 	x1 = p.Pos
 	x2 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -17020,6 +17244,8 @@ fail:
 
 // rule reference
 func u78(p *rt.TParser) (any, bool) {
+	p.Spend()
+	p.ChargeKey(rules[78])
 	if !p.FirstCall(rules[78]) {
 		return p.CallMemo(trules[78], v78)
 	}
@@ -17068,6 +17294,7 @@ fail:
 
 func s79(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, size int
 	var v any
 	var ch rune
@@ -17093,6 +17320,7 @@ fail:
 
 func s80(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start, x1, size, x7, x8, x11, x12 int
 	var v any
 	var x3, ch rune
@@ -17117,6 +17345,7 @@ func s80(p *rt.TParser) (any, bool) {
 	x7 = p.Pos
 	x8 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -17166,6 +17395,7 @@ L5:
 	x11 = p.Pos
 	x12 = 0
 	for {
+		p.Spend()
 		if p.Pos < len(p.In) {
 			p.Control.Take(1)
 			ch, size, ok = p.In[p.Pos], 1, true
@@ -17208,6 +17438,7 @@ fail:
 
 func s81(p *rt.TParser) (any, bool) {
 	p.Spend()
+	p.Spend()
 	var start int
 	var v any
 	var ok bool
@@ -17232,6 +17463,6 @@ fail:
 	return nil, false
 }
 
-const _ = types.SXIRSchema_b044f4d2cb8d65a3
+const _ = types.SXIRSchema_f2495284b507cf77
 
-const _ = rt.Protocol21
+const _ = rt.Protocol24

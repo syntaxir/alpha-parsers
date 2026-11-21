@@ -5391,7 +5391,7 @@ func tb4(v *FStringRawMiddle) any {
 // is no named node type. It is for generated parsers.
 var SXIRNodeTypes [6]uint16
 
-// SXIRSchema_674b8dab8d98d65a ties the parser package to this package: the parser refers to it once, so a
+// SXIRSchema_6f1df1ee56065489 ties the parser package to this package: the parser refers to it once, so a
 // parser and a types package generated from different schemas do not compile together.
 // It is for generated parsers; not a stable API.
-const SXIRSchema_674b8dab8d98d65a = 0
+const SXIRSchema_6f1df1ee56065489 = 0

@@ -352,6 +352,8 @@ func tv8(a *tslabs, v any) *types.UintLit {
 
 type tslabs struct {
 	control      *rt.BudgetControl
+	result       bool
+	steps        uint64
 	tBinary      rt.Chunk[types.Binary]
 	tCall        rt.Chunk[types.Call]
 	tConditional rt.Chunk[types.Conditional]
@@ -371,10 +373,19 @@ type tslabs struct {
 }
 
 func (a *tslabs) SetBudgetControl(c *rt.BudgetControl) { a.control = c }
+
 func (a *tslabs) spend() {
-	if a.control != nil {
-		a.control.Charge(1)
+	if a.control == nil {
+		return
 	}
+	if a.result {
+		a.steps++
+		if a.steps%256 == 0 {
+			a.control.Check()
+		}
+		return
+	}
+	a.control.Charge(1)
 }
 
 func (a *tslabs) MemoryBytes() uint64 {
@@ -387,7 +398,7 @@ func (a *tslabs) MemoryBytes() uint64 {
 // It builds the values directly, without the nodes Parse returns.
 func ParseValue(input string, opts ...rt.ParseOption) (types.Expr, error) {
 	a := &tslabs{}
-	return rt.TParse(trules[0], input, opts, a, func(v any) types.Expr { return rt.TAs[types.Expr](rt.TPubIn(types.SXIRHooks, a, v)) })
+	return rt.TParse(trules[0], input, opts, a, func(v any) types.Expr { a.result = true; return rt.TAs[types.Expr](rt.TPubIn(types.SXIRHooks, a, v)) })
 }
 
 // ParseRuleValue parses the whole input with the named start rule and returns its typed value; an empty
@@ -404,7 +415,7 @@ func ParseRuleValue(name, input string, opts ...rt.ParseOption) (any, error) {
 	switch name {
 	case "main", "":
 		a := &tslabs{}
-		return rt.TParseResolved(trules[0], input, o, a, func(v any) types.Expr { return rt.TAs[types.Expr](rt.TPubIn(types.SXIRHooks, a, v)) })
+		return rt.TParseResolved(trules[0], input, o, a, func(v any) types.Expr { a.result = true; return rt.TAs[types.Expr](rt.TPubIn(types.SXIRHooks, a, v)) })
 	default:
 		return nil, sxirGrammar.StartError(name)
 	}
@@ -719,7 +730,7 @@ func init() {
 				if tf2 != nil {
 					return nil, tf2
 				}
-				tk3 := c.P.Kids(tm1)
+				tk3 := c.P.ElemsAbove(tm1)
 				tn4 := c.P.TermHull(c, false, tk3)
 				tv5 := tmk_Call(c, true, (c.Lhs), c.Cap(0), any(tn4))
 				return tv5, nil
@@ -2446,7 +2457,7 @@ L9:
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tv5 := tmk_Call(c, true, any(nil), k1, any(tn4))
 			tr7 = tv5
@@ -2569,7 +2580,7 @@ func i13(p *rt.TParser) (any, bool) {
 					c.TermRaise(tf9)
 				}
 			}
-			tk10 := c.P.Kids(tm1)
+			tk10 := c.P.ElemsAbove(tm1)
 			tn11 := c.P.TermHull(c, false, tk10)
 			tr8 = any(tn11)
 		}
@@ -2650,7 +2661,7 @@ L10:
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tv5 := tmk_ListLit(c, true, any(tn4))
 			tr9 = tv5
@@ -2770,7 +2781,7 @@ func i15(p *rt.TParser) (any, bool) {
 					c.TermRaise(tf9)
 				}
 			}
-			tk10 := c.P.Kids(tm1)
+			tk10 := c.P.ElemsAbove(tm1)
 			tn11 := c.P.TermHull(c, false, tk10)
 			tr10 = any(tn11)
 		}
@@ -2947,7 +2958,7 @@ L10:
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tv5 := tmk_MapLit(c, true, any(tn4))
 			tr12 = tv5
@@ -3026,7 +3037,7 @@ func i19(p *rt.TParser) (any, bool) {
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tr13 = any(tn5)
 		}
@@ -3383,7 +3394,7 @@ L24:
 			if tf2 != nil {
 				c.TermRaise(tf2)
 			}
-			tk3 := c.P.Kids(tm1)
+			tk3 := c.P.ElemsAbove(tm1)
 			tn4 := c.P.TermHull(c, false, tk3)
 			tv5 := tmk_MessageLit(c, true, k12, any(tn4))
 			tr16 = tv5
@@ -3539,7 +3550,7 @@ func i25(p *rt.TParser) (any, bool) {
 			if tf3 != nil {
 				c.TermRaise(tf3)
 			}
-			tk4 := c.P.Kids(tm1)
+			tk4 := c.P.ElemsAbove(tm1)
 			tn5 := c.P.TermHull(c, false, tk4)
 			tr17 = any(tn5)
 		}
@@ -6251,6 +6262,6 @@ fail:
 	return nil, false
 }
 
-const _ = types.SXIRSchema_b6502f89b49491a9
+const _ = types.SXIRSchema_6efc68ea8ebc478c
 
-const _ = rt.Protocol21
+const _ = rt.Protocol24

@@ -9302,7 +9302,7 @@ func tb28(v *ThisTypeNode) any {
 // is no named node type. It is for generated parsers.
 var SXIRNodeTypes [30]uint16
 
-// SXIRSchema_bd0fc995c7788152 ties the parser package to this package: the parser refers to it once, so a
+// SXIRSchema_b93e02d2faedd99f ties the parser package to this package: the parser refers to it once, so a
 // parser and a types package generated from different schemas do not compile together.
 // It is for generated parsers; not a stable API.
-const SXIRSchema_bd0fc995c7788152 = 0
+const SXIRSchema_b93e02d2faedd99f = 0
