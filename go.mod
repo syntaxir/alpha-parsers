@@ -1,5 +1,5 @@
-module zeroparse.dev/alpha-parsers
+module syntaxir.dev/alpha-parsers
 
 go 1.27.1
 
-require zeroparse.dev/zp v0.0.0-20261120073848-e57b1e66d646
+require syntaxir.dev/sxir v0.0.0-20261120073848-e57b1e66d646

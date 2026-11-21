@@ -3,7 +3,7 @@ package golang_test
 import (
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/golang"
+	"syntaxir.dev/alpha-parsers/golang"
 )
 
 // FuzzParseFile compares the package with go/parser on arbitrary input (go test -fuzz

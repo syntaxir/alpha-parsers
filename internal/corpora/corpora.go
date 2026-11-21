@@ -73,16 +73,16 @@ func Lookup(name string) (Source, bool) {
 	return Source{}, false
 }
 
-// Root returns the cache directory: $ZP_CORPORA, or zp/corpora in the user cache directory.
+// Root returns the cache directory: $SXIR_CORPORA, or sxir/corpora in the user cache directory.
 func Root() (string, error) {
-	if d := os.Getenv("ZP_CORPORA"); d != "" {
+	if d := os.Getenv("SXIR_CORPORA"); d != "" {
 		return filepath.Abs(d)
 	}
 	d, err := os.UserCacheDir()
 	if err != nil {
-		return "", fmt.Errorf("no cache directory (set ZP_CORPORA): %w", err)
+		return "", fmt.Errorf("no cache directory (set SXIR_CORPORA): %w", err)
 	}
-	return filepath.Join(d, "zp", "corpora"), nil
+	return filepath.Join(d, "sxir", "corpora"), nil
 }
 
 // Dir returns the directory of the fetched files of s, and whether they are there. The directory is named by the digest

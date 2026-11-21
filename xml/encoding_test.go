@@ -6,7 +6,7 @@ import (
 	"testing"
 	"unicode/utf16"
 
-	"zeroparse.dev/alpha-parsers/xml"
+	"syntaxir.dev/alpha-parsers/xml"
 )
 
 func TestLongEncodingDeclarations(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/duckdb"
+	"syntaxir.dev/alpha-parsers/duckdb"
 )
 
 // nestings are the constructs that nest, and some that repeat: a text with n levels or terms of each. Chains of

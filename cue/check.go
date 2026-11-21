@@ -7,7 +7,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"zeroparse.dev/alpha-parsers/cue/types"
+	"syntaxir.dev/alpha-parsers/cue/types"
 )
 
 // A SemanticError is an error that the syntax does not show, found after parsing: a name declared twice in a

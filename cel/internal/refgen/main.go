@@ -26,7 +26,7 @@ import (
 	"strconv"
 	"strings"
 
-	upstreampkg "zeroparse.dev/alpha-parsers/cel/internal/upstream"
+	upstreampkg "syntaxir.dev/alpha-parsers/cel/internal/upstream"
 )
 
 func main() {

@@ -15,8 +15,8 @@ import (
 	"sync"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/cue/internal/upstream"
-	"zeroparse.dev/alpha-parsers/internal/corpora/corporatest"
+	"syntaxir.dev/alpha-parsers/cue/internal/upstream"
+	"syntaxir.dev/alpha-parsers/internal/corpora/corporatest"
 )
 
 // A refResult is the result of the reference implementation (cuelang.org/go/cue/parser) for one source.

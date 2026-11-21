@@ -3,7 +3,7 @@ package cel
 import (
 	"strings"
 
-	"zeroparse.dev/alpha-parsers/cel/types"
+	"syntaxir.dev/alpha-parsers/cel/types"
 )
 
 // Format returns the expression as source text: the literals as they were written (a triple-quoted string keeps its

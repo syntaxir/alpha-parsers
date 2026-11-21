@@ -14,9 +14,9 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/zp/pkg/compiler"
-	"zeroparse.dev/zp/pkg/grammar"
-	"zeroparse.dev/zp/pkg/runtime"
+	"syntaxir.dev/sxir/pkg/compiler"
+	"syntaxir.dev/sxir/pkg/grammar"
+	"syntaxir.dev/sxir/pkg/runtime"
 )
 
 // The typed conformance checks compare the generated typed outputs with the output schema of their

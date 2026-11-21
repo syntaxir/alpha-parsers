@@ -7,8 +7,8 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	"zeroparse.dev/alpha-parsers/cel"
-	"zeroparse.dev/alpha-parsers/internal/corpora/corporatest"
+	"syntaxir.dev/alpha-parsers/cel"
+	"syntaxir.dev/alpha-parsers/internal/corpora/corporatest"
 )
 
 // FuzzParse checks the properties of the parser on arbitrary input (go test -fuzz FuzzParse): ParseValue accepts the same

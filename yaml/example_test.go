@@ -4,13 +4,13 @@ import (
 	"errors"
 	"fmt"
 
-	"zeroparse.dev/alpha-parsers/yaml"
-	"zeroparse.dev/alpha-parsers/yaml/types"
+	"syntaxir.dev/alpha-parsers/yaml"
+	"syntaxir.dev/alpha-parsers/yaml/types"
 )
 
 func ExampleLoad() {
 	v, err := yaml.Load(`
-name: zp
+name: sxir
 tags: [peg, pratt]
 stars: 42
 license: ~
@@ -20,7 +20,7 @@ license: ~
 	}
 	m := v.(map[string]any)
 	fmt.Println(m["name"], m["tags"], m["stars"], m["license"])
-	// Output: zp [peg pratt] 42 <nil>
+	// Output: sxir [peg pratt] 42 <nil>
 }
 
 func ExampleLoadAll() {

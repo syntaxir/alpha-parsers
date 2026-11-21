@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/csv"
+	"syntaxir.dev/alpha-parsers/csv"
 )
 
 // TestBudgetControls checks that the parser, generated with limit controls, stops at a Compute limit

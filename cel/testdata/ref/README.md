@@ -1,7 +1,7 @@
 # Reference Results of Cel-Go
 
 What the parser of [cel-go](https://github.com/google/cel-go) v0.32.0 (`cel.dev/cel-go`, Apache License 2.0) makes of
-each expression, written by [internal/refgen](https://github.com/zeroparse/zp/blob/main/internal/refgen) (`go run . -spec /path/to/cel-spec -out
+each expression, written by [internal/refgen](https://github.com/syntaxir/syntaxir/blob/main/internal/refgen) (`go run . -spec /path/to/cel-spec -out
 ../../testdata/ref -deep 1000`; see the README of the module). The tests of the module compare the parser with these
 files, so that they need no cel-go.
 

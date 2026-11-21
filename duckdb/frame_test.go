@@ -6,8 +6,8 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	"zeroparse.dev/alpha-parsers/duckdb"
-	"zeroparse.dev/alpha-parsers/duckdb/types"
+	"syntaxir.dev/alpha-parsers/duckdb"
+	"syntaxir.dev/alpha-parsers/duckdb/types"
 )
 
 func TestFrameBoundaries(t *testing.T) {

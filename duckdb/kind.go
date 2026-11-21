@@ -1,6 +1,6 @@
 package duckdb
 
-import "zeroparse.dev/alpha-parsers/duckdb/types"
+import "syntaxir.dev/alpha-parsers/duckdb/types"
 
 // Kind returns the type DuckDB gives the statement (the name of its StatementType: SELECT, INSERT, CREATE, ...).
 //

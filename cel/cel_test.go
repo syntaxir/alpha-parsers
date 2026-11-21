@@ -9,9 +9,9 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"zeroparse.dev/alpha-parsers/cel"
-	"zeroparse.dev/alpha-parsers/cel/types"
-	"zeroparse.dev/alpha-parsers/internal/corpora/corporatest"
+	"syntaxir.dev/alpha-parsers/cel"
+	"syntaxir.dev/alpha-parsers/cel/types"
+	"syntaxir.dev/alpha-parsers/internal/corpora/corporatest"
 )
 
 // textprotoExprs returns the value of each expr field in a file of the protobuf text format. A string value may be
@@ -167,7 +167,7 @@ func TestConformanceSuite(t *testing.T) {
 }
 
 // TestGolden checks the generated parser against the golden files of testdata, which the tests of
-// zeroparse.dev/alpha-parsers check every backend of the engine against.
+// syntaxir.dev/alpha-parsers check every backend of the engine against.
 func TestGolden(t *testing.T) {
 	inputs, _ := filepath.Glob("testdata/*.txt")
 	if len(inputs) == 0 {

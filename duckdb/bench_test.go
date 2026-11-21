@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/duckdb"
+	"syntaxir.dev/alpha-parsers/duckdb"
 )
 
 // benchScript is an analytical script of about 256 KB: tables, CTEs with joins, aggregates, window functions,

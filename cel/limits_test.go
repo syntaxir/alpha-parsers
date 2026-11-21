@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/cel"
+	"syntaxir.dev/alpha-parsers/cel"
 )
 
 func rep(s string, n int) string { return strings.Repeat(s, max(n, 0)) }

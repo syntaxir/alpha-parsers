@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/yaml"
+	"syntaxir.dev/alpha-parsers/yaml"
 )
 
 // TestBudgetControls checks that the parser, generated with limit controls, stops at a Compute limit

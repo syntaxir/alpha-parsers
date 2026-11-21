@@ -3,7 +3,7 @@ package cel_test
 import (
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/cel"
+	"syntaxir.dev/alpha-parsers/cel"
 )
 
 // TestMacros checks which calls CheckMacros rejects (the differential test compares it with cel-go on 12,000

@@ -1,10 +1,10 @@
-module zeroparse.dev/alpha-parsers/cel/internal/refgen
+module syntaxir.dev/alpha-parsers/cel/internal/refgen
 
 go 1.27.1
 
 require (
 	cel.dev/cel-go v0.32.0
-	zeroparse.dev/alpha-parsers/cel v0.0.0-00010101000000-000000000000
+	syntaxir.dev/alpha-parsers/cel v0.0.0-00010101000000-000000000000
 )
 
 require (
@@ -16,6 +16,6 @@ require (
 	google.golang.org/protobuf v1.36.10 // indirect
 )
 
-replace zeroparse.dev/alpha-parsers/cel => ../..
+replace syntaxir.dev/alpha-parsers/cel => ../..
 
-replace zeroparse.dev/zp => ../../../..
+replace syntaxir.dev/sxir => ../../../..

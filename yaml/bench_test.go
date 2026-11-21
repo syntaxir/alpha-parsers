@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/yaml"
+	"syntaxir.dev/alpha-parsers/yaml"
 )
 
 // benchInput is a stream of Kubernetes-like manifests of about 256 KB: deployments, services and

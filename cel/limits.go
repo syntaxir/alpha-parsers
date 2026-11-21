@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"unicode/utf8"
 
-	"zeroparse.dev/alpha-parsers/cel/types"
+	"syntaxir.dev/alpha-parsers/cel/types"
 )
 
 // ExprLimits are limits on an expression, which a CEL implementation is free to choose (the specification only requires

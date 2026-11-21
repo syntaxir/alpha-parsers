@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"zeroparse.dev/alpha-parsers/duckdb/types"
+	"syntaxir.dev/alpha-parsers/duckdb/types"
 )
 
 // cteQuery maps the query of a common table expression; that of a recursive one is a RECURSIVE_CTE_NODE.

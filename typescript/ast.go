@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"sync"
 
-	"zeroparse.dev/alpha-parsers/typescript/types"
+	"syntaxir.dev/alpha-parsers/typescript/types"
 )
 
 // ASTNode is a node of the AST: a pointer to one of the struct or terminal types of this package, each of which

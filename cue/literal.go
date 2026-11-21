@@ -4,7 +4,7 @@ import (
 	"strings"
 	"unicode"
 
-	"zeroparse.dev/alpha-parsers/cue/types"
+	"syntaxir.dev/alpha-parsers/cue/types"
 )
 
 // The decoding of string literals is adapted from cuelang.org/go/cue/literal (Apache License 2.0,

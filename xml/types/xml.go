@@ -2,7 +2,7 @@ package types
 
 import (
 	"strings"
-	"zeroparse.dev/alpha-parsers/xml/internal/text"
+	"syntaxir.dev/alpha-parsers/xml/internal/text"
 )
 
 // Name returns the name of the entity.

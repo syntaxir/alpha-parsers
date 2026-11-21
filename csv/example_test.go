@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"slices"
 
-	"zeroparse.dev/alpha-parsers/csv"
+	"syntaxir.dev/alpha-parsers/csv"
 )
 
 func ExampleRecords() {

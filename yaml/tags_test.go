@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/yaml"
-	"zeroparse.dev/alpha-parsers/yaml/types"
+	"syntaxir.dev/alpha-parsers/yaml"
+	"syntaxir.dev/alpha-parsers/yaml/types"
 )
 
 func TestTagValidity(t *testing.T) {

@@ -13,8 +13,8 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/internal/corpora/corporatest"
-	"zeroparse.dev/alpha-parsers/yaml"
+	"syntaxir.dev/alpha-parsers/internal/corpora/corporatest"
+	"syntaxir.dev/alpha-parsers/yaml"
 )
 
 // suiteCase is a test of the yaml-test-suite: an input, and the events and JSON values it must give or

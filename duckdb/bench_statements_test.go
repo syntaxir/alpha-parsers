@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/duckdb"
+	"syntaxir.dev/alpha-parsers/duckdb"
 )
 
 // BenchmarkStatements parses 2000 copies of a statement of each kind: the cost of each construct, and of the dispatch

@@ -10,8 +10,8 @@ import (
 	"sort"
 	"testing"
 
-	"zeroparse.dev/zp/pkg/compiler"
-	"zeroparse.dev/zp/pkg/grammar"
+	"syntaxir.dev/sxir/pkg/compiler"
+	"syntaxir.dev/sxir/pkg/grammar"
 )
 
 // helperName matches the names of the generated helpers: eN are the methods of expressions and qN the
@@ -56,8 +56,8 @@ func TestRecognizerHelpersReferenced(t *testing.T) {
 		t.Skip("generates the duckdb grammar")
 	}
 	for _, g := range []struct{ name, path string }{
-		{"json", "json/json.zp"},
-		{"duckdb", "duckdb/duckdb.zp"},
+		{"json", "json/json.sxir"},
+		{"duckdb", "duckdb/duckdb.sxir"},
 	} {
 		src, err := os.ReadFile(g.path)
 		if err != nil {

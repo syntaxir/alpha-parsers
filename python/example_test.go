@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"zeroparse.dev/alpha-parsers/python"
-	"zeroparse.dev/alpha-parsers/python/types"
+	"syntaxir.dev/alpha-parsers/python"
+	"syntaxir.dev/alpha-parsers/python/types"
 )
 
 func ExampleParseModule() {

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"zeroparse.dev/alpha-parsers/python/types"
+	"syntaxir.dev/alpha-parsers/python/types"
 )
 
 // EllipsisType is the type of Ellipsis.

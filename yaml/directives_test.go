@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/yaml"
-	"zeroparse.dev/alpha-parsers/yaml/types"
+	"syntaxir.dev/alpha-parsers/yaml"
+	"syntaxir.dev/alpha-parsers/yaml/types"
 )
 
 func TestMalformedDirectives(t *testing.T) {

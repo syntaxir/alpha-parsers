@@ -10,12 +10,12 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	"zeroparse.dev/alpha-parsers/yaml"
-	"zeroparse.dev/alpha-parsers/yaml/types"
+	"syntaxir.dev/alpha-parsers/yaml"
+	"syntaxir.dev/alpha-parsers/yaml/types"
 )
 
 // TestGolden checks the generated parser against the golden files of testdata, which the tests of
-// zeroparse.dev/alpha-parsers check every backend of the engine against.
+// syntaxir.dev/alpha-parsers check every backend of the engine against.
 func TestGolden(t *testing.T) {
 	inputs, _ := filepath.Glob("testdata/*.txt")
 	if len(inputs) == 0 {

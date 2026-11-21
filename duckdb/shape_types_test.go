@@ -3,7 +3,7 @@ package duckdb_test
 import (
 	"strings"
 
-	"zeroparse.dev/alpha-parsers/duckdb/types"
+	"syntaxir.dev/alpha-parsers/duckdb/types"
 )
 
 // typ maps a type to the JSON of a LogicalType in the AST of DuckDB.

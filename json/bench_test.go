@@ -7,11 +7,11 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/json"
+	"syntaxir.dev/alpha-parsers/json"
 )
 
-// benchInput is an array of objects of about 256 KB, like the JSON workload of the benchmarks of ZeroParse
-// (bench/ in zeroparse.dev/zp).
+// benchInput is an array of objects of about 256 KB, like the JSON workload of the benchmarks of SyntaxIR
+// (bench/ in syntaxir.dev/sxir).
 var benchInput = func() string {
 	words := []string{"alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta"}
 	r := rand.New(rand.NewPCG(1, 2))

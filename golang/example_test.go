@@ -6,8 +6,8 @@ import (
 	"go/token"
 	"os"
 
-	"zeroparse.dev/alpha-parsers/golang"
-	"zeroparse.dev/alpha-parsers/golang/types"
+	"syntaxir.dev/alpha-parsers/golang"
+	"syntaxir.dev/alpha-parsers/golang/types"
 )
 
 const hello = `package main

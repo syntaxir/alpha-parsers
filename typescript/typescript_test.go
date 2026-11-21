@@ -8,12 +8,12 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	"zeroparse.dev/alpha-parsers/typescript"
-	"zeroparse.dev/alpha-parsers/typescript/types"
+	"syntaxir.dev/alpha-parsers/typescript"
+	"syntaxir.dev/alpha-parsers/typescript/types"
 )
 
 // TestGolden checks the generated parser against the golden files of testdata, which the tests of
-// zeroparse.dev/alpha-parsers check every backend of the engine against. An input starting with NUL is
+// syntaxir.dev/alpha-parsers check every backend of the engine against. An input starting with NUL is
 // parsed as a .tsx file (see ParseTSX).
 func TestGolden(t *testing.T) {
 	inputs, _ := filepath.Glob("testdata/*.txt")

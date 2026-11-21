@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/json"
+	"syntaxir.dev/alpha-parsers/json"
 )
 
 // TestBudgetControls checks that the parser, generated with limit controls, stops at a Compute limit

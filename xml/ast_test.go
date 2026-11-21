@@ -3,8 +3,8 @@ package xml_test
 import (
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/xml"
-	"zeroparse.dev/alpha-parsers/xml/types"
+	"syntaxir.dev/alpha-parsers/xml"
+	"syntaxir.dev/alpha-parsers/xml/types"
 )
 
 // TestASTHelpers checks the methods of the typed values.

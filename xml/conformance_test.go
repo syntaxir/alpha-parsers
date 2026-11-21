@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/xml"
-	"zeroparse.dev/alpha-parsers/xml/types"
+	"syntaxir.dev/alpha-parsers/xml"
+	"syntaxir.dev/alpha-parsers/xml/types"
 )
 
 // suiteCase is a TEST of the W3C XML Conformance Test Suite.

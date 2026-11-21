@@ -4,18 +4,18 @@ import (
 	"errors"
 	"fmt"
 
-	"zeroparse.dev/alpha-parsers/xml"
-	"zeroparse.dev/alpha-parsers/xml/types"
+	"syntaxir.dev/alpha-parsers/xml"
+	"syntaxir.dev/alpha-parsers/xml/types"
 )
 
 func ExampleDecode() {
 	tree, err := xml.Decode(`<?xml version="1.0"?>
 <!DOCTYPE catalog [
-  <!ENTITY zp "ZeroParse">
+  <!ENTITY sxir "SyntaxIR">
   <!ATTLIST book lang CDATA "en">
 ]>
 <catalog>
-  <book id="b1"><title>&zp; &amp; XML</title></book>
+  <book id="b1"><title>&sxir; &amp; XML</title></book>
   <book id="b2" lang="ja"><title>Parsing&#x20;Expression Grammars</title></book>
 </catalog>`)
 	if err != nil {
@@ -27,7 +27,7 @@ func ExampleDecode() {
 		fmt.Printf("%s %s %q\n", id, lang, b.Text())
 	}
 	// Output:
-	// b1 en "ZeroParse & XML"
+	// b1 en "SyntaxIR & XML"
 	// b2 ja "Parsing Expression Grammars"
 }
 

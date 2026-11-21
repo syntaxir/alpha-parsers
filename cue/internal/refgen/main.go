@@ -26,7 +26,7 @@ import (
 	"strconv"
 	"strings"
 
-	"zeroparse.dev/alpha-parsers/cue/internal/upstream"
+	"syntaxir.dev/alpha-parsers/cue/internal/upstream"
 )
 
 func main() {

@@ -13,10 +13,10 @@ import (
 	"sync"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/duckdb"
-	"zeroparse.dev/alpha-parsers/duckdb/types"
-	"zeroparse.dev/alpha-parsers/internal/corpora"
-	"zeroparse.dev/alpha-parsers/internal/corpora/corporatest"
+	"syntaxir.dev/alpha-parsers/duckdb"
+	"syntaxir.dev/alpha-parsers/duckdb/types"
+	"syntaxir.dev/alpha-parsers/internal/corpora"
+	"syntaxir.dev/alpha-parsers/internal/corpora/corporatest"
 )
 
 // The reference data in testdata/reference is what DuckDB 1.5.6 says about each text: whether its parser accepts

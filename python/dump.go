@@ -9,7 +9,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"zeroparse.dev/alpha-parsers/python/types"
+	"syntaxir.dev/alpha-parsers/python/types"
 )
 
 // Dump returns the tree as CPython's ast.dump(tree) prints it (with its default arguments: field

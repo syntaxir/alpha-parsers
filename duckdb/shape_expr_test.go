@@ -3,7 +3,7 @@ package duckdb_test
 import (
 	"strings"
 
-	"zeroparse.dev/alpha-parsers/duckdb/types"
+	"syntaxir.dev/alpha-parsers/duckdb/types"
 )
 
 // lambda maps LAMBDA x, y: body.

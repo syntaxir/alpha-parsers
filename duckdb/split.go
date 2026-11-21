@@ -4,7 +4,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"zeroparse.dev/alpha-parsers/duckdb/types"
+	"syntaxir.dev/alpha-parsers/duckdb/types"
 )
 
 // A StatementText is a statement with the text DuckDB gives it when it splits a script.

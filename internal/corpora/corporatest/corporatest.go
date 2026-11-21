@@ -4,7 +4,7 @@ package corporatest
 import (
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/internal/corpora"
+	"syntaxir.dev/alpha-parsers/internal/corpora"
 )
 
 // FetchCommand is what a skipped test tells the reader to run.

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/yaml"
+	"syntaxir.dev/alpha-parsers/yaml"
 )
 
 // TestBudgetErrorsAreDeterministic requires that a parse under a finite budget fails the same way

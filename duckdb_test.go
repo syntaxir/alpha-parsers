@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"testing"
 
-	"zeroparse.dev/zp/pkg/runtime"
-	"zeroparse.dev/zp/pkg/runtime/input"
+	"syntaxir.dev/sxir/pkg/runtime"
+	"syntaxir.dev/sxir/pkg/runtime/input"
 )
 
 func TestDuckDBKeywordNames(t *testing.T) {
-	bs := backends(t, "duckdb/duckdb.zp")
+	bs := backends(t, "duckdb/duckdb.sxir")
 	for _, tc := range []struct {
 		sql string
 		ok  bool
@@ -34,7 +34,7 @@ func TestDuckDBKeywordNames(t *testing.T) {
 }
 
 func TestDuckDBSetofTypes(t *testing.T) {
-	bs := backends(t, "duckdb/duckdb.zp")
+	bs := backends(t, "duckdb/duckdb.sxir")
 	for _, tc := range []struct {
 		typ string
 		ok  bool
@@ -63,7 +63,7 @@ func TestDuckDBSetofTypes(t *testing.T) {
 }
 
 func TestDuckDBFrameBounds(t *testing.T) {
-	bs := backends(t, "duckdb/duckdb.zp")
+	bs := backends(t, "duckdb/duckdb.sxir")
 	for _, tc := range []struct {
 		bound string
 		ok    bool

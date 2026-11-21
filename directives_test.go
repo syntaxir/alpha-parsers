@@ -3,12 +3,12 @@ package parsers_test
 import (
 	"testing"
 
-	"zeroparse.dev/zp/pkg/runtime"
-	"zeroparse.dev/zp/pkg/runtime/input"
+	"syntaxir.dev/sxir/pkg/runtime"
+	"syntaxir.dev/sxir/pkg/runtime/input"
 )
 
 func TestYAMLDirectiveBackends(t *testing.T) {
-	bs := backends(t, "yaml/yaml.zp")
+	bs := backends(t, "yaml/yaml.sxir")
 	for _, tc := range []struct {
 		directive string
 		valid     bool

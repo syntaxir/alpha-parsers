@@ -10,9 +10,9 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	"zeroparse.dev/alpha-parsers/internal/corpora"
-	"zeroparse.dev/alpha-parsers/internal/corpora/corporatest"
-	"zeroparse.dev/alpha-parsers/python"
+	"syntaxir.dev/alpha-parsers/internal/corpora"
+	"syntaxir.dev/alpha-parsers/internal/corpora/corporatest"
+	"syntaxir.dev/alpha-parsers/python"
 )
 
 // The reference data, generated with CPython 3.14.0 by internal/refgen/generate.sh: the snippets of code in the

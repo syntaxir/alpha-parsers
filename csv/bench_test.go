@@ -7,12 +7,12 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/csv"
+	"syntaxir.dev/alpha-parsers/csv"
 )
 
 // benchInput is a file of 5,000 records (about 210 KB) with quoted fields that contain commas, doubled
-// quotes and line breaks, like the CSV workload of the benchmarks of ZeroParse (bench/ in
-// zeroparse.dev/zp).
+// quotes and line breaks, like the CSV workload of the benchmarks of SyntaxIR (bench/ in
+// syntaxir.dev/sxir).
 var benchInput = func() string {
 	words := []string{"alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta"}
 	r := rand.New(rand.NewPCG(1, 2))

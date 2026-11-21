@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/cue/types"
+	"syntaxir.dev/alpha-parsers/cue/types"
 )
 
 // literalCount is the number of literals in testdata/literals.txt.gz.

@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/typescript"
-	"zeroparse.dev/alpha-parsers/typescript/types"
+	"syntaxir.dev/alpha-parsers/typescript"
+	"syntaxir.dev/alpha-parsers/typescript/types"
 )
 
 type cookedLiteralCase struct{ name, src, want string }

@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/typescript"
-	"zeroparse.dev/alpha-parsers/typescript/types"
+	"syntaxir.dev/alpha-parsers/typescript"
+	"syntaxir.dev/alpha-parsers/typescript/types"
 )
 
 func TestStringValue(t *testing.T) {

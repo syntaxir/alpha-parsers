@@ -4,7 +4,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"zeroparse.dev/alpha-parsers/xml/types"
+	"syntaxir.dev/alpha-parsers/xml/types"
 )
 
 // The namespace names bound to the prefixes xml and xmlns.

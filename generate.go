@@ -1,7 +1,7 @@
 // Package parsers generates and checks the parsers in its subdirectories, packages of this module
-// (zeroparse.dev/alpha-parsers/<language>) that depend only on the standard library, the ZeroParse library (zeroparse.dev/zp/codegen/go/lib) and core (zeroparse.dev/zp/core).
+// (syntaxir.dev/alpha-parsers/<language>) that depend only on the standard library, the SyntaxIR library (syntaxir.dev/sxir/codegen/go/lib) and core (syntaxir.dev/sxir/core).
 //
-// Each subdirectory holds the grammar (<language>.zp), the parser generated from it (parser.go, api.go, and types/types.go; they import the library), code
+// Each subdirectory holds the grammar (<language>.sxir), the parser generated from it (parser.go, api.go, and types/types.go; they import the library), code
 // written by hand around the generated API, and tests against the language's reference implementation
 // or conformance suite. The tests of this package check that every generated file is up to date and that
 // every backend of the engine gives the results recorded in the subdirectories' golden files, which the
@@ -10,13 +10,13 @@
 // all of them with ./test.sh.
 package parsers
 
-//go:generate go run zeroparse.dev/zp/cmd/zp gen -g cel/cel.zp -module zeroparse.dev/alpha-parsers/cel -types -typed-only -nodoc -lib import -o cel
-//go:generate go run zeroparse.dev/zp/cmd/zp gen -g csv/csv.zp -module zeroparse.dev/alpha-parsers/csv -types -recognize -limits -nodoc -lib import -o csv
-//go:generate go run zeroparse.dev/zp/cmd/zp gen -g cue/cue.zp -module zeroparse.dev/alpha-parsers/cue -types -typed-only -nodoc -lib import -o cue
-//go:generate go run zeroparse.dev/zp/cmd/zp gen -g duckdb/duckdb.zp -module zeroparse.dev/alpha-parsers/duckdb -types -typed-only -nodoc -lib import -o duckdb
-//go:generate go run zeroparse.dev/zp/cmd/zp gen -g golang/golang.zp -expectations -module zeroparse.dev/alpha-parsers/golang -types -typed-only -nodoc -lib import -o golang
-//go:generate go run zeroparse.dev/zp/cmd/zp gen -g json/json.zp -module zeroparse.dev/alpha-parsers/json -types -recognize -limits -nodoc -lib import -o json
-//go:generate go run zeroparse.dev/zp/cmd/zp gen -g python/python.zp -expectations -module zeroparse.dev/alpha-parsers/python -types -typed-only -nodoc -lib import -o python
-//go:generate go run zeroparse.dev/zp/cmd/zp gen -g typescript/typescript.zp -expectations -module zeroparse.dev/alpha-parsers/typescript -types -typed-only -nodoc -lib import -o typescript
-//go:generate go run zeroparse.dev/zp/cmd/zp gen -g xml/xml.zp -expectations -module zeroparse.dev/alpha-parsers/xml -types -recognize -limits -nodoc -lib import -o xml
-//go:generate go run zeroparse.dev/zp/cmd/zp gen -g yaml/yaml.zp -module zeroparse.dev/alpha-parsers/yaml -types -recognize -limits -nodoc -lib import -o yaml
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g cel/cel.sxir -module syntaxir.dev/alpha-parsers/cel -types -typed-only -nodoc -lib import -o cel
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g csv/csv.sxir -module syntaxir.dev/alpha-parsers/csv -types -recognize -limits -nodoc -lib import -o csv
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g cue/cue.sxir -module syntaxir.dev/alpha-parsers/cue -types -typed-only -nodoc -lib import -o cue
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g duckdb/duckdb.sxir -module syntaxir.dev/alpha-parsers/duckdb -types -typed-only -nodoc -lib import -o duckdb
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g golang/golang.sxir -expectations -module syntaxir.dev/alpha-parsers/golang -types -typed-only -nodoc -lib import -o golang
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g json/json.sxir -module syntaxir.dev/alpha-parsers/json -types -recognize -limits -nodoc -lib import -o json
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g python/python.sxir -expectations -module syntaxir.dev/alpha-parsers/python -types -typed-only -nodoc -lib import -o python
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g typescript/typescript.sxir -expectations -module syntaxir.dev/alpha-parsers/typescript -types -typed-only -nodoc -lib import -o typescript
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g xml/xml.sxir -expectations -module syntaxir.dev/alpha-parsers/xml -types -recognize -limits -nodoc -lib import -o xml
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g yaml/yaml.sxir -module syntaxir.dev/alpha-parsers/yaml -types -recognize -limits -nodoc -lib import -o yaml

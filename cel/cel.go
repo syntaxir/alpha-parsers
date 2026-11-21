@@ -1,5 +1,5 @@
 // Package cel parses CEL, the Common Expression Language (https://github.com/google/cel-spec), with a parser generated
-// by ZeroParse from cel.zp.
+// by SyntaxIR from cel.sxir.
 //
 // ParseValue returns an expression as typed values, each with its Span in the input: Ident, IntLit, UintLit, DoubleLit,
 // StringLit, BytesLit, BoolLit and NullLit for names and literals, Select, Index, Call, Unary, Binary and Conditional
@@ -23,7 +23,7 @@
 package cel
 
 import (
-	"zeroparse.dev/alpha-parsers/cel/types"
+	"syntaxir.dev/alpha-parsers/cel/types"
 )
 
 // SpanOf returns the range of the input that e covers, or the zero Span for nil or an Error left by recovery.

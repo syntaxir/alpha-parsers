@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/cel"
-	"zeroparse.dev/alpha-parsers/cel/types"
+	"syntaxir.dev/alpha-parsers/cel"
+	"syntaxir.dev/alpha-parsers/cel/types"
 )
 
 // stripPos removes the offsets from a canonical form.

@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/golang"
+	"syntaxir.dev/alpha-parsers/golang"
 )
 
 // benchFiles are large files of the standard library, read from GOROOT/src: a parser, an HTTP

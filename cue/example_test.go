@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"zeroparse.dev/alpha-parsers/cue"
-	"zeroparse.dev/alpha-parsers/cue/types"
+	"syntaxir.dev/alpha-parsers/cue"
+	"syntaxir.dev/alpha-parsers/cue/types"
 )
 
 func ExampleParseFile() {

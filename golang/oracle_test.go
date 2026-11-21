@@ -8,22 +8,22 @@ import (
 	"sync"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/golang"
-	"zeroparse.dev/zp/pkg/compiler"
-	"zeroparse.dev/zp/pkg/grammar"
-	"zeroparse.dev/zp/pkg/runtime"
-	"zeroparse.dev/zp/pkg/runtime/input"
+	"syntaxir.dev/alpha-parsers/golang"
+	"syntaxir.dev/sxir/pkg/compiler"
+	"syntaxir.dev/sxir/pkg/grammar"
+	"syntaxir.dev/sxir/pkg/runtime"
+	"syntaxir.dev/sxir/pkg/runtime/input"
 )
 
 // The generated parser has only the typed entry point, so the check that it agrees with the grammar does not
 // rest on other entry points of the same generated code: the oracle is the reference parser, which runs
-// golang.zp itself.
+// golang.sxir itself.
 var interpreter = sync.OnceValue(func() runtime.Parser {
-	src, err := os.ReadFile("golang.zp")
+	src, err := os.ReadFile("golang.sxir")
 	if err != nil {
 		panic(err)
 	}
-	p, err := compiler.NewReferenceParser(grammar.FromBytes("golang.zp", src), compiler.WithStart("main"))
+	p, err := compiler.NewReferenceParser(grammar.FromBytes("golang.sxir", src), compiler.WithStart("main"))
 	if err != nil {
 		panic(err)
 	}
@@ -85,7 +85,7 @@ func agreeWithInterpreter(t testing.TB, src string) {
 // TestInterpreterOracle checks that the comparison can fail: against an interpreter of a grammar that differs
 // it reports a difference, for an accepted input and a rejected one, and the range comparison has a range.
 func TestInterpreterOracle(t *testing.T) {
-	src, err := os.ReadFile("golang.zp")
+	src, err := os.ReadFile("golang.sxir")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,7 +93,7 @@ func TestInterpreterOracle(t *testing.T) {
 	if mutated == string(src) {
 		t.Fatal("the mutation did not apply")
 	}
-	other, err := compiler.NewReferenceParser(grammar.FromString("golang.zp", mutated), compiler.WithStart("main"))
+	other, err := compiler.NewReferenceParser(grammar.FromString("golang.sxir", mutated), compiler.WithStart("main"))
 	if err != nil {
 		t.Fatal(err)
 	}

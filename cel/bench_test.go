@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/cel"
+	"syntaxir.dev/alpha-parsers/cel"
 )
 
 // policies are the expressions of testdata/bench/policies.txt: typical access policies, admission checks and validation

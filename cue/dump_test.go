@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"zeroparse.dev/alpha-parsers/cue/types"
+	"syntaxir.dev/alpha-parsers/cue/types"
 )
 
 // dump prints a file in the canonical form of the reference results (see internal/refgen/dump.go): a line

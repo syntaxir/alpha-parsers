@@ -4,18 +4,18 @@ import (
 	"errors"
 	"fmt"
 
-	"zeroparse.dev/alpha-parsers/json"
-	"zeroparse.dev/alpha-parsers/json/types"
+	"syntaxir.dev/alpha-parsers/json"
+	"syntaxir.dev/alpha-parsers/json/types"
 )
 
 func ExampleDecode() {
-	v, err := json.Decode(`{"name": "zp", "tags": ["peg", "pratt"], "stars": 42}`)
+	v, err := json.Decode(`{"name": "sxir", "tags": ["peg", "pratt"], "stars": 42}`)
 	if err != nil {
 		panic(err)
 	}
 	m := v.(map[string]any)
 	fmt.Println(m["name"], m["tags"], m["stars"])
-	// Output: zp [peg pratt] 42
+	// Output: sxir [peg pratt] 42
 }
 
 func ExampleParseValue() {

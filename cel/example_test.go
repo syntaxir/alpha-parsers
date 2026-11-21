@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"sort"
 
-	"zeroparse.dev/alpha-parsers/cel"
-	"zeroparse.dev/alpha-parsers/cel/types"
+	"syntaxir.dev/alpha-parsers/cel"
+	"syntaxir.dev/alpha-parsers/cel/types"
 )
 
 func ExampleParseExpr() {

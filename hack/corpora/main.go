@@ -7,14 +7,14 @@
 //	go run ./hack/corpora pin name          download a source and print the digest for the manifest
 //	go run ./hack/corpora dir name          print the directory of a fetched source
 //
-// The cache is $ZP_CORPORA or zp/corpora in the user cache directory. The tests never download anything.
+// The cache is $SXIR_CORPORA or sxir/corpora in the user cache directory. The tests never download anything.
 package main
 
 import (
 	"fmt"
 	"os"
 
-	"zeroparse.dev/alpha-parsers/internal/corpora"
+	"syntaxir.dev/alpha-parsers/internal/corpora"
 )
 
 func main() {

@@ -3,7 +3,7 @@ package cel
 import (
 	"fmt"
 
-	"zeroparse.dev/alpha-parsers/cel/types"
+	"syntaxir.dev/alpha-parsers/cel/types"
 )
 
 // CheckError reports what the grammar cannot: a literal out of range, an expression over a limit, or a macro call

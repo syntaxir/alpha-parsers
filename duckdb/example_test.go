@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"zeroparse.dev/alpha-parsers/duckdb"
-	"zeroparse.dev/alpha-parsers/duckdb/types"
+	"syntaxir.dev/alpha-parsers/duckdb"
+	"syntaxir.dev/alpha-parsers/duckdb/types"
 )
 
 func ExampleParseValue() {

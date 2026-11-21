@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/internal/corpora"
-	"zeroparse.dev/alpha-parsers/internal/corpora/corporatest"
+	"syntaxir.dev/alpha-parsers/internal/corpora"
+	"syntaxir.dev/alpha-parsers/internal/corpora/corporatest"
 )
 
 // benchInput is CUE of about 256 KB: the sources of the corpus (the fetched cue repository) that have no package

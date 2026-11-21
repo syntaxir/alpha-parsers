@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/golang"
+	"syntaxir.dev/alpha-parsers/golang"
 )
 
 // TestNesting checks the one known deviation in the language: go/parser accepts nesting up to

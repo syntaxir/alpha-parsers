@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"syntaxir.dev/alpha-parsers/xml/internal/text"
+	"syntaxir.dev/alpha-parsers/xml/types"
 	"unicode/utf8"
-	"zeroparse.dev/alpha-parsers/xml/internal/text"
-	"zeroparse.dev/alpha-parsers/xml/types"
 )
 
 // Tree is a document decoded by Decode: its entities expanded, its text and attribute values normalized,

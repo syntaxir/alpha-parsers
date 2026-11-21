@@ -8,7 +8,7 @@ import (
 	"testing"
 	"unicode"
 
-	"zeroparse.dev/alpha-parsers/cue/types"
+	"syntaxir.dev/alpha-parsers/cue/types"
 )
 
 // TestCheck: inputs that the grammar accepts and Check (so ParseFile) rejects, as the reference parser does; the

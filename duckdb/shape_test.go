@@ -12,8 +12,8 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/duckdb"
-	"zeroparse.dev/alpha-parsers/duckdb/types"
+	"syntaxir.dev/alpha-parsers/duckdb"
+	"syntaxir.dev/alpha-parsers/duckdb/types"
 )
 
 // This file checks the syntax tree against the AST of DuckDB. The reference data holds, for each SELECT statement

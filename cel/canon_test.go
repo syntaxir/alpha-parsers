@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"zeroparse.dev/alpha-parsers/cel"
-	"zeroparse.dev/alpha-parsers/cel/types"
+	"syntaxir.dev/alpha-parsers/cel"
+	"syntaxir.dev/alpha-parsers/cel/types"
 )
 
 // canon prints an expression in the canonical form that internal/refgen prints for the AST of cel-go, so that the

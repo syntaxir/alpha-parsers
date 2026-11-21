@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/yaml"
+	"syntaxir.dev/alpha-parsers/yaml"
 )
 
 func TestUnicodeScalarContent(t *testing.T) {

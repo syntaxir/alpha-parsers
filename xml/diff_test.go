@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/xml"
-	"zeroparse.dev/alpha-parsers/xml/types"
+	"syntaxir.dev/alpha-parsers/xml"
+	"syntaxir.dev/alpha-parsers/xml/types"
 )
 
 // The differential tests compare Decode (with ResolveNamespaces) with encoding/xml's Decoder.Token on

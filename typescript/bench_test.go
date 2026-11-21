@@ -7,12 +7,12 @@ import (
 	"strings"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/typescript"
+	"syntaxir.dev/alpha-parsers/typescript"
 )
 
 // synthetic is a TypeScript source of about 256 KB made of repeated declarations, classes, generic functions,
-// async code, destructuring and template literals, like the workloads of the benchmarks of ZeroParse (bench/ in
-// zeroparse.dev/zp). It needs nothing but Go.
+// async code, destructuring and template literals, like the workloads of the benchmarks of SyntaxIR (bench/ in
+// syntaxir.dev/sxir). It needs nothing but Go.
 var synthetic = func() string {
 	var b strings.Builder
 	b.WriteString("import { Foo, type Bar } from \"./lib\";\n")
@@ -72,7 +72,7 @@ const total%[1]d = [...table%[1]d.values()].reduce((a, b) => a + b * 2 ** 3, 0) 
 
 type benchSource struct{ name, text string }
 
-// benchSources returns the synthetic source and, when ZP_TYPESCRIPT is set (the directory of the typescript
+// benchSources returns the synthetic source and, when SXIR_TYPESCRIPT is set (the directory of the typescript
 // package), large real ones: its declaration files, and the JavaScript of the compiler itself, which is valid
 // TypeScript and the largest body of real code at hand.
 func benchSources(b *testing.B) []benchSource {
@@ -88,7 +88,7 @@ func benchSources(b *testing.B) []benchSource {
 		}
 		out = append(out, benchSource{filepath.Base(rel), string(data)})
 	}
-	pkg := os.Getenv("ZP_TYPESCRIPT")
+	pkg := os.Getenv("SXIR_TYPESCRIPT")
 	add(pkg, "lib/lib.es5.d.ts")
 	add(pkg, "lib/lib.dom.d.ts")
 	add(pkg, "lib/typescript.d.ts")

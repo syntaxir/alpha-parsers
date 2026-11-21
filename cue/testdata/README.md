@@ -25,5 +25,5 @@ single literals and their values only.
   float literals of the corpus and of 30,000 generated inputs of each family: whether the decoding fails, and the
   value (`literal_test.go`).
 
-The `*.txt` files and their `*.golden` files are inputs of this module's tests and the trees the engine of ZeroParse
+The `*.txt` files and their `*.golden` files are inputs of this module's tests and the trees the engine of SyntaxIR
 gives for them; see `parsers_test.go`.

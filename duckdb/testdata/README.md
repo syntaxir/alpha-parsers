@@ -3,7 +3,7 @@
 ## Golden Files
 
 `*.txt` are inputs, `*.golden` the trees and errors that the engine returns for them. The tests of
-`zeroparse.dev/alpha-parsers` check them on every backend of the engine, and the tests of this module on the
+`syntaxir.dev/alpha-parsers` check them on every backend of the engine, and the tests of this module on the
 generated parser. Rewrite them with `go test . -update`.
 
 ## Reference Data

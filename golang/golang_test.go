@@ -15,7 +15,7 @@ import (
 	"sync"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/golang"
+	"syntaxir.dev/alpha-parsers/golang"
 )
 
 // compare parses src with go/parser and with the package, and returns a description of the first

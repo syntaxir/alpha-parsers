@@ -11,9 +11,9 @@ import (
 	"sync"
 	"testing"
 
-	"zeroparse.dev/alpha-parsers/cel"
-	"zeroparse.dev/alpha-parsers/cel/internal/upstream"
-	"zeroparse.dev/alpha-parsers/internal/corpora/corporatest"
+	"syntaxir.dev/alpha-parsers/cel"
+	"syntaxir.dev/alpha-parsers/cel/internal/upstream"
+	"syntaxir.dev/alpha-parsers/internal/corpora/corporatest"
 )
 
 // refDir is the directory of the reference results of cel-go: testdata/ref, or the directory that the environment
