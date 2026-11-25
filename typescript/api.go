@@ -7,7 +7,6 @@ import (
 
 	sxirruntime "syntaxir.dev/sxir/pkg/runtime"
 	sxirinput "syntaxir.dev/sxir/pkg/runtime/input"
-	rt "syntaxir.dev/sxir/pkg/runtime/libgo"
 	sxirvalue "syntaxir.dev/sxir/pkg/runtime/value"
 )
 
@@ -62,25 +61,25 @@ const CodePoints = sxirinput.CodePoints
 // Bytes counts positions in UTF-8 bytes.
 const Bytes = sxirinput.Bytes
 
-// ParseOption configures an individual parsing invocation. Options apply in order.
-type ParseOption = rt.ParseOption
+// ParseOption configures one parse, or the defaults of a Document.
+type ParseOption = sxirruntime.ParseOption
 
-// WithUnit selects the unit of input positions (CodePoints by default).
-func WithUnit(unit sxirinput.PositionUnit) ParseOption { return rt.WithUnit(unit) }
+// WithUnit selects the position unit. Matching always proceeds by code point, whatever the unit.
+func WithUnit(u sxirinput.PositionUnit) ParseOption { return sxirruntime.WithUnit(u) }
 
-// WithLimits sets the limits of the invocation field by field: a nonzero field overrides the value
+// WithLimits sets the invocation-local limits field by field: a nonzero field overrides the value
 // of an earlier WithLimits, including the construction defaults of a Document, and a zero field
 // leaves it unchanged. A field that no option sets takes its default; Unlimited disables a limit.
-// Counters are never rolled back.
-func WithLimits(limits sxirruntime.Limits) ParseOption { return rt.WithLimits(limits) }
+func WithLimits(l Limits) ParseOption { return sxirruntime.WithLimits(l) }
 
 // Limits bounds one parse invocation. A zero limit selects the default of that limit, and
 // Unlimited disables it.
 //
-// Compute bounds the cumulative cost of the parse: every input unit inspected, every rule call
-// and loop iteration, and every unit of value construction adds to one counter, so a bound on it
-// bounds scanning, recursion and value building alike. The default grows with the length of the
-// input.
+// Compute bounds the compute units of the parse, which count its logical events in one counter:
+// rule calls, the input that terminals advance over, and the values built or compared in proportion
+// to their size (spec/runtime/parsing.md, Compute Units), so a bound on it bounds scanning,
+// recursion and value building alike. The count is the same on every backend. The default grows
+// with the length of the input.
 //
 // Memory bounds the bytes of storage the parser holds for the parse, counted when the parser
 // takes it into use and returned when it lets it go at a point it controls (a stream's commit, a
@@ -115,6 +114,13 @@ type LimitKind = sxirruntime.LimitKind
 // Used is the depth reached (the limit) and Requested is one, the nested call that would exceed
 // it. For LimitMemory, Used is the count of bytes at the check that failed and Requested is zero,
 // since memory is checked at polls rather than reserved.
+//
+// For LimitCompute, Hotspot is the rule that the Profile of the parse ranks first when the limit is
+// exceeded (Profile.Hotspot: the most evaluations at one position and level, a tie going to the
+// rule with more repeated evaluations, then to the first name). Every backend records the profile
+// while the parse runs and ranks it this way. It is empty without a Profile and when no rule
+// evaluated twice at a position. A parse without a Profile does not name one: run it again with
+// WithProfile to find the hotspot.
 type LimitError = sxirruntime.LimitError
 
 // ErrLimit is matched by errors.Is for any LimitError.
@@ -181,13 +187,13 @@ func Walk(root *Node, visit func(WalkVisit) (WalkAction, error)) error {
 	return sxirvalue.Walk(root, visit)
 }
 
-// WithExpectations makes the parse record what a syntax error expects and the messages of @error,
-// which the SyntaxError then lists. Without it the error carries the farthest failure position only.
-// A parser generated without expectations has no WithExpectations, and a parse that passes the
-// option through the library returns an error.
-func WithExpectations() ParseOption { return rt.WithExpectations() }
+// WithExpectations records what a syntax error expects. A syntax error then lists the
+// expectations at the farthest failure and carries the messages of @error. Without it the error
+// reports the farthest failure position, an empty Expected list and no Messages, and parsing does
+// not record expectations. A Document fixes it at construction.
+func WithExpectations() ParseOption { return sxirruntime.WithExpectations() }
 
-// Span is the range of input a typed value covers, in the parse's position unit (End is exclusive).
-//
-// Of its fields and methods, TSetSpan, TSpan are for generated parsers; not a stable API.
-type Span = rt.Span
+// Span is a range [Start, End) of the input, in the position unit of the parse that produced
+// it; End is exclusive. The typed values of a generated parser embed it to report the input they
+// cover.
+type Span = sxirinput.Span

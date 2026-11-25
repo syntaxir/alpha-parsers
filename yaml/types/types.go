@@ -3,6 +3,7 @@
 package types
 
 import (
+	sxirinput "syntaxir.dev/sxir/pkg/runtime/input"
 	rt "syntaxir.dev/sxir/pkg/runtime/libgo"
 )
 
@@ -12,21 +13,25 @@ import (
 // []any of the elements of a tuple or list.
 type TNode[T any] rt.TNode[T]
 
-// Error is input skipped by error recovery (#recover).
-type Error rt.Error
+// Error is input skipped by error recovery (#recover): the range of the skipped input and the message
+// of the error that recovery replaced.
+type Error struct {
+	sxirinput.Span
+	Message string
+}
 
 // SXIRHooks makes the values of the types of this package from those the typed library builds, and
 // back. It is for generated parsers.
 var SXIRHooks = &rt.TPubHooks{
 	Match: func(m *rt.TNode[string]) any { return (*TNode[string])(m) },
-	Error: func(e *rt.Error) any { return (*Error)(e) },
+	Error: func(e *rt.TErrorValue) any { return (*Error)(e) },
 	Node:  func(n *rt.TNode[any]) any { return (*TNode[any])(n) },
 	Back: func(v any) any {
 		switch x := v.(type) {
 		case *TNode[string]:
 			return (*rt.TNode[string])(x)
 		case *Error:
-			return (*rt.Error)(x)
+			return (*rt.TErrorValue)(x)
 		case *TNode[any]:
 			return (*rt.TNode[any])(x)
 		}
@@ -36,14 +41,14 @@ var SXIRHooks = &rt.TPubHooks{
 
 // Directive is the struct type Directive.
 type Directive struct {
-	rt.Span
+	sxirinput.Span
 	Name   *Word
 	Params []*Word
 }
 
 // Document is the struct type Document.
 type Document struct {
-	rt.Span
+	sxirinput.Span
 	Directives []*Directive
 	Start_     *Marker
 	Root       Value
@@ -52,7 +57,7 @@ type Document struct {
 
 // Mapping is the struct type Mapping.
 type Mapping struct {
-	rt.Span
+	sxirinput.Span
 	Props *Properties
 	Flow  bool
 	Pairs []*Pair
@@ -60,21 +65,21 @@ type Mapping struct {
 
 // Pair is the struct type Pair.
 type Pair struct {
-	rt.Span
+	sxirinput.Span
 	Key   Value
 	Value Value
 }
 
 // Properties is the struct type Properties.
 type Properties struct {
-	rt.Span
+	sxirinput.Span
 	Tag    *Tag
 	Anchor *Anchor
 }
 
 // Scalar is the struct type Scalar.
 type Scalar struct {
-	rt.Span
+	sxirinput.Span
 	Props  *Properties
 	Style  int
 	Indent int
@@ -83,7 +88,7 @@ type Scalar struct {
 
 // Sequence is the struct type Sequence.
 type Sequence struct {
-	rt.Span
+	sxirinput.Span
 	Props *Properties
 	Flow  bool
 	Items []Value
@@ -91,7 +96,7 @@ type Sequence struct {
 
 // Stream is the struct type Stream.
 type Stream struct {
-	rt.Span
+	sxirinput.Span
 	Documents []*Document
 }
 
@@ -119,12 +124,14 @@ func (*Mapping) isValue()  {}
 func (*Scalar) isValue()   {}
 func (*Sequence) isValue() {}
 
-func (v *Directive) TName() string         { return "Directive" }
-func (v *Directive) TText() (string, bool) { return "", false }
-func (v *Directive) TKids() []any          { return nil }
-func (v *Directive) TStruct() bool         { return true }
-func (v *Directive) TFresh() bool          { return false }
-func (v *Directive) TSetFresh(bool)        {}
+func (v *Directive) TName() string           { return "Directive" }
+func (v *Directive) TText() (string, bool)   { return "", false }
+func (v *Directive) TSpan() (int, int)       { return v.Start, v.End }
+func (v *Directive) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *Directive) TKids() []any            { return nil }
+func (v *Directive) TStruct() bool           { return true }
+func (v *Directive) TFresh() bool            { return false }
+func (v *Directive) TSetFresh(bool)          {}
 func (v *Directive) TField(name string) (any, bool) {
 	switch name {
 	case "Name":
@@ -147,29 +154,6 @@ func (v *Directive) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Directive) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Name":
-		return tb0(v.Name), true
-	case "Params":
-		if v.Params == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Params == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Params))
-			for i, x := range v.Params {
-				p.Spend()
-				kids[i] = tb0(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *Directive) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Params":
@@ -178,12 +162,14 @@ func (v *Directive) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Document) TName() string         { return "Document" }
-func (v *Document) TText() (string, bool) { return "", false }
-func (v *Document) TKids() []any          { return nil }
-func (v *Document) TStruct() bool         { return true }
-func (v *Document) TFresh() bool          { return false }
-func (v *Document) TSetFresh(bool)        {}
+func (v *Document) TName() string           { return "Document" }
+func (v *Document) TText() (string, bool)   { return "", false }
+func (v *Document) TSpan() (int, int)       { return v.Start, v.End }
+func (v *Document) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *Document) TKids() []any            { return nil }
+func (v *Document) TStruct() bool           { return true }
+func (v *Document) TFresh() bool            { return false }
+func (v *Document) TSetFresh(bool)          {}
 func (v *Document) TField(name string) (any, bool) {
 	switch name {
 	case "Directives":
@@ -210,33 +196,6 @@ func (v *Document) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Document) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Directives":
-		if v.Directives == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Directives == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Directives))
-			for i, x := range v.Directives {
-				p.Spend()
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Start":
-		return tb1(v.Start_), true
-	case "Root":
-		return rt.TBack(SXIRHooks, v.Root), true
-	case "End":
-		return tb1(v.End_), true
-	}
-	return nil, false
-}
-
 func (v *Document) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Directives":
@@ -245,12 +204,14 @@ func (v *Document) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Mapping) TName() string         { return "Mapping" }
-func (v *Mapping) TText() (string, bool) { return "", false }
-func (v *Mapping) TKids() []any          { return nil }
-func (v *Mapping) TStruct() bool         { return true }
-func (v *Mapping) TFresh() bool          { return false }
-func (v *Mapping) TSetFresh(bool)        {}
+func (v *Mapping) TName() string           { return "Mapping" }
+func (v *Mapping) TText() (string, bool)   { return "", false }
+func (v *Mapping) TSpan() (int, int)       { return v.Start, v.End }
+func (v *Mapping) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *Mapping) TKids() []any            { return nil }
+func (v *Mapping) TStruct() bool           { return true }
+func (v *Mapping) TFresh() bool            { return false }
+func (v *Mapping) TSetFresh(bool)          {}
 func (v *Mapping) TField(name string) (any, bool) {
 	switch name {
 	case "Props":
@@ -275,31 +236,6 @@ func (v *Mapping) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Mapping) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Props":
-		return rt.TPtr(v.Props), true
-	case "Flow":
-		return any(v.Flow), true
-	case "Pairs":
-		if v.Pairs == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Pairs == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Pairs))
-			for i, x := range v.Pairs {
-				p.Spend()
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *Mapping) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Pairs":
@@ -308,23 +244,15 @@ func (v *Mapping) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Pair) TName() string         { return "Pair" }
-func (v *Pair) TText() (string, bool) { return "", false }
-func (v *Pair) TKids() []any          { return nil }
-func (v *Pair) TStruct() bool         { return true }
-func (v *Pair) TFresh() bool          { return false }
-func (v *Pair) TSetFresh(bool)        {}
+func (v *Pair) TName() string           { return "Pair" }
+func (v *Pair) TText() (string, bool)   { return "", false }
+func (v *Pair) TSpan() (int, int)       { return v.Start, v.End }
+func (v *Pair) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *Pair) TKids() []any            { return nil }
+func (v *Pair) TStruct() bool           { return true }
+func (v *Pair) TFresh() bool            { return false }
+func (v *Pair) TSetFresh(bool)          {}
 func (v *Pair) TField(name string) (any, bool) {
-	switch name {
-	case "Key":
-		return rt.TBack(SXIRHooks, v.Key), true
-	case "Value":
-		return rt.TBack(SXIRHooks, v.Value), true
-	}
-	return nil, false
-}
-
-func (v *Pair) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Key":
 		return rt.TBack(SXIRHooks, v.Key), true
@@ -340,23 +268,15 @@ func (v *Pair) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Properties) TName() string         { return "Properties" }
-func (v *Properties) TText() (string, bool) { return "", false }
-func (v *Properties) TKids() []any          { return nil }
-func (v *Properties) TStruct() bool         { return true }
-func (v *Properties) TFresh() bool          { return false }
-func (v *Properties) TSetFresh(bool)        {}
+func (v *Properties) TName() string           { return "Properties" }
+func (v *Properties) TText() (string, bool)   { return "", false }
+func (v *Properties) TSpan() (int, int)       { return v.Start, v.End }
+func (v *Properties) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *Properties) TKids() []any            { return nil }
+func (v *Properties) TStruct() bool           { return true }
+func (v *Properties) TFresh() bool            { return false }
+func (v *Properties) TSetFresh(bool)          {}
 func (v *Properties) TField(name string) (any, bool) {
-	switch name {
-	case "Tag":
-		return tb2(v.Tag), true
-	case "Anchor":
-		return tb3(v.Anchor), true
-	}
-	return nil, false
-}
-
-func (v *Properties) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Tag":
 		return tb2(v.Tag), true
@@ -372,12 +292,14 @@ func (v *Properties) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Scalar) TName() string         { return "Scalar" }
-func (v *Scalar) TText() (string, bool) { return "", false }
-func (v *Scalar) TKids() []any          { return nil }
-func (v *Scalar) TStruct() bool         { return true }
-func (v *Scalar) TFresh() bool          { return false }
-func (v *Scalar) TSetFresh(bool)        {}
+func (v *Scalar) TName() string           { return "Scalar" }
+func (v *Scalar) TText() (string, bool)   { return "", false }
+func (v *Scalar) TSpan() (int, int)       { return v.Start, v.End }
+func (v *Scalar) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *Scalar) TKids() []any            { return nil }
+func (v *Scalar) TStruct() bool           { return true }
+func (v *Scalar) TFresh() bool            { return false }
+func (v *Scalar) TSetFresh(bool)          {}
 func (v *Scalar) TField(name string) (any, bool) {
 	switch name {
 	case "Props":
@@ -400,32 +322,20 @@ func (v *Scalar) TStrField(name string) (string, bool) {
 	return "", false
 }
 
-func (v *Scalar) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Props":
-		return rt.TPtr(v.Props), true
-	case "Style":
-		return any(v.Style), true
-	case "Indent":
-		return any(v.Indent), true
-	case "Text":
-		return any(v.Text), true
-	}
-	return nil, false
-}
-
 func (v *Scalar) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	}
 	return nil, false
 }
 
-func (v *Sequence) TName() string         { return "Sequence" }
-func (v *Sequence) TText() (string, bool) { return "", false }
-func (v *Sequence) TKids() []any          { return nil }
-func (v *Sequence) TStruct() bool         { return true }
-func (v *Sequence) TFresh() bool          { return false }
-func (v *Sequence) TSetFresh(bool)        {}
+func (v *Sequence) TName() string           { return "Sequence" }
+func (v *Sequence) TText() (string, bool)   { return "", false }
+func (v *Sequence) TSpan() (int, int)       { return v.Start, v.End }
+func (v *Sequence) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *Sequence) TKids() []any            { return nil }
+func (v *Sequence) TStruct() bool           { return true }
+func (v *Sequence) TFresh() bool            { return false }
+func (v *Sequence) TSetFresh(bool)          {}
 func (v *Sequence) TField(name string) (any, bool) {
 	switch name {
 	case "Props":
@@ -450,31 +360,6 @@ func (v *Sequence) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Sequence) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Props":
-		return rt.TPtr(v.Props), true
-	case "Flow":
-		return any(v.Flow), true
-	case "Items":
-		if v.Items == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Items == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Items))
-			for i, x := range v.Items {
-				p.Spend()
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *Sequence) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Items":
@@ -483,12 +368,14 @@ func (v *Sequence) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Stream) TName() string         { return "Stream" }
-func (v *Stream) TText() (string, bool) { return "", false }
-func (v *Stream) TKids() []any          { return nil }
-func (v *Stream) TStruct() bool         { return true }
-func (v *Stream) TFresh() bool          { return false }
-func (v *Stream) TSetFresh(bool)        {}
+func (v *Stream) TName() string           { return "Stream" }
+func (v *Stream) TText() (string, bool)   { return "", false }
+func (v *Stream) TSpan() (int, int)       { return v.Start, v.End }
+func (v *Stream) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *Stream) TKids() []any            { return nil }
+func (v *Stream) TStruct() bool           { return true }
+func (v *Stream) TFresh() bool            { return false }
+func (v *Stream) TSetFresh(bool)          {}
 func (v *Stream) TField(name string) (any, bool) {
 	switch name {
 	case "Documents":
@@ -504,27 +391,6 @@ func (v *Stream) TField(name string) (any, bool) {
 				kids[i] = rt.TPtr(x)
 			}
 			return rt.TListOf(kids)
-		}(), true
-	}
-	return nil, false
-}
-
-func (v *Stream) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Documents":
-		if v.Documents == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Documents == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Documents))
-			for i, x := range v.Documents {
-				p.Spend()
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
 		}(), true
 	}
 	return nil, false
@@ -596,7 +462,7 @@ func tb4(v *Alias) any {
 // is no named node type. It is for generated parsers.
 var SXIRNodeTypes [6]uint16
 
-// SXIRSchema_c729201f8af3f286 ties the parser package to this package: the parser refers to it once, so a
+// SXIRSchema_42ab4583770a8b8f ties the parser package to this package: the parser refers to it once, so a
 // parser and a types package generated from different schemas do not compile together.
 // It is for generated parsers; not a stable API.
-const SXIRSchema_c729201f8af3f286 = 0
+const SXIRSchema_42ab4583770a8b8f = 0

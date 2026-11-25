@@ -3,6 +3,7 @@
 package types
 
 import (
+	sxirinput "syntaxir.dev/sxir/pkg/runtime/input"
 	rt "syntaxir.dev/sxir/pkg/runtime/libgo"
 )
 
@@ -12,21 +13,25 @@ import (
 // []any of the elements of a tuple or list.
 type TNode[T any] rt.TNode[T]
 
-// Error is input skipped by error recovery (#recover).
-type Error rt.Error
+// Error is input skipped by error recovery (#recover): the range of the skipped input and the message
+// of the error that recovery replaced.
+type Error struct {
+	sxirinput.Span
+	Message string
+}
 
 // SXIRHooks makes the values of the types of this package from those the typed library builds, and
 // back. It is for generated parsers.
 var SXIRHooks = &rt.TPubHooks{
 	Match: func(m *rt.TNode[string]) any { return (*TNode[string])(m) },
-	Error: func(e *rt.Error) any { return (*Error)(e) },
+	Error: func(e *rt.TErrorValue) any { return (*Error)(e) },
 	Node:  func(n *rt.TNode[any]) any { return (*TNode[any])(n) },
 	Back: func(v any) any {
 		switch x := v.(type) {
 		case *TNode[string]:
 			return (*rt.TNode[string])(x)
 		case *Error:
-			return (*rt.Error)(x)
+			return (*rt.TErrorValue)(x)
 		case *TNode[any]:
 			return (*rt.TNode[any])(x)
 		}
@@ -36,25 +41,25 @@ var SXIRHooks = &rt.TPubHooks{
 
 // ArrayBindingPattern is the struct type ArrayBindingPattern.
 type ArrayBindingPattern struct {
-	rt.Span
+	sxirinput.Span
 	Elements []ArrayBindingElement
 }
 
 // ArrayLiteralExpression is the struct type ArrayLiteralExpression.
 type ArrayLiteralExpression struct {
-	rt.Span
+	sxirinput.Span
 	Elements []Expression
 }
 
 // ArrayType is the struct type ArrayType.
 type ArrayType struct {
-	rt.Span
+	sxirinput.Span
 	ElementType TypeNode
 }
 
 // ArrowFunction is the struct type ArrowFunction.
 type ArrowFunction struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers              []ModifierLike
 	TypeParameters         []*TypeParameter
 	Parameters             []*Parameter
@@ -65,20 +70,20 @@ type ArrowFunction struct {
 
 // AsExpression is the struct type AsExpression.
 type AsExpression struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 	Type       TypeNode
 }
 
 // AwaitExpression is the struct type AwaitExpression.
 type AwaitExpression struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // BinaryExpression is the struct type BinaryExpression.
 type BinaryExpression struct {
-	rt.Span
+	sxirinput.Span
 	Left          Expression
 	OperatorToken *Token
 	Right         Expression
@@ -86,7 +91,7 @@ type BinaryExpression struct {
 
 // BindingElement is the struct type BindingElement.
 type BindingElement struct {
-	rt.Span
+	sxirinput.Span
 	DotDotDotToken *Token
 	PropertyName   PropertyName
 	Name           BindingName
@@ -95,19 +100,19 @@ type BindingElement struct {
 
 // Block is the struct type Block.
 type Block struct {
-	rt.Span
+	sxirinput.Span
 	Statements []Statement
 }
 
 // BreakStatement is the struct type BreakStatement.
 type BreakStatement struct {
-	rt.Span
+	sxirinput.Span
 	Label *Identifier
 }
 
 // CallExpression is the struct type CallExpression.
 type CallExpression struct {
-	rt.Span
+	sxirinput.Span
 	Expression       Expression
 	QuestionDotToken *Token
 	TypeArguments    []TypeNode
@@ -116,7 +121,7 @@ type CallExpression struct {
 
 // CallSignature is the struct type CallSignature.
 type CallSignature struct {
-	rt.Span
+	sxirinput.Span
 	TypeParameters []*TypeParameter
 	Parameters     []*Parameter
 	Type           TypeNode
@@ -124,27 +129,27 @@ type CallSignature struct {
 
 // CaseBlock is the struct type CaseBlock.
 type CaseBlock struct {
-	rt.Span
+	sxirinput.Span
 	Clauses []CaseOrDefaultClause
 }
 
 // CaseClause is the struct type CaseClause.
 type CaseClause struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 	Statements []Statement
 }
 
 // CatchClause is the struct type CatchClause.
 type CatchClause struct {
-	rt.Span
+	sxirinput.Span
 	VariableDeclaration *VariableDeclaration
 	Block               *Block
 }
 
 // ClassDeclaration is the struct type ClassDeclaration.
 type ClassDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers       []ModifierLike
 	Name            *Identifier
 	TypeParameters  []*TypeParameter
@@ -154,7 +159,7 @@ type ClassDeclaration struct {
 
 // ClassExpression is the struct type ClassExpression.
 type ClassExpression struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers       []ModifierLike
 	Name            *Identifier
 	TypeParameters  []*TypeParameter
@@ -164,20 +169,20 @@ type ClassExpression struct {
 
 // ClassStaticBlockDeclaration is the struct type ClassStaticBlockDeclaration.
 type ClassStaticBlockDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers []ModifierLike
 	Body      *Block
 }
 
 // ComputedPropertyName is the struct type ComputedPropertyName.
 type ComputedPropertyName struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // ConditionalExpression is the struct type ConditionalExpression.
 type ConditionalExpression struct {
-	rt.Span
+	sxirinput.Span
 	Condition     Expression
 	QuestionToken *Token
 	WhenTrue      Expression
@@ -187,7 +192,7 @@ type ConditionalExpression struct {
 
 // ConditionalType is the struct type ConditionalType.
 type ConditionalType struct {
-	rt.Span
+	sxirinput.Span
 	CheckType   TypeNode
 	ExtendsType TypeNode
 	TrueType    TypeNode
@@ -196,7 +201,7 @@ type ConditionalType struct {
 
 // ConstructSignature is the struct type ConstructSignature.
 type ConstructSignature struct {
-	rt.Span
+	sxirinput.Span
 	TypeParameters []*TypeParameter
 	Parameters     []*Parameter
 	Type           TypeNode
@@ -204,7 +209,7 @@ type ConstructSignature struct {
 
 // Constructor is the struct type Constructor.
 type Constructor struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers      []ModifierLike
 	TypeParameters []*TypeParameter
 	Parameters     []*Parameter
@@ -214,7 +219,7 @@ type Constructor struct {
 
 // ConstructorType is the struct type ConstructorType.
 type ConstructorType struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers      []ModifierLike
 	TypeParameters []*TypeParameter
 	Parameters     []*Parameter
@@ -223,38 +228,38 @@ type ConstructorType struct {
 
 // ContinueStatement is the struct type ContinueStatement.
 type ContinueStatement struct {
-	rt.Span
+	sxirinput.Span
 	Label *Identifier
 }
 
 // Decorator is the struct type Decorator.
 type Decorator struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // DefaultClause is the struct type DefaultClause.
 type DefaultClause struct {
-	rt.Span
+	sxirinput.Span
 	Statements []Statement
 }
 
 // DeleteExpression is the struct type DeleteExpression.
 type DeleteExpression struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // DoStatement is the struct type DoStatement.
 type DoStatement struct {
-	rt.Span
+	sxirinput.Span
 	Statement  Statement
 	Expression Expression
 }
 
 // ElementAccessExpression is the struct type ElementAccessExpression.
 type ElementAccessExpression struct {
-	rt.Span
+	sxirinput.Span
 	Expression         Expression
 	QuestionDotToken   *Token
 	ArgumentExpression Expression
@@ -262,7 +267,7 @@ type ElementAccessExpression struct {
 
 // EnumDeclaration is the struct type EnumDeclaration.
 type EnumDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers []ModifierLike
 	Name      *Identifier
 	Members   []*EnumMember
@@ -270,14 +275,14 @@ type EnumDeclaration struct {
 
 // EnumMember is the struct type EnumMember.
 type EnumMember struct {
-	rt.Span
+	sxirinput.Span
 	Name        PropertyName
 	Initializer Expression
 }
 
 // ExportAssignment is the struct type ExportAssignment.
 type ExportAssignment struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers      []ModifierLike
 	Expression     Expression
 	IsExportEquals bool
@@ -285,7 +290,7 @@ type ExportAssignment struct {
 
 // ExportDeclaration is the struct type ExportDeclaration.
 type ExportDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers       []ModifierLike
 	ExportClause    NamedExportBindings
 	ModuleSpecifier Expression
@@ -295,7 +300,7 @@ type ExportDeclaration struct {
 
 // ExportSpecifier is the struct type ExportSpecifier.
 type ExportSpecifier struct {
-	rt.Span
+	sxirinput.Span
 	PropertyName ImportAttributeName
 	Name         ImportAttributeName
 	IsTypeOnly   bool
@@ -303,26 +308,26 @@ type ExportSpecifier struct {
 
 // ExpressionStatement is the struct type ExpressionStatement.
 type ExpressionStatement struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // ExpressionWithTypeArguments is the struct type ExpressionWithTypeArguments.
 type ExpressionWithTypeArguments struct {
-	rt.Span
+	sxirinput.Span
 	Expression    Expression
 	TypeArguments []TypeNode
 }
 
 // ExternalModuleReference is the struct type ExternalModuleReference.
 type ExternalModuleReference struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // ForInStatement is the struct type ForInStatement.
 type ForInStatement struct {
-	rt.Span
+	sxirinput.Span
 	Initializer ForInitializer
 	Expression  Expression
 	Statement   Statement
@@ -330,7 +335,7 @@ type ForInStatement struct {
 
 // ForOfStatement is the struct type ForOfStatement.
 type ForOfStatement struct {
-	rt.Span
+	sxirinput.Span
 	AwaitModifier *Token
 	Initializer   ForInitializer
 	Expression    Expression
@@ -339,7 +344,7 @@ type ForOfStatement struct {
 
 // ForStatement is the struct type ForStatement.
 type ForStatement struct {
-	rt.Span
+	sxirinput.Span
 	Initializer ForInitializer
 	Condition   Expression
 	Incrementor Expression
@@ -348,7 +353,7 @@ type ForStatement struct {
 
 // FunctionDeclaration is the struct type FunctionDeclaration.
 type FunctionDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers      []ModifierLike
 	AsteriskToken  *Token
 	Name           *Identifier
@@ -360,7 +365,7 @@ type FunctionDeclaration struct {
 
 // FunctionExpression is the struct type FunctionExpression.
 type FunctionExpression struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers      []ModifierLike
 	AsteriskToken  *Token
 	Name           *Identifier
@@ -372,7 +377,7 @@ type FunctionExpression struct {
 
 // FunctionType is the struct type FunctionType.
 type FunctionType struct {
-	rt.Span
+	sxirinput.Span
 	TypeParameters []*TypeParameter
 	Parameters     []*Parameter
 	Type           TypeNode
@@ -380,7 +385,7 @@ type FunctionType struct {
 
 // GetAccessor is the struct type GetAccessor.
 type GetAccessor struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers      []ModifierLike
 	Name           PropertyName
 	TypeParameters []*TypeParameter
@@ -391,14 +396,14 @@ type GetAccessor struct {
 
 // HeritageClause is the struct type HeritageClause.
 type HeritageClause struct {
-	rt.Span
+	sxirinput.Span
 	Token string
 	Types []*ExpressionWithTypeArguments
 }
 
 // IfStatement is the struct type IfStatement.
 type IfStatement struct {
-	rt.Span
+	sxirinput.Span
 	Expression    Expression
 	ThenStatement Statement
 	ElseStatement Statement
@@ -406,21 +411,21 @@ type IfStatement struct {
 
 // ImportAttribute is the struct type ImportAttribute.
 type ImportAttribute struct {
-	rt.Span
+	sxirinput.Span
 	Name  ImportAttributeName
 	Value Expression
 }
 
 // ImportAttributes is the struct type ImportAttributes.
 type ImportAttributes struct {
-	rt.Span
+	sxirinput.Span
 	Elements []*ImportAttribute
 	Token    string
 }
 
 // ImportClause is the struct type ImportClause.
 type ImportClause struct {
-	rt.Span
+	sxirinput.Span
 	Name          *Identifier
 	NamedBindings NamedImportBindings
 	PhaseModifier string
@@ -428,7 +433,7 @@ type ImportClause struct {
 
 // ImportDeclaration is the struct type ImportDeclaration.
 type ImportDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers       []ModifierLike
 	ImportClause    *ImportClause
 	ModuleSpecifier Expression
@@ -437,7 +442,7 @@ type ImportDeclaration struct {
 
 // ImportEqualsDeclaration is the struct type ImportEqualsDeclaration.
 type ImportEqualsDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers       []ModifierLike
 	Name            *Identifier
 	ModuleReference ModuleReference
@@ -446,7 +451,7 @@ type ImportEqualsDeclaration struct {
 
 // ImportSpecifier is the struct type ImportSpecifier.
 type ImportSpecifier struct {
-	rt.Span
+	sxirinput.Span
 	PropertyName ImportAttributeName
 	Name         *Identifier
 	IsTypeOnly   bool
@@ -454,7 +459,7 @@ type ImportSpecifier struct {
 
 // ImportType is the struct type ImportType.
 type ImportType struct {
-	rt.Span
+	sxirinput.Span
 	Argument      TypeNode
 	Attributes    *ImportAttributes
 	Qualifier     EntityName
@@ -464,7 +469,7 @@ type ImportType struct {
 
 // IndexSignature is the struct type IndexSignature.
 type IndexSignature struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers  []ModifierLike
 	Parameters []*Parameter
 	Type       TypeNode
@@ -472,20 +477,20 @@ type IndexSignature struct {
 
 // IndexedAccessType is the struct type IndexedAccessType.
 type IndexedAccessType struct {
-	rt.Span
+	sxirinput.Span
 	ObjectType TypeNode
 	IndexType  TypeNode
 }
 
 // InferType is the struct type InferType.
 type InferType struct {
-	rt.Span
+	sxirinput.Span
 	TypeParameter *TypeParameter
 }
 
 // InterfaceDeclaration is the struct type InterfaceDeclaration.
 type InterfaceDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers       []ModifierLike
 	Name            *Identifier
 	TypeParameters  []*TypeParameter
@@ -495,53 +500,53 @@ type InterfaceDeclaration struct {
 
 // IntersectionType is the struct type IntersectionType.
 type IntersectionType struct {
-	rt.Span
+	sxirinput.Span
 	Types []TypeNode
 }
 
 // JSDocFunctionType is the struct type JSDocFunctionType.
 type JSDocFunctionType struct {
-	rt.Span
+	sxirinput.Span
 	Parameters []*Parameter
 	Type       TypeNode
 }
 
 // JSDocNonNullableType is the struct type JSDocNonNullableType.
 type JSDocNonNullableType struct {
-	rt.Span
+	sxirinput.Span
 	Type    TypeNode
 	Postfix bool
 }
 
 // JSDocNullableType is the struct type JSDocNullableType.
 type JSDocNullableType struct {
-	rt.Span
+	sxirinput.Span
 	Type    TypeNode
 	Postfix bool
 }
 
 // JsxAttribute is the struct type JsxAttribute.
 type JsxAttribute struct {
-	rt.Span
+	sxirinput.Span
 	Name        JsxAttributeName
 	Initializer JsxAttributeValue
 }
 
 // JsxAttributes is the struct type JsxAttributes.
 type JsxAttributes struct {
-	rt.Span
+	sxirinput.Span
 	Properties []JsxAttributeLike
 }
 
 // JsxClosingElement is the struct type JsxClosingElement.
 type JsxClosingElement struct {
-	rt.Span
+	sxirinput.Span
 	TagName JsxTagName
 }
 
 // JsxElement is the struct type JsxElement.
 type JsxElement struct {
-	rt.Span
+	sxirinput.Span
 	OpeningElement *JsxOpeningElement
 	Children       []JsxChild
 	ClosingElement *JsxClosingElement
@@ -549,14 +554,14 @@ type JsxElement struct {
 
 // JsxExpression is the struct type JsxExpression.
 type JsxExpression struct {
-	rt.Span
+	sxirinput.Span
 	DotDotDotToken *Token
 	Expression     Expression
 }
 
 // JsxFragment is the struct type JsxFragment.
 type JsxFragment struct {
-	rt.Span
+	sxirinput.Span
 	OpeningFragment *JsxOpeningFragment
 	Children        []JsxChild
 	ClosingFragment *JsxClosingFragment
@@ -564,14 +569,14 @@ type JsxFragment struct {
 
 // JsxNamespacedName is the struct type JsxNamespacedName.
 type JsxNamespacedName struct {
-	rt.Span
+	sxirinput.Span
 	Namespace *Identifier
 	Name      *Identifier
 }
 
 // JsxOpeningElement is the struct type JsxOpeningElement.
 type JsxOpeningElement struct {
-	rt.Span
+	sxirinput.Span
 	TagName       JsxTagName
 	TypeArguments []TypeNode
 	Attributes    *JsxAttributes
@@ -579,7 +584,7 @@ type JsxOpeningElement struct {
 
 // JsxSelfClosingElement is the struct type JsxSelfClosingElement.
 type JsxSelfClosingElement struct {
-	rt.Span
+	sxirinput.Span
 	TagName       JsxTagName
 	TypeArguments []TypeNode
 	Attributes    *JsxAttributes
@@ -587,26 +592,26 @@ type JsxSelfClosingElement struct {
 
 // JsxSpreadAttribute is the struct type JsxSpreadAttribute.
 type JsxSpreadAttribute struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // LabeledStatement is the struct type LabeledStatement.
 type LabeledStatement struct {
-	rt.Span
+	sxirinput.Span
 	Label     *Identifier
 	Statement Statement
 }
 
 // LiteralType is the struct type LiteralType.
 type LiteralType struct {
-	rt.Span
+	sxirinput.Span
 	Literal LiteralTypeLiteral
 }
 
 // MappedType is the struct type MappedType.
 type MappedType struct {
-	rt.Span
+	sxirinput.Span
 	ReadonlyToken *Token
 	TypeParameter *TypeParameter
 	NameType      TypeNode
@@ -617,14 +622,14 @@ type MappedType struct {
 
 // MetaProperty is the struct type MetaProperty.
 type MetaProperty struct {
-	rt.Span
+	sxirinput.Span
 	KeywordToken string
 	Name         *Identifier
 }
 
 // MethodDeclaration is the struct type MethodDeclaration.
 type MethodDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers        []ModifierLike
 	AsteriskToken    *Token
 	Name             PropertyName
@@ -638,7 +643,7 @@ type MethodDeclaration struct {
 
 // MethodSignature is the struct type MethodSignature.
 type MethodSignature struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers      []ModifierLike
 	Name           PropertyName
 	QuestionToken  *Token
@@ -649,13 +654,13 @@ type MethodSignature struct {
 
 // ModuleBlock is the struct type ModuleBlock.
 type ModuleBlock struct {
-	rt.Span
+	sxirinput.Span
 	Statements []Statement
 }
 
 // ModuleDeclaration is the struct type ModuleDeclaration.
 type ModuleDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers []ModifierLike
 	Name      ImportAttributeName
 	Body      ModuleBody
@@ -663,19 +668,19 @@ type ModuleDeclaration struct {
 
 // NamedExports is the struct type NamedExports.
 type NamedExports struct {
-	rt.Span
+	sxirinput.Span
 	Elements []*ExportSpecifier
 }
 
 // NamedImports is the struct type NamedImports.
 type NamedImports struct {
-	rt.Span
+	sxirinput.Span
 	Elements []*ImportSpecifier
 }
 
 // NamedTupleMember is the struct type NamedTupleMember.
 type NamedTupleMember struct {
-	rt.Span
+	sxirinput.Span
 	DotDotDotToken *Token
 	Name           *Identifier
 	QuestionToken  *Token
@@ -684,26 +689,26 @@ type NamedTupleMember struct {
 
 // NamespaceExport is the struct type NamespaceExport.
 type NamespaceExport struct {
-	rt.Span
+	sxirinput.Span
 	Name ImportAttributeName
 }
 
 // NamespaceExportDeclaration is the struct type NamespaceExportDeclaration.
 type NamespaceExportDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers []ModifierLike
 	Name      *Identifier
 }
 
 // NamespaceImport is the struct type NamespaceImport.
 type NamespaceImport struct {
-	rt.Span
+	sxirinput.Span
 	Name *Identifier
 }
 
 // NewExpression is the struct type NewExpression.
 type NewExpression struct {
-	rt.Span
+	sxirinput.Span
 	Expression    Expression
 	TypeArguments []TypeNode
 	Arguments     []Expression
@@ -711,31 +716,31 @@ type NewExpression struct {
 
 // NonNullExpression is the struct type NonNullExpression.
 type NonNullExpression struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // ObjectBindingPattern is the struct type ObjectBindingPattern.
 type ObjectBindingPattern struct {
-	rt.Span
+	sxirinput.Span
 	Elements []*BindingElement
 }
 
 // ObjectLiteralExpression is the struct type ObjectLiteralExpression.
 type ObjectLiteralExpression struct {
-	rt.Span
+	sxirinput.Span
 	Properties []ObjectLiteralElement
 }
 
 // OptionalType is the struct type OptionalType.
 type OptionalType struct {
-	rt.Span
+	sxirinput.Span
 	Type TypeNode
 }
 
 // Parameter is the struct type Parameter.
 type Parameter struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers      []ModifierLike
 	DotDotDotToken *Token
 	Name           BindingName
@@ -746,33 +751,33 @@ type Parameter struct {
 
 // ParenthesizedExpression is the struct type ParenthesizedExpression.
 type ParenthesizedExpression struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // ParenthesizedType is the struct type ParenthesizedType.
 type ParenthesizedType struct {
-	rt.Span
+	sxirinput.Span
 	Type TypeNode
 }
 
 // PostfixUnaryExpression is the struct type PostfixUnaryExpression.
 type PostfixUnaryExpression struct {
-	rt.Span
+	sxirinput.Span
 	Operand  Expression
 	Operator string
 }
 
 // PrefixUnaryExpression is the struct type PrefixUnaryExpression.
 type PrefixUnaryExpression struct {
-	rt.Span
+	sxirinput.Span
 	Operator string
 	Operand  Expression
 }
 
 // PropertyAccessExpression is the struct type PropertyAccessExpression.
 type PropertyAccessExpression struct {
-	rt.Span
+	sxirinput.Span
 	Expression       Expression
 	QuestionDotToken *Token
 	Name             MemberName
@@ -780,7 +785,7 @@ type PropertyAccessExpression struct {
 
 // PropertyAssignment is the struct type PropertyAssignment.
 type PropertyAssignment struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers        []ModifierLike
 	Name             PropertyName
 	QuestionToken    *Token
@@ -790,7 +795,7 @@ type PropertyAssignment struct {
 
 // PropertyDeclaration is the struct type PropertyDeclaration.
 type PropertyDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers        []ModifierLike
 	Name             PropertyName
 	QuestionToken    *Token
@@ -801,7 +806,7 @@ type PropertyDeclaration struct {
 
 // PropertySignature is the struct type PropertySignature.
 type PropertySignature struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers     []ModifierLike
 	Name          PropertyName
 	QuestionToken *Token
@@ -811,33 +816,33 @@ type PropertySignature struct {
 
 // QualifiedName is the struct type QualifiedName.
 type QualifiedName struct {
-	rt.Span
+	sxirinput.Span
 	Left  EntityName
 	Right *Identifier
 }
 
 // RestType is the struct type RestType.
 type RestType struct {
-	rt.Span
+	sxirinput.Span
 	Type TypeNode
 }
 
 // ReturnStatement is the struct type ReturnStatement.
 type ReturnStatement struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // SatisfiesExpression is the struct type SatisfiesExpression.
 type SatisfiesExpression struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 	Type       TypeNode
 }
 
 // SetAccessor is the struct type SetAccessor.
 type SetAccessor struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers      []ModifierLike
 	Name           PropertyName
 	TypeParameters []*TypeParameter
@@ -848,7 +853,7 @@ type SetAccessor struct {
 
 // ShorthandPropertyAssignment is the struct type ShorthandPropertyAssignment.
 type ShorthandPropertyAssignment struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers                   []ModifierLike
 	Name                        *Identifier
 	QuestionToken               *Token
@@ -859,33 +864,33 @@ type ShorthandPropertyAssignment struct {
 
 // SourceFile is the struct type SourceFile.
 type SourceFile struct {
-	rt.Span
+	sxirinput.Span
 	Statements     []Statement
 	EndOfFileToken *EndOfFileToken
 }
 
 // SpreadAssignment is the struct type SpreadAssignment.
 type SpreadAssignment struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // SpreadElement is the struct type SpreadElement.
 type SpreadElement struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // SwitchStatement is the struct type SwitchStatement.
 type SwitchStatement struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 	CaseBlock  *CaseBlock
 }
 
 // TaggedTemplateExpression is the struct type TaggedTemplateExpression.
 type TaggedTemplateExpression struct {
-	rt.Span
+	sxirinput.Span
 	Tag              Expression
 	QuestionDotToken *Token
 	TypeArguments    []TypeNode
@@ -894,41 +899,41 @@ type TaggedTemplateExpression struct {
 
 // TemplateExpression is the struct type TemplateExpression.
 type TemplateExpression struct {
-	rt.Span
+	sxirinput.Span
 	Head          *TemplateHead
 	TemplateSpans []*TemplateSpan
 }
 
 // TemplateLiteralType is the struct type TemplateLiteralType.
 type TemplateLiteralType struct {
-	rt.Span
+	sxirinput.Span
 	Head          *TemplateHead
 	TemplateSpans []*TemplateLiteralTypeSpan
 }
 
 // TemplateLiteralTypeSpan is the struct type TemplateLiteralTypeSpan.
 type TemplateLiteralTypeSpan struct {
-	rt.Span
+	sxirinput.Span
 	Type    TypeNode
 	Literal TemplateMiddleOrTail
 }
 
 // TemplateSpan is the struct type TemplateSpan.
 type TemplateSpan struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 	Literal    TemplateMiddleOrTail
 }
 
 // ThrowStatement is the struct type ThrowStatement.
 type ThrowStatement struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // TryStatement is the struct type TryStatement.
 type TryStatement struct {
-	rt.Span
+	sxirinput.Span
 	TryBlock     *Block
 	CatchClause  *CatchClause
 	FinallyBlock *Block
@@ -936,13 +941,13 @@ type TryStatement struct {
 
 // TupleType is the struct type TupleType.
 type TupleType struct {
-	rt.Span
+	sxirinput.Span
 	Elements []TypeNode
 }
 
 // TypeAliasDeclaration is the struct type TypeAliasDeclaration.
 type TypeAliasDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers      []ModifierLike
 	Name           *Identifier
 	TypeParameters []*TypeParameter
@@ -951,33 +956,33 @@ type TypeAliasDeclaration struct {
 
 // TypeAssertionExpression is the struct type TypeAssertionExpression.
 type TypeAssertionExpression struct {
-	rt.Span
+	sxirinput.Span
 	Type       TypeNode
 	Expression Expression
 }
 
 // TypeLiteral is the struct type TypeLiteral.
 type TypeLiteral struct {
-	rt.Span
+	sxirinput.Span
 	Members []TypeElement
 }
 
 // TypeOfExpression is the struct type TypeOfExpression.
 type TypeOfExpression struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // TypeOperator is the struct type TypeOperator.
 type TypeOperator struct {
-	rt.Span
+	sxirinput.Span
 	Operator string
 	Type     TypeNode
 }
 
 // TypeParameter is the struct type TypeParameter.
 type TypeParameter struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers  []ModifierLike
 	Name       *Identifier
 	Constraint TypeNode
@@ -987,7 +992,7 @@ type TypeParameter struct {
 
 // TypePredicate is the struct type TypePredicate.
 type TypePredicate struct {
-	rt.Span
+	sxirinput.Span
 	AssertsModifier *Token
 	ParameterName   TypePredicateParameterName
 	Type            TypeNode
@@ -995,27 +1000,27 @@ type TypePredicate struct {
 
 // TypeQuery is the struct type TypeQuery.
 type TypeQuery struct {
-	rt.Span
+	sxirinput.Span
 	ExprName      EntityName
 	TypeArguments []TypeNode
 }
 
 // TypeReference is the struct type TypeReference.
 type TypeReference struct {
-	rt.Span
+	sxirinput.Span
 	TypeName      EntityName
 	TypeArguments []TypeNode
 }
 
 // UnionType is the struct type UnionType.
 type UnionType struct {
-	rt.Span
+	sxirinput.Span
 	Types []TypeNode
 }
 
 // VariableDeclaration is the struct type VariableDeclaration.
 type VariableDeclaration struct {
-	rt.Span
+	sxirinput.Span
 	Name             BindingName
 	ExclamationToken *Token
 	Type             TypeNode
@@ -1024,41 +1029,41 @@ type VariableDeclaration struct {
 
 // VariableDeclarationList is the struct type VariableDeclarationList.
 type VariableDeclarationList struct {
-	rt.Span
+	sxirinput.Span
 	Keyword      string
 	Declarations []*VariableDeclaration
 }
 
 // VariableStatement is the struct type VariableStatement.
 type VariableStatement struct {
-	rt.Span
+	sxirinput.Span
 	Modifiers       []ModifierLike
 	DeclarationList *VariableDeclarationList
 }
 
 // VoidExpression is the struct type VoidExpression.
 type VoidExpression struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 }
 
 // WhileStatement is the struct type WhileStatement.
 type WhileStatement struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 	Statement  Statement
 }
 
 // WithStatement is the struct type WithStatement.
 type WithStatement struct {
-	rt.Span
+	sxirinput.Span
 	Expression Expression
 	Statement  Statement
 }
 
 // YieldExpression is the struct type YieldExpression.
 type YieldExpression struct {
-	rt.Span
+	sxirinput.Span
 	AsteriskToken *Token
 	Expression    Expression
 }
@@ -1246,10 +1251,24 @@ type TypeNode interface{ isTypeNode() }
 // TypePredicateParameterName is the join type TypePredicateParameterName ~ Identifier | ThisTypeNode. Error (left by #recover) also implements it.
 type TypePredicateParameterName interface{ isTypePredicateParameterName() }
 
+// IdentifierOrStringNode is the join type Identifier | node[string]. Error (left by #recover) also implements it.
+type IdentifierOrStringNode interface{ isIdentifierOrStringNode() }
+
+// IdentifierOrStringNodeTupleNode is the join type Identifier | node[(node[string],)]. Error (left by #recover) also implements it.
+type IdentifierOrStringNodeTupleNode interface{ isIdentifierOrStringNodeTupleNode() }
+
+// TokenOrStringNodeTupleNode is the join type Token | node[(node[string],)]. Error (left by #recover) also implements it.
+type TokenOrStringNodeTupleNode interface{ isTokenOrStringNodeTupleNode() }
+
+// IdentifierOrStringNodeTupleNodeOrObjectBindingPatternOrArrayBindingPattern is the join type Identifier | node[(node[string],)] | ObjectBindingPattern | ArrayBindingPattern. Error (left by #recover) also implements it.
+type IdentifierOrStringNodeTupleNodeOrObjectBindingPatternOrArrayBindingPattern interface{ isIdentifierOrStringNodeTupleNodeOrObjectBindingPatternOrArrayBindingPattern() }
+
 // IdentifierOrPrivateIdentifierOrStringLiteralOrNumericLiteralOrBigIntLiteral is the join type Identifier | PrivateIdentifier | StringLiteral | NumericLiteral | BigIntLiteral. Error (left by #recover) also implements it.
 type IdentifierOrPrivateIdentifierOrStringLiteralOrNumericLiteralOrBigIntLiteral interface{ isIdentifierOrPrivateIdentifierOrStringLiteralOrNumericLiteralOrBigIntLiteral() }
 
-func (*ArrayBindingPattern) isBindingName()       {}
+func (*ArrayBindingPattern) isBindingName() {}
+func (*ArrayBindingPattern) isIdentifierOrStringNodeTupleNodeOrObjectBindingPatternOrArrayBindingPattern() {
+}
 func (*ArrayLiteralExpression) isConciseBody()    {}
 func (*ArrayLiteralExpression) isExpression()     {}
 func (*ArrayLiteralExpression) isForInitializer() {}
@@ -1321,6 +1340,9 @@ func (*Error) isEntityName()                                                    
 func (*Error) isExpression()                                                                       {}
 func (*Error) isForInitializer()                                                                   {}
 func (*Error) isIdentifierOrPrivateIdentifierOrStringLiteralOrNumericLiteralOrBigIntLiteral()      {}
+func (*Error) isIdentifierOrStringNode()                                                           {}
+func (*Error) isIdentifierOrStringNodeTupleNode()                                                  {}
+func (*Error) isIdentifierOrStringNodeTupleNodeOrObjectBindingPatternOrArrayBindingPattern()       {}
 func (*Error) isImportAttributeName()                                                              {}
 func (*Error) isJsxAttributeLike()                                                                 {}
 func (*Error) isJsxAttributeName()                                                                 {}
@@ -1340,6 +1362,7 @@ func (*Error) isPropertyName()                                                  
 func (*Error) isStatement()                                                                        {}
 func (*Error) isTemplateLiteral()                                                                  {}
 func (*Error) isTemplateMiddleOrTail()                                                             {}
+func (*Error) isTokenOrStringNodeTupleNode()                                                       {}
 func (*Error) isTypeElement()                                                                      {}
 func (*Error) isTypeNode()                                                                         {}
 func (*Error) isTypePredicateParameterName()                                                       {}
@@ -1367,6 +1390,9 @@ func (*Identifier) isEntityName()                                               
 func (*Identifier) isExpression()                                                                  {}
 func (*Identifier) isForInitializer()                                                              {}
 func (*Identifier) isIdentifierOrPrivateIdentifierOrStringLiteralOrNumericLiteralOrBigIntLiteral() {}
+func (*Identifier) isIdentifierOrStringNode()                                                      {}
+func (*Identifier) isIdentifierOrStringNodeTupleNode()                                             {}
+func (*Identifier) isIdentifierOrStringNodeTupleNodeOrObjectBindingPatternOrArrayBindingPattern()  {}
 func (*Identifier) isImportAttributeName()                                                         {}
 func (*Identifier) isJsxAttributeName()                                                            {}
 func (*Identifier) isJsxTagName()                                                                  {}
@@ -1456,9 +1482,11 @@ func (*NumericLiteral) isExpression()                                           
 func (*NumericLiteral) isForInitializer()                                                          {}
 func (*NumericLiteral) isIdentifierOrPrivateIdentifierOrStringLiteralOrNumericLiteralOrBigIntLiteral() {
 }
-func (*NumericLiteral) isLiteralTypeLiteral()        {}
-func (*NumericLiteral) isPropertyName()              {}
-func (*ObjectBindingPattern) isBindingName()         {}
+func (*NumericLiteral) isLiteralTypeLiteral() {}
+func (*NumericLiteral) isPropertyName()       {}
+func (*ObjectBindingPattern) isBindingName()  {}
+func (*ObjectBindingPattern) isIdentifierOrStringNodeTupleNodeOrObjectBindingPatternOrArrayBindingPattern() {
+}
 func (*ObjectLiteralExpression) isConciseBody()      {}
 func (*ObjectLiteralExpression) isExpression()       {}
 func (*ObjectLiteralExpression) isForInitializer()   {}
@@ -1516,64 +1544,71 @@ func (*StringLiteral) isExpression()                         {}
 func (*StringLiteral) isForInitializer()                     {}
 func (*StringLiteral) isIdentifierOrPrivateIdentifierOrStringLiteralOrNumericLiteralOrBigIntLiteral() {
 }
-func (*StringLiteral) isImportAttributeName()       {}
-func (*StringLiteral) isJsxAttributeValue()         {}
-func (*StringLiteral) isLiteralTypeLiteral()        {}
-func (*StringLiteral) isPropertyName()              {}
-func (*SuperExpression) isConciseBody()             {}
-func (*SuperExpression) isExpression()              {}
-func (*SuperExpression) isForInitializer()          {}
-func (*SwitchStatement) isStatement()               {}
-func (*TaggedTemplateExpression) isConciseBody()    {}
-func (*TaggedTemplateExpression) isExpression()     {}
-func (*TaggedTemplateExpression) isForInitializer() {}
-func (*TemplateExpression) isConciseBody()          {}
-func (*TemplateExpression) isExpression()           {}
-func (*TemplateExpression) isForInitializer()       {}
-func (*TemplateExpression) isTemplateLiteral()      {}
-func (*TemplateLiteralType) isTypeNode()            {}
-func (*TemplateMiddle) isTemplateMiddleOrTail()     {}
-func (*TemplateTail) isTemplateMiddleOrTail()       {}
-func (*ThisExpression) isConciseBody()              {}
-func (*ThisExpression) isExpression()               {}
-func (*ThisExpression) isForInitializer()           {}
-func (*ThisExpression) isJsxTagName()               {}
-func (*ThisExpression) isJsxTagNameStart()          {}
-func (*ThisTypeNode) isTypeNode()                   {}
-func (*ThisTypeNode) isTypePredicateParameterName() {}
-func (*ThrowStatement) isStatement()                {}
-func (*TryStatement) isStatement()                  {}
-func (*TupleType) isTypeNode()                      {}
-func (*TypeAliasDeclaration) isStatement()          {}
-func (*TypeAssertionExpression) isConciseBody()     {}
-func (*TypeAssertionExpression) isExpression()      {}
-func (*TypeAssertionExpression) isForInitializer()  {}
-func (*TypeLiteral) isTypeNode()                    {}
-func (*TypeOfExpression) isConciseBody()            {}
-func (*TypeOfExpression) isExpression()             {}
-func (*TypeOfExpression) isForInitializer()         {}
-func (*TypeOperator) isTypeNode()                   {}
-func (*TypePredicate) isTypeNode()                  {}
-func (*TypeQuery) isTypeNode()                      {}
-func (*TypeReference) isTypeNode()                  {}
-func (*UnionType) isTypeNode()                      {}
-func (*VariableDeclarationList) isForInitializer()  {}
-func (*VariableStatement) isStatement()             {}
-func (*VoidExpression) isConciseBody()              {}
-func (*VoidExpression) isExpression()               {}
-func (*VoidExpression) isForInitializer()           {}
-func (*WhileStatement) isStatement()                {}
-func (*WithStatement) isStatement()                 {}
-func (*YieldExpression) isConciseBody()             {}
-func (*YieldExpression) isExpression()              {}
-func (*YieldExpression) isForInitializer()          {}
+func (*StringLiteral) isImportAttributeName()                                                   {}
+func (*StringLiteral) isJsxAttributeValue()                                                     {}
+func (*StringLiteral) isLiteralTypeLiteral()                                                    {}
+func (*StringLiteral) isPropertyName()                                                          {}
+func (*SuperExpression) isConciseBody()                                                         {}
+func (*SuperExpression) isExpression()                                                          {}
+func (*SuperExpression) isForInitializer()                                                      {}
+func (*SwitchStatement) isStatement()                                                           {}
+func (*TNode[T]) isIdentifierOrStringNode()                                                     {}
+func (*TNode[T]) isIdentifierOrStringNodeTupleNode()                                            {}
+func (*TNode[T]) isIdentifierOrStringNodeTupleNodeOrObjectBindingPatternOrArrayBindingPattern() {}
+func (*TNode[T]) isTokenOrStringNodeTupleNode()                                                 {}
+func (*TaggedTemplateExpression) isConciseBody()                                                {}
+func (*TaggedTemplateExpression) isExpression()                                                 {}
+func (*TaggedTemplateExpression) isForInitializer()                                             {}
+func (*TemplateExpression) isConciseBody()                                                      {}
+func (*TemplateExpression) isExpression()                                                       {}
+func (*TemplateExpression) isForInitializer()                                                   {}
+func (*TemplateExpression) isTemplateLiteral()                                                  {}
+func (*TemplateLiteralType) isTypeNode()                                                        {}
+func (*TemplateMiddle) isTemplateMiddleOrTail()                                                 {}
+func (*TemplateTail) isTemplateMiddleOrTail()                                                   {}
+func (*ThisExpression) isConciseBody()                                                          {}
+func (*ThisExpression) isExpression()                                                           {}
+func (*ThisExpression) isForInitializer()                                                       {}
+func (*ThisExpression) isJsxTagName()                                                           {}
+func (*ThisExpression) isJsxTagNameStart()                                                      {}
+func (*ThisTypeNode) isTypeNode()                                                               {}
+func (*ThisTypeNode) isTypePredicateParameterName()                                             {}
+func (*ThrowStatement) isStatement()                                                            {}
+func (*Token) isTokenOrStringNodeTupleNode()                                                    {}
+func (*TryStatement) isStatement()                                                              {}
+func (*TupleType) isTypeNode()                                                                  {}
+func (*TypeAliasDeclaration) isStatement()                                                      {}
+func (*TypeAssertionExpression) isConciseBody()                                                 {}
+func (*TypeAssertionExpression) isExpression()                                                  {}
+func (*TypeAssertionExpression) isForInitializer()                                              {}
+func (*TypeLiteral) isTypeNode()                                                                {}
+func (*TypeOfExpression) isConciseBody()                                                        {}
+func (*TypeOfExpression) isExpression()                                                         {}
+func (*TypeOfExpression) isForInitializer()                                                     {}
+func (*TypeOperator) isTypeNode()                                                               {}
+func (*TypePredicate) isTypeNode()                                                              {}
+func (*TypeQuery) isTypeNode()                                                                  {}
+func (*TypeReference) isTypeNode()                                                              {}
+func (*UnionType) isTypeNode()                                                                  {}
+func (*VariableDeclarationList) isForInitializer()                                              {}
+func (*VariableStatement) isStatement()                                                         {}
+func (*VoidExpression) isConciseBody()                                                          {}
+func (*VoidExpression) isExpression()                                                           {}
+func (*VoidExpression) isForInitializer()                                                       {}
+func (*WhileStatement) isStatement()                                                            {}
+func (*WithStatement) isStatement()                                                             {}
+func (*YieldExpression) isConciseBody()                                                         {}
+func (*YieldExpression) isExpression()                                                          {}
+func (*YieldExpression) isForInitializer()                                                      {}
 
-func (v *ArrayBindingPattern) TName() string         { return "ArrayBindingPattern" }
-func (v *ArrayBindingPattern) TText() (string, bool) { return "", false }
-func (v *ArrayBindingPattern) TKids() []any          { return nil }
-func (v *ArrayBindingPattern) TStruct() bool         { return true }
-func (v *ArrayBindingPattern) TFresh() bool          { return false }
-func (v *ArrayBindingPattern) TSetFresh(bool)        {}
+func (v *ArrayBindingPattern) TName() string           { return "ArrayBindingPattern" }
+func (v *ArrayBindingPattern) TText() (string, bool)   { return "", false }
+func (v *ArrayBindingPattern) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ArrayBindingPattern) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ArrayBindingPattern) TKids() []any            { return nil }
+func (v *ArrayBindingPattern) TStruct() bool           { return true }
+func (v *ArrayBindingPattern) TFresh() bool            { return false }
+func (v *ArrayBindingPattern) TSetFresh(bool)          {}
 func (v *ArrayBindingPattern) TField(name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -1594,26 +1629,6 @@ func (v *ArrayBindingPattern) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ArrayBindingPattern) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Elements":
-		if v.Elements == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Elements == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Elements))
-			for i, x := range v.Elements {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *ArrayBindingPattern) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -1622,12 +1637,14 @@ func (v *ArrayBindingPattern) TZeroField(c *rt.TActCtx, name string) (any, bool)
 	return nil, false
 }
 
-func (v *ArrayLiteralExpression) TName() string         { return "ArrayLiteralExpression" }
-func (v *ArrayLiteralExpression) TText() (string, bool) { return "", false }
-func (v *ArrayLiteralExpression) TKids() []any          { return nil }
-func (v *ArrayLiteralExpression) TStruct() bool         { return true }
-func (v *ArrayLiteralExpression) TFresh() bool          { return false }
-func (v *ArrayLiteralExpression) TSetFresh(bool)        {}
+func (v *ArrayLiteralExpression) TName() string           { return "ArrayLiteralExpression" }
+func (v *ArrayLiteralExpression) TText() (string, bool)   { return "", false }
+func (v *ArrayLiteralExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ArrayLiteralExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ArrayLiteralExpression) TKids() []any            { return nil }
+func (v *ArrayLiteralExpression) TStruct() bool           { return true }
+func (v *ArrayLiteralExpression) TFresh() bool            { return false }
+func (v *ArrayLiteralExpression) TSetFresh(bool)          {}
 func (v *ArrayLiteralExpression) TField(name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -1648,26 +1665,6 @@ func (v *ArrayLiteralExpression) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ArrayLiteralExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Elements":
-		if v.Elements == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Elements == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Elements))
-			for i, x := range v.Elements {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *ArrayLiteralExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -1676,21 +1673,15 @@ func (v *ArrayLiteralExpression) TZeroField(c *rt.TActCtx, name string) (any, bo
 	return nil, false
 }
 
-func (v *ArrayType) TName() string         { return "ArrayType" }
-func (v *ArrayType) TText() (string, bool) { return "", false }
-func (v *ArrayType) TKids() []any          { return nil }
-func (v *ArrayType) TStruct() bool         { return true }
-func (v *ArrayType) TFresh() bool          { return false }
-func (v *ArrayType) TSetFresh(bool)        {}
+func (v *ArrayType) TName() string           { return "ArrayType" }
+func (v *ArrayType) TText() (string, bool)   { return "", false }
+func (v *ArrayType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ArrayType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ArrayType) TKids() []any            { return nil }
+func (v *ArrayType) TStruct() bool           { return true }
+func (v *ArrayType) TFresh() bool            { return false }
+func (v *ArrayType) TSetFresh(bool)          {}
 func (v *ArrayType) TField(name string) (any, bool) {
-	switch name {
-	case "ElementType":
-		return rt.TBack(SXIRHooks, v.ElementType), true
-	}
-	return nil, false
-}
-
-func (v *ArrayType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "ElementType":
 		return rt.TBack(SXIRHooks, v.ElementType), true
@@ -1704,12 +1695,14 @@ func (v *ArrayType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ArrowFunction) TName() string         { return "ArrowFunction" }
-func (v *ArrowFunction) TText() (string, bool) { return "", false }
-func (v *ArrowFunction) TKids() []any          { return nil }
-func (v *ArrowFunction) TStruct() bool         { return true }
-func (v *ArrowFunction) TFresh() bool          { return false }
-func (v *ArrowFunction) TSetFresh(bool)        {}
+func (v *ArrowFunction) TName() string           { return "ArrowFunction" }
+func (v *ArrowFunction) TText() (string, bool)   { return "", false }
+func (v *ArrowFunction) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ArrowFunction) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ArrowFunction) TKids() []any            { return nil }
+func (v *ArrowFunction) TStruct() bool           { return true }
+func (v *ArrowFunction) TFresh() bool            { return false }
+func (v *ArrowFunction) TSetFresh(bool)          {}
 func (v *ArrowFunction) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -1764,60 +1757,6 @@ func (v *ArrowFunction) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ArrowFunction) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "EqualsGreaterThanToken":
-		return tb0(v.EqualsGreaterThanToken), true
-	case "Body":
-		return rt.TBack(SXIRHooks, v.Body), true
-	}
-	return nil, false
-}
-
 func (v *ArrowFunction) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -1830,23 +1769,15 @@ func (v *ArrowFunction) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *AsExpression) TName() string         { return "AsExpression" }
-func (v *AsExpression) TText() (string, bool) { return "", false }
-func (v *AsExpression) TKids() []any          { return nil }
-func (v *AsExpression) TStruct() bool         { return true }
-func (v *AsExpression) TFresh() bool          { return false }
-func (v *AsExpression) TSetFresh(bool)        {}
+func (v *AsExpression) TName() string           { return "AsExpression" }
+func (v *AsExpression) TText() (string, bool)   { return "", false }
+func (v *AsExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *AsExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *AsExpression) TKids() []any            { return nil }
+func (v *AsExpression) TStruct() bool           { return true }
+func (v *AsExpression) TFresh() bool            { return false }
+func (v *AsExpression) TSetFresh(bool)          {}
 func (v *AsExpression) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
-func (v *AsExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -1862,21 +1793,15 @@ func (v *AsExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *AwaitExpression) TName() string         { return "AwaitExpression" }
-func (v *AwaitExpression) TText() (string, bool) { return "", false }
-func (v *AwaitExpression) TKids() []any          { return nil }
-func (v *AwaitExpression) TStruct() bool         { return true }
-func (v *AwaitExpression) TFresh() bool          { return false }
-func (v *AwaitExpression) TSetFresh(bool)        {}
+func (v *AwaitExpression) TName() string           { return "AwaitExpression" }
+func (v *AwaitExpression) TText() (string, bool)   { return "", false }
+func (v *AwaitExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *AwaitExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *AwaitExpression) TKids() []any            { return nil }
+func (v *AwaitExpression) TStruct() bool           { return true }
+func (v *AwaitExpression) TFresh() bool            { return false }
+func (v *AwaitExpression) TSetFresh(bool)          {}
 func (v *AwaitExpression) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *AwaitExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -1890,25 +1815,15 @@ func (v *AwaitExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *BinaryExpression) TName() string         { return "BinaryExpression" }
-func (v *BinaryExpression) TText() (string, bool) { return "", false }
-func (v *BinaryExpression) TKids() []any          { return nil }
-func (v *BinaryExpression) TStruct() bool         { return true }
-func (v *BinaryExpression) TFresh() bool          { return false }
-func (v *BinaryExpression) TSetFresh(bool)        {}
+func (v *BinaryExpression) TName() string           { return "BinaryExpression" }
+func (v *BinaryExpression) TText() (string, bool)   { return "", false }
+func (v *BinaryExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *BinaryExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *BinaryExpression) TKids() []any            { return nil }
+func (v *BinaryExpression) TStruct() bool           { return true }
+func (v *BinaryExpression) TFresh() bool            { return false }
+func (v *BinaryExpression) TSetFresh(bool)          {}
 func (v *BinaryExpression) TField(name string) (any, bool) {
-	switch name {
-	case "Left":
-		return rt.TBack(SXIRHooks, v.Left), true
-	case "OperatorToken":
-		return tb0(v.OperatorToken), true
-	case "Right":
-		return rt.TBack(SXIRHooks, v.Right), true
-	}
-	return nil, false
-}
-
-func (v *BinaryExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Left":
 		return rt.TBack(SXIRHooks, v.Left), true
@@ -1926,27 +1841,15 @@ func (v *BinaryExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *BindingElement) TName() string         { return "BindingElement" }
-func (v *BindingElement) TText() (string, bool) { return "", false }
-func (v *BindingElement) TKids() []any          { return nil }
-func (v *BindingElement) TStruct() bool         { return true }
-func (v *BindingElement) TFresh() bool          { return false }
-func (v *BindingElement) TSetFresh(bool)        {}
+func (v *BindingElement) TName() string           { return "BindingElement" }
+func (v *BindingElement) TText() (string, bool)   { return "", false }
+func (v *BindingElement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *BindingElement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *BindingElement) TKids() []any            { return nil }
+func (v *BindingElement) TStruct() bool           { return true }
+func (v *BindingElement) TFresh() bool            { return false }
+func (v *BindingElement) TSetFresh(bool)          {}
 func (v *BindingElement) TField(name string) (any, bool) {
-	switch name {
-	case "DotDotDotToken":
-		return tb0(v.DotDotDotToken), true
-	case "PropertyName":
-		return rt.TBack(SXIRHooks, v.PropertyName), true
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "Initializer":
-		return rt.TBack(SXIRHooks, v.Initializer), true
-	}
-	return nil, false
-}
-
-func (v *BindingElement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "DotDotDotToken":
 		return tb0(v.DotDotDotToken), true
@@ -1966,12 +1869,14 @@ func (v *BindingElement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Block) TName() string         { return "Block" }
-func (v *Block) TText() (string, bool) { return "", false }
-func (v *Block) TKids() []any          { return nil }
-func (v *Block) TStruct() bool         { return true }
-func (v *Block) TFresh() bool          { return false }
-func (v *Block) TSetFresh(bool)        {}
+func (v *Block) TName() string           { return "Block" }
+func (v *Block) TText() (string, bool)   { return "", false }
+func (v *Block) TSpan() (int, int)       { return v.Start, v.End }
+func (v *Block) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *Block) TKids() []any            { return nil }
+func (v *Block) TStruct() bool           { return true }
+func (v *Block) TFresh() bool            { return false }
+func (v *Block) TSetFresh(bool)          {}
 func (v *Block) TField(name string) (any, bool) {
 	switch name {
 	case "Statements":
@@ -1992,26 +1897,6 @@ func (v *Block) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Block) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Statements":
-		if v.Statements == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Statements == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Statements))
-			for i, x := range v.Statements {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *Block) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Statements":
@@ -2020,21 +1905,15 @@ func (v *Block) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *BreakStatement) TName() string         { return "BreakStatement" }
-func (v *BreakStatement) TText() (string, bool) { return "", false }
-func (v *BreakStatement) TKids() []any          { return nil }
-func (v *BreakStatement) TStruct() bool         { return true }
-func (v *BreakStatement) TFresh() bool          { return false }
-func (v *BreakStatement) TSetFresh(bool)        {}
+func (v *BreakStatement) TName() string           { return "BreakStatement" }
+func (v *BreakStatement) TText() (string, bool)   { return "", false }
+func (v *BreakStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *BreakStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *BreakStatement) TKids() []any            { return nil }
+func (v *BreakStatement) TStruct() bool           { return true }
+func (v *BreakStatement) TFresh() bool            { return false }
+func (v *BreakStatement) TSetFresh(bool)          {}
 func (v *BreakStatement) TField(name string) (any, bool) {
-	switch name {
-	case "Label":
-		return tb1(v.Label), true
-	}
-	return nil, false
-}
-
-func (v *BreakStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Label":
 		return tb1(v.Label), true
@@ -2048,12 +1927,14 @@ func (v *BreakStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *CallExpression) TName() string         { return "CallExpression" }
-func (v *CallExpression) TText() (string, bool) { return "", false }
-func (v *CallExpression) TKids() []any          { return nil }
-func (v *CallExpression) TStruct() bool         { return true }
-func (v *CallExpression) TFresh() bool          { return false }
-func (v *CallExpression) TSetFresh(bool)        {}
+func (v *CallExpression) TName() string           { return "CallExpression" }
+func (v *CallExpression) TText() (string, bool)   { return "", false }
+func (v *CallExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *CallExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *CallExpression) TKids() []any            { return nil }
+func (v *CallExpression) TStruct() bool           { return true }
+func (v *CallExpression) TFresh() bool            { return false }
+func (v *CallExpression) TSetFresh(bool)          {}
 func (v *CallExpression) TField(name string) (any, bool) {
 	switch name {
 	case "Expression":
@@ -2092,44 +1973,6 @@ func (v *CallExpression) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *CallExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "QuestionDotToken":
-		return tb0(v.QuestionDotToken), true
-	case "TypeArguments":
-		if v.TypeArguments == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeArguments == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeArguments))
-			for i, x := range v.TypeArguments {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Arguments":
-		if v.Arguments == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Arguments == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Arguments))
-			for i, x := range v.Arguments {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *CallExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TypeArguments":
@@ -2140,12 +1983,14 @@ func (v *CallExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *CallSignature) TName() string         { return "CallSignature" }
-func (v *CallSignature) TText() (string, bool) { return "", false }
-func (v *CallSignature) TKids() []any          { return nil }
-func (v *CallSignature) TStruct() bool         { return true }
-func (v *CallSignature) TFresh() bool          { return false }
-func (v *CallSignature) TSetFresh(bool)        {}
+func (v *CallSignature) TName() string           { return "CallSignature" }
+func (v *CallSignature) TText() (string, bool)   { return "", false }
+func (v *CallSignature) TSpan() (int, int)       { return v.Start, v.End }
+func (v *CallSignature) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *CallSignature) TKids() []any            { return nil }
+func (v *CallSignature) TStruct() bool           { return true }
+func (v *CallSignature) TFresh() bool            { return false }
+func (v *CallSignature) TSetFresh(bool)          {}
 func (v *CallSignature) TField(name string) (any, bool) {
 	switch name {
 	case "TypeParameters":
@@ -2182,42 +2027,6 @@ func (v *CallSignature) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *CallSignature) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
 func (v *CallSignature) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TypeParameters":
@@ -2228,12 +2037,14 @@ func (v *CallSignature) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *CaseBlock) TName() string         { return "CaseBlock" }
-func (v *CaseBlock) TText() (string, bool) { return "", false }
-func (v *CaseBlock) TKids() []any          { return nil }
-func (v *CaseBlock) TStruct() bool         { return true }
-func (v *CaseBlock) TFresh() bool          { return false }
-func (v *CaseBlock) TSetFresh(bool)        {}
+func (v *CaseBlock) TName() string           { return "CaseBlock" }
+func (v *CaseBlock) TText() (string, bool)   { return "", false }
+func (v *CaseBlock) TSpan() (int, int)       { return v.Start, v.End }
+func (v *CaseBlock) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *CaseBlock) TKids() []any            { return nil }
+func (v *CaseBlock) TStruct() bool           { return true }
+func (v *CaseBlock) TFresh() bool            { return false }
+func (v *CaseBlock) TSetFresh(bool)          {}
 func (v *CaseBlock) TField(name string) (any, bool) {
 	switch name {
 	case "Clauses":
@@ -2254,26 +2065,6 @@ func (v *CaseBlock) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *CaseBlock) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Clauses":
-		if v.Clauses == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Clauses == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Clauses))
-			for i, x := range v.Clauses {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *CaseBlock) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Clauses":
@@ -2282,12 +2073,14 @@ func (v *CaseBlock) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *CaseClause) TName() string         { return "CaseClause" }
-func (v *CaseClause) TText() (string, bool) { return "", false }
-func (v *CaseClause) TKids() []any          { return nil }
-func (v *CaseClause) TStruct() bool         { return true }
-func (v *CaseClause) TFresh() bool          { return false }
-func (v *CaseClause) TSetFresh(bool)        {}
+func (v *CaseClause) TName() string           { return "CaseClause" }
+func (v *CaseClause) TText() (string, bool)   { return "", false }
+func (v *CaseClause) TSpan() (int, int)       { return v.Start, v.End }
+func (v *CaseClause) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *CaseClause) TKids() []any            { return nil }
+func (v *CaseClause) TStruct() bool           { return true }
+func (v *CaseClause) TFresh() bool            { return false }
+func (v *CaseClause) TSetFresh(bool)          {}
 func (v *CaseClause) TField(name string) (any, bool) {
 	switch name {
 	case "Expression":
@@ -2310,28 +2103,6 @@ func (v *CaseClause) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *CaseClause) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "Statements":
-		if v.Statements == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Statements == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Statements))
-			for i, x := range v.Statements {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *CaseClause) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Statements":
@@ -2340,26 +2111,15 @@ func (v *CaseClause) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *CatchClause) TName() string         { return "CatchClause" }
-func (v *CatchClause) TText() (string, bool) { return "", false }
-func (v *CatchClause) TKids() []any          { return nil }
-func (v *CatchClause) TStruct() bool         { return true }
-func (v *CatchClause) TFresh() bool          { return false }
-func (v *CatchClause) TSetFresh(bool)        {}
+func (v *CatchClause) TName() string           { return "CatchClause" }
+func (v *CatchClause) TText() (string, bool)   { return "", false }
+func (v *CatchClause) TSpan() (int, int)       { return v.Start, v.End }
+func (v *CatchClause) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *CatchClause) TKids() []any            { return nil }
+func (v *CatchClause) TStruct() bool           { return true }
+func (v *CatchClause) TFresh() bool            { return false }
+func (v *CatchClause) TSetFresh(bool)          {}
 func (v *CatchClause) TField(name string) (any, bool) {
-	switch name {
-	case "VariableDeclaration":
-		return rt.TPtr(v.VariableDeclaration), true
-	case "Block":
-		if v.Block == nil {
-			return nil, false
-		}
-		return rt.TPtr(v.Block), true
-	}
-	return nil, false
-}
-
-func (v *CatchClause) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "VariableDeclaration":
 		return rt.TPtr(v.VariableDeclaration), true
@@ -2380,12 +2140,14 @@ func (v *CatchClause) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ClassDeclaration) TName() string         { return "ClassDeclaration" }
-func (v *ClassDeclaration) TText() (string, bool) { return "", false }
-func (v *ClassDeclaration) TKids() []any          { return nil }
-func (v *ClassDeclaration) TStruct() bool         { return true }
-func (v *ClassDeclaration) TFresh() bool          { return false }
-func (v *ClassDeclaration) TSetFresh(bool)        {}
+func (v *ClassDeclaration) TName() string           { return "ClassDeclaration" }
+func (v *ClassDeclaration) TText() (string, bool)   { return "", false }
+func (v *ClassDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ClassDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ClassDeclaration) TKids() []any            { return nil }
+func (v *ClassDeclaration) TStruct() bool           { return true }
+func (v *ClassDeclaration) TFresh() bool            { return false }
+func (v *ClassDeclaration) TSetFresh(bool)          {}
 func (v *ClassDeclaration) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -2450,70 +2212,6 @@ func (v *ClassDeclaration) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ClassDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return tb1(v.Name), true
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "HeritageClauses":
-		if v.HeritageClauses == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.HeritageClauses == nil {
-				return nil
-			}
-			kids := make([]any, len(v.HeritageClauses))
-			for i, x := range v.HeritageClauses {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Members":
-		if v.Members == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Members == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Members))
-			for i, x := range v.Members {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *ClassDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -2528,12 +2226,14 @@ func (v *ClassDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ClassExpression) TName() string         { return "ClassExpression" }
-func (v *ClassExpression) TText() (string, bool) { return "", false }
-func (v *ClassExpression) TKids() []any          { return nil }
-func (v *ClassExpression) TStruct() bool         { return true }
-func (v *ClassExpression) TFresh() bool          { return false }
-func (v *ClassExpression) TSetFresh(bool)        {}
+func (v *ClassExpression) TName() string           { return "ClassExpression" }
+func (v *ClassExpression) TText() (string, bool)   { return "", false }
+func (v *ClassExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ClassExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ClassExpression) TKids() []any            { return nil }
+func (v *ClassExpression) TStruct() bool           { return true }
+func (v *ClassExpression) TFresh() bool            { return false }
+func (v *ClassExpression) TSetFresh(bool)          {}
 func (v *ClassExpression) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -2598,70 +2298,6 @@ func (v *ClassExpression) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ClassExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return tb1(v.Name), true
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "HeritageClauses":
-		if v.HeritageClauses == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.HeritageClauses == nil {
-				return nil
-			}
-			kids := make([]any, len(v.HeritageClauses))
-			for i, x := range v.HeritageClauses {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Members":
-		if v.Members == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Members == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Members))
-			for i, x := range v.Members {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *ClassExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -2676,12 +2312,14 @@ func (v *ClassExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ClassStaticBlockDeclaration) TName() string         { return "ClassStaticBlockDeclaration" }
-func (v *ClassStaticBlockDeclaration) TText() (string, bool) { return "", false }
-func (v *ClassStaticBlockDeclaration) TKids() []any          { return nil }
-func (v *ClassStaticBlockDeclaration) TStruct() bool         { return true }
-func (v *ClassStaticBlockDeclaration) TFresh() bool          { return false }
-func (v *ClassStaticBlockDeclaration) TSetFresh(bool)        {}
+func (v *ClassStaticBlockDeclaration) TName() string           { return "ClassStaticBlockDeclaration" }
+func (v *ClassStaticBlockDeclaration) TText() (string, bool)   { return "", false }
+func (v *ClassStaticBlockDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ClassStaticBlockDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ClassStaticBlockDeclaration) TKids() []any            { return nil }
+func (v *ClassStaticBlockDeclaration) TStruct() bool           { return true }
+func (v *ClassStaticBlockDeclaration) TFresh() bool            { return false }
+func (v *ClassStaticBlockDeclaration) TSetFresh(bool)          {}
 func (v *ClassStaticBlockDeclaration) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -2707,31 +2345,6 @@ func (v *ClassStaticBlockDeclaration) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ClassStaticBlockDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Body":
-		if v.Body == nil {
-			return nil, false
-		}
-		return rt.TPtr(v.Body), true
-	}
-	return nil, false
-}
-
 func (v *ClassStaticBlockDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -2742,21 +2355,15 @@ func (v *ClassStaticBlockDeclaration) TZeroField(c *rt.TActCtx, name string) (an
 	return nil, false
 }
 
-func (v *ComputedPropertyName) TName() string         { return "ComputedPropertyName" }
-func (v *ComputedPropertyName) TText() (string, bool) { return "", false }
-func (v *ComputedPropertyName) TKids() []any          { return nil }
-func (v *ComputedPropertyName) TStruct() bool         { return true }
-func (v *ComputedPropertyName) TFresh() bool          { return false }
-func (v *ComputedPropertyName) TSetFresh(bool)        {}
+func (v *ComputedPropertyName) TName() string           { return "ComputedPropertyName" }
+func (v *ComputedPropertyName) TText() (string, bool)   { return "", false }
+func (v *ComputedPropertyName) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ComputedPropertyName) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ComputedPropertyName) TKids() []any            { return nil }
+func (v *ComputedPropertyName) TStruct() bool           { return true }
+func (v *ComputedPropertyName) TFresh() bool            { return false }
+func (v *ComputedPropertyName) TSetFresh(bool)          {}
 func (v *ComputedPropertyName) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *ComputedPropertyName) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -2770,29 +2377,15 @@ func (v *ComputedPropertyName) TZeroField(c *rt.TActCtx, name string) (any, bool
 	return nil, false
 }
 
-func (v *ConditionalExpression) TName() string         { return "ConditionalExpression" }
-func (v *ConditionalExpression) TText() (string, bool) { return "", false }
-func (v *ConditionalExpression) TKids() []any          { return nil }
-func (v *ConditionalExpression) TStruct() bool         { return true }
-func (v *ConditionalExpression) TFresh() bool          { return false }
-func (v *ConditionalExpression) TSetFresh(bool)        {}
+func (v *ConditionalExpression) TName() string           { return "ConditionalExpression" }
+func (v *ConditionalExpression) TText() (string, bool)   { return "", false }
+func (v *ConditionalExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ConditionalExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ConditionalExpression) TKids() []any            { return nil }
+func (v *ConditionalExpression) TStruct() bool           { return true }
+func (v *ConditionalExpression) TFresh() bool            { return false }
+func (v *ConditionalExpression) TSetFresh(bool)          {}
 func (v *ConditionalExpression) TField(name string) (any, bool) {
-	switch name {
-	case "Condition":
-		return rt.TBack(SXIRHooks, v.Condition), true
-	case "QuestionToken":
-		return tb0(v.QuestionToken), true
-	case "WhenTrue":
-		return rt.TBack(SXIRHooks, v.WhenTrue), true
-	case "ColonToken":
-		return tb0(v.ColonToken), true
-	case "WhenFalse":
-		return rt.TBack(SXIRHooks, v.WhenFalse), true
-	}
-	return nil, false
-}
-
-func (v *ConditionalExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Condition":
 		return rt.TBack(SXIRHooks, v.Condition), true
@@ -2814,27 +2407,15 @@ func (v *ConditionalExpression) TZeroField(c *rt.TActCtx, name string) (any, boo
 	return nil, false
 }
 
-func (v *ConditionalType) TName() string         { return "ConditionalType" }
-func (v *ConditionalType) TText() (string, bool) { return "", false }
-func (v *ConditionalType) TKids() []any          { return nil }
-func (v *ConditionalType) TStruct() bool         { return true }
-func (v *ConditionalType) TFresh() bool          { return false }
-func (v *ConditionalType) TSetFresh(bool)        {}
+func (v *ConditionalType) TName() string           { return "ConditionalType" }
+func (v *ConditionalType) TText() (string, bool)   { return "", false }
+func (v *ConditionalType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ConditionalType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ConditionalType) TKids() []any            { return nil }
+func (v *ConditionalType) TStruct() bool           { return true }
+func (v *ConditionalType) TFresh() bool            { return false }
+func (v *ConditionalType) TSetFresh(bool)          {}
 func (v *ConditionalType) TField(name string) (any, bool) {
-	switch name {
-	case "CheckType":
-		return rt.TBack(SXIRHooks, v.CheckType), true
-	case "ExtendsType":
-		return rt.TBack(SXIRHooks, v.ExtendsType), true
-	case "TrueType":
-		return rt.TBack(SXIRHooks, v.TrueType), true
-	case "FalseType":
-		return rt.TBack(SXIRHooks, v.FalseType), true
-	}
-	return nil, false
-}
-
-func (v *ConditionalType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "CheckType":
 		return rt.TBack(SXIRHooks, v.CheckType), true
@@ -2854,12 +2435,14 @@ func (v *ConditionalType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ConstructSignature) TName() string         { return "ConstructSignature" }
-func (v *ConstructSignature) TText() (string, bool) { return "", false }
-func (v *ConstructSignature) TKids() []any          { return nil }
-func (v *ConstructSignature) TStruct() bool         { return true }
-func (v *ConstructSignature) TFresh() bool          { return false }
-func (v *ConstructSignature) TSetFresh(bool)        {}
+func (v *ConstructSignature) TName() string           { return "ConstructSignature" }
+func (v *ConstructSignature) TText() (string, bool)   { return "", false }
+func (v *ConstructSignature) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ConstructSignature) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ConstructSignature) TKids() []any            { return nil }
+func (v *ConstructSignature) TStruct() bool           { return true }
+func (v *ConstructSignature) TFresh() bool            { return false }
+func (v *ConstructSignature) TSetFresh(bool)          {}
 func (v *ConstructSignature) TField(name string) (any, bool) {
 	switch name {
 	case "TypeParameters":
@@ -2896,42 +2479,6 @@ func (v *ConstructSignature) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ConstructSignature) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
 func (v *ConstructSignature) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TypeParameters":
@@ -2942,12 +2489,14 @@ func (v *ConstructSignature) TZeroField(c *rt.TActCtx, name string) (any, bool) 
 	return nil, false
 }
 
-func (v *Constructor) TName() string         { return "Constructor" }
-func (v *Constructor) TText() (string, bool) { return "", false }
-func (v *Constructor) TKids() []any          { return nil }
-func (v *Constructor) TStruct() bool         { return true }
-func (v *Constructor) TFresh() bool          { return false }
-func (v *Constructor) TSetFresh(bool)        {}
+func (v *Constructor) TName() string           { return "Constructor" }
+func (v *Constructor) TText() (string, bool)   { return "", false }
+func (v *Constructor) TSpan() (int, int)       { return v.Start, v.End }
+func (v *Constructor) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *Constructor) TKids() []any            { return nil }
+func (v *Constructor) TStruct() bool           { return true }
+func (v *Constructor) TFresh() bool            { return false }
+func (v *Constructor) TSetFresh(bool)          {}
 func (v *Constructor) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -3000,58 +2549,6 @@ func (v *Constructor) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Constructor) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Body":
-		return rt.TPtr(v.Body), true
-	}
-	return nil, false
-}
-
 func (v *Constructor) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -3064,12 +2561,14 @@ func (v *Constructor) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ConstructorType) TName() string         { return "ConstructorType" }
-func (v *ConstructorType) TText() (string, bool) { return "", false }
-func (v *ConstructorType) TKids() []any          { return nil }
-func (v *ConstructorType) TStruct() bool         { return true }
-func (v *ConstructorType) TFresh() bool          { return false }
-func (v *ConstructorType) TSetFresh(bool)        {}
+func (v *ConstructorType) TName() string           { return "ConstructorType" }
+func (v *ConstructorType) TText() (string, bool)   { return "", false }
+func (v *ConstructorType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ConstructorType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ConstructorType) TKids() []any            { return nil }
+func (v *ConstructorType) TStruct() bool           { return true }
+func (v *ConstructorType) TFresh() bool            { return false }
+func (v *ConstructorType) TSetFresh(bool)          {}
 func (v *ConstructorType) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -3120,56 +2619,6 @@ func (v *ConstructorType) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ConstructorType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
 func (v *ConstructorType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -3182,21 +2631,15 @@ func (v *ConstructorType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ContinueStatement) TName() string         { return "ContinueStatement" }
-func (v *ContinueStatement) TText() (string, bool) { return "", false }
-func (v *ContinueStatement) TKids() []any          { return nil }
-func (v *ContinueStatement) TStruct() bool         { return true }
-func (v *ContinueStatement) TFresh() bool          { return false }
-func (v *ContinueStatement) TSetFresh(bool)        {}
+func (v *ContinueStatement) TName() string           { return "ContinueStatement" }
+func (v *ContinueStatement) TText() (string, bool)   { return "", false }
+func (v *ContinueStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ContinueStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ContinueStatement) TKids() []any            { return nil }
+func (v *ContinueStatement) TStruct() bool           { return true }
+func (v *ContinueStatement) TFresh() bool            { return false }
+func (v *ContinueStatement) TSetFresh(bool)          {}
 func (v *ContinueStatement) TField(name string) (any, bool) {
-	switch name {
-	case "Label":
-		return tb1(v.Label), true
-	}
-	return nil, false
-}
-
-func (v *ContinueStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Label":
 		return tb1(v.Label), true
@@ -3210,21 +2653,15 @@ func (v *ContinueStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Decorator) TName() string         { return "Decorator" }
-func (v *Decorator) TText() (string, bool) { return "", false }
-func (v *Decorator) TKids() []any          { return nil }
-func (v *Decorator) TStruct() bool         { return true }
-func (v *Decorator) TFresh() bool          { return false }
-func (v *Decorator) TSetFresh(bool)        {}
+func (v *Decorator) TName() string           { return "Decorator" }
+func (v *Decorator) TText() (string, bool)   { return "", false }
+func (v *Decorator) TSpan() (int, int)       { return v.Start, v.End }
+func (v *Decorator) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *Decorator) TKids() []any            { return nil }
+func (v *Decorator) TStruct() bool           { return true }
+func (v *Decorator) TFresh() bool            { return false }
+func (v *Decorator) TSetFresh(bool)          {}
 func (v *Decorator) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *Decorator) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -3238,12 +2675,14 @@ func (v *Decorator) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *DefaultClause) TName() string         { return "DefaultClause" }
-func (v *DefaultClause) TText() (string, bool) { return "", false }
-func (v *DefaultClause) TKids() []any          { return nil }
-func (v *DefaultClause) TStruct() bool         { return true }
-func (v *DefaultClause) TFresh() bool          { return false }
-func (v *DefaultClause) TSetFresh(bool)        {}
+func (v *DefaultClause) TName() string           { return "DefaultClause" }
+func (v *DefaultClause) TText() (string, bool)   { return "", false }
+func (v *DefaultClause) TSpan() (int, int)       { return v.Start, v.End }
+func (v *DefaultClause) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *DefaultClause) TKids() []any            { return nil }
+func (v *DefaultClause) TStruct() bool           { return true }
+func (v *DefaultClause) TFresh() bool            { return false }
+func (v *DefaultClause) TSetFresh(bool)          {}
 func (v *DefaultClause) TField(name string) (any, bool) {
 	switch name {
 	case "Statements":
@@ -3264,26 +2703,6 @@ func (v *DefaultClause) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *DefaultClause) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Statements":
-		if v.Statements == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Statements == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Statements))
-			for i, x := range v.Statements {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *DefaultClause) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Statements":
@@ -3292,21 +2711,15 @@ func (v *DefaultClause) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *DeleteExpression) TName() string         { return "DeleteExpression" }
-func (v *DeleteExpression) TText() (string, bool) { return "", false }
-func (v *DeleteExpression) TKids() []any          { return nil }
-func (v *DeleteExpression) TStruct() bool         { return true }
-func (v *DeleteExpression) TFresh() bool          { return false }
-func (v *DeleteExpression) TSetFresh(bool)        {}
+func (v *DeleteExpression) TName() string           { return "DeleteExpression" }
+func (v *DeleteExpression) TText() (string, bool)   { return "", false }
+func (v *DeleteExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *DeleteExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *DeleteExpression) TKids() []any            { return nil }
+func (v *DeleteExpression) TStruct() bool           { return true }
+func (v *DeleteExpression) TFresh() bool            { return false }
+func (v *DeleteExpression) TSetFresh(bool)          {}
 func (v *DeleteExpression) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *DeleteExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -3320,23 +2733,15 @@ func (v *DeleteExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *DoStatement) TName() string         { return "DoStatement" }
-func (v *DoStatement) TText() (string, bool) { return "", false }
-func (v *DoStatement) TKids() []any          { return nil }
-func (v *DoStatement) TStruct() bool         { return true }
-func (v *DoStatement) TFresh() bool          { return false }
-func (v *DoStatement) TSetFresh(bool)        {}
+func (v *DoStatement) TName() string           { return "DoStatement" }
+func (v *DoStatement) TText() (string, bool)   { return "", false }
+func (v *DoStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *DoStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *DoStatement) TKids() []any            { return nil }
+func (v *DoStatement) TStruct() bool           { return true }
+func (v *DoStatement) TFresh() bool            { return false }
+func (v *DoStatement) TSetFresh(bool)          {}
 func (v *DoStatement) TField(name string) (any, bool) {
-	switch name {
-	case "Statement":
-		return rt.TBack(SXIRHooks, v.Statement), true
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *DoStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Statement":
 		return rt.TBack(SXIRHooks, v.Statement), true
@@ -3352,25 +2757,15 @@ func (v *DoStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ElementAccessExpression) TName() string         { return "ElementAccessExpression" }
-func (v *ElementAccessExpression) TText() (string, bool) { return "", false }
-func (v *ElementAccessExpression) TKids() []any          { return nil }
-func (v *ElementAccessExpression) TStruct() bool         { return true }
-func (v *ElementAccessExpression) TFresh() bool          { return false }
-func (v *ElementAccessExpression) TSetFresh(bool)        {}
+func (v *ElementAccessExpression) TName() string           { return "ElementAccessExpression" }
+func (v *ElementAccessExpression) TText() (string, bool)   { return "", false }
+func (v *ElementAccessExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ElementAccessExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ElementAccessExpression) TKids() []any            { return nil }
+func (v *ElementAccessExpression) TStruct() bool           { return true }
+func (v *ElementAccessExpression) TFresh() bool            { return false }
+func (v *ElementAccessExpression) TSetFresh(bool)          {}
 func (v *ElementAccessExpression) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "QuestionDotToken":
-		return tb0(v.QuestionDotToken), true
-	case "ArgumentExpression":
-		return rt.TBack(SXIRHooks, v.ArgumentExpression), true
-	}
-	return nil, false
-}
-
-func (v *ElementAccessExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -3388,12 +2783,14 @@ func (v *ElementAccessExpression) TZeroField(c *rt.TActCtx, name string) (any, b
 	return nil, false
 }
 
-func (v *EnumDeclaration) TName() string         { return "EnumDeclaration" }
-func (v *EnumDeclaration) TText() (string, bool) { return "", false }
-func (v *EnumDeclaration) TKids() []any          { return nil }
-func (v *EnumDeclaration) TStruct() bool         { return true }
-func (v *EnumDeclaration) TFresh() bool          { return false }
-func (v *EnumDeclaration) TSetFresh(bool)        {}
+func (v *EnumDeclaration) TName() string           { return "EnumDeclaration" }
+func (v *EnumDeclaration) TText() (string, bool)   { return "", false }
+func (v *EnumDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *EnumDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *EnumDeclaration) TKids() []any            { return nil }
+func (v *EnumDeclaration) TStruct() bool           { return true }
+func (v *EnumDeclaration) TFresh() bool            { return false }
+func (v *EnumDeclaration) TSetFresh(bool)          {}
 func (v *EnumDeclaration) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -3430,42 +2827,6 @@ func (v *EnumDeclaration) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *EnumDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return tb1(v.Name), true
-	case "Members":
-		if v.Members == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Members == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Members))
-			for i, x := range v.Members {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *EnumDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -3476,23 +2837,15 @@ func (v *EnumDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *EnumMember) TName() string         { return "EnumMember" }
-func (v *EnumMember) TText() (string, bool) { return "", false }
-func (v *EnumMember) TKids() []any          { return nil }
-func (v *EnumMember) TStruct() bool         { return true }
-func (v *EnumMember) TFresh() bool          { return false }
-func (v *EnumMember) TSetFresh(bool)        {}
+func (v *EnumMember) TName() string           { return "EnumMember" }
+func (v *EnumMember) TText() (string, bool)   { return "", false }
+func (v *EnumMember) TSpan() (int, int)       { return v.Start, v.End }
+func (v *EnumMember) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *EnumMember) TKids() []any            { return nil }
+func (v *EnumMember) TStruct() bool           { return true }
+func (v *EnumMember) TFresh() bool            { return false }
+func (v *EnumMember) TSetFresh(bool)          {}
 func (v *EnumMember) TField(name string) (any, bool) {
-	switch name {
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "Initializer":
-		return rt.TBack(SXIRHooks, v.Initializer), true
-	}
-	return nil, false
-}
-
-func (v *EnumMember) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Name":
 		return rt.TBack(SXIRHooks, v.Name), true
@@ -3508,12 +2861,14 @@ func (v *EnumMember) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ExportAssignment) TName() string         { return "ExportAssignment" }
-func (v *ExportAssignment) TText() (string, bool) { return "", false }
-func (v *ExportAssignment) TKids() []any          { return nil }
-func (v *ExportAssignment) TStruct() bool         { return true }
-func (v *ExportAssignment) TFresh() bool          { return false }
-func (v *ExportAssignment) TSetFresh(bool)        {}
+func (v *ExportAssignment) TName() string           { return "ExportAssignment" }
+func (v *ExportAssignment) TText() (string, bool)   { return "", false }
+func (v *ExportAssignment) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ExportAssignment) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ExportAssignment) TKids() []any            { return nil }
+func (v *ExportAssignment) TStruct() bool           { return true }
+func (v *ExportAssignment) TFresh() bool            { return false }
+func (v *ExportAssignment) TSetFresh(bool)          {}
 func (v *ExportAssignment) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -3538,30 +2893,6 @@ func (v *ExportAssignment) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ExportAssignment) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "IsExportEquals":
-		return any(v.IsExportEquals), true
-	}
-	return nil, false
-}
-
 func (v *ExportAssignment) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -3570,12 +2901,14 @@ func (v *ExportAssignment) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ExportDeclaration) TName() string         { return "ExportDeclaration" }
-func (v *ExportDeclaration) TText() (string, bool) { return "", false }
-func (v *ExportDeclaration) TKids() []any          { return nil }
-func (v *ExportDeclaration) TStruct() bool         { return true }
-func (v *ExportDeclaration) TFresh() bool          { return false }
-func (v *ExportDeclaration) TSetFresh(bool)        {}
+func (v *ExportDeclaration) TName() string           { return "ExportDeclaration" }
+func (v *ExportDeclaration) TText() (string, bool)   { return "", false }
+func (v *ExportDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ExportDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ExportDeclaration) TKids() []any            { return nil }
+func (v *ExportDeclaration) TStruct() bool           { return true }
+func (v *ExportDeclaration) TFresh() bool            { return false }
+func (v *ExportDeclaration) TSetFresh(bool)          {}
 func (v *ExportDeclaration) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -3604,34 +2937,6 @@ func (v *ExportDeclaration) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ExportDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "ExportClause":
-		return rt.TBack(SXIRHooks, v.ExportClause), true
-	case "ModuleSpecifier":
-		return rt.TBack(SXIRHooks, v.ModuleSpecifier), true
-	case "Attributes":
-		return rt.TPtr(v.Attributes), true
-	case "IsTypeOnly":
-		return any(v.IsTypeOnly), true
-	}
-	return nil, false
-}
-
 func (v *ExportDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -3640,25 +2945,15 @@ func (v *ExportDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ExportSpecifier) TName() string         { return "ExportSpecifier" }
-func (v *ExportSpecifier) TText() (string, bool) { return "", false }
-func (v *ExportSpecifier) TKids() []any          { return nil }
-func (v *ExportSpecifier) TStruct() bool         { return true }
-func (v *ExportSpecifier) TFresh() bool          { return false }
-func (v *ExportSpecifier) TSetFresh(bool)        {}
+func (v *ExportSpecifier) TName() string           { return "ExportSpecifier" }
+func (v *ExportSpecifier) TText() (string, bool)   { return "", false }
+func (v *ExportSpecifier) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ExportSpecifier) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ExportSpecifier) TKids() []any            { return nil }
+func (v *ExportSpecifier) TStruct() bool           { return true }
+func (v *ExportSpecifier) TFresh() bool            { return false }
+func (v *ExportSpecifier) TSetFresh(bool)          {}
 func (v *ExportSpecifier) TField(name string) (any, bool) {
-	switch name {
-	case "PropertyName":
-		return rt.TBack(SXIRHooks, v.PropertyName), true
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "IsTypeOnly":
-		return any(v.IsTypeOnly), true
-	}
-	return nil, false
-}
-
-func (v *ExportSpecifier) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "PropertyName":
 		return rt.TBack(SXIRHooks, v.PropertyName), true
@@ -3676,21 +2971,15 @@ func (v *ExportSpecifier) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ExpressionStatement) TName() string         { return "ExpressionStatement" }
-func (v *ExpressionStatement) TText() (string, bool) { return "", false }
-func (v *ExpressionStatement) TKids() []any          { return nil }
-func (v *ExpressionStatement) TStruct() bool         { return true }
-func (v *ExpressionStatement) TFresh() bool          { return false }
-func (v *ExpressionStatement) TSetFresh(bool)        {}
+func (v *ExpressionStatement) TName() string           { return "ExpressionStatement" }
+func (v *ExpressionStatement) TText() (string, bool)   { return "", false }
+func (v *ExpressionStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ExpressionStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ExpressionStatement) TKids() []any            { return nil }
+func (v *ExpressionStatement) TStruct() bool           { return true }
+func (v *ExpressionStatement) TFresh() bool            { return false }
+func (v *ExpressionStatement) TSetFresh(bool)          {}
 func (v *ExpressionStatement) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *ExpressionStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -3704,12 +2993,14 @@ func (v *ExpressionStatement) TZeroField(c *rt.TActCtx, name string) (any, bool)
 	return nil, false
 }
 
-func (v *ExpressionWithTypeArguments) TName() string         { return "ExpressionWithTypeArguments" }
-func (v *ExpressionWithTypeArguments) TText() (string, bool) { return "", false }
-func (v *ExpressionWithTypeArguments) TKids() []any          { return nil }
-func (v *ExpressionWithTypeArguments) TStruct() bool         { return true }
-func (v *ExpressionWithTypeArguments) TFresh() bool          { return false }
-func (v *ExpressionWithTypeArguments) TSetFresh(bool)        {}
+func (v *ExpressionWithTypeArguments) TName() string           { return "ExpressionWithTypeArguments" }
+func (v *ExpressionWithTypeArguments) TText() (string, bool)   { return "", false }
+func (v *ExpressionWithTypeArguments) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ExpressionWithTypeArguments) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ExpressionWithTypeArguments) TKids() []any            { return nil }
+func (v *ExpressionWithTypeArguments) TStruct() bool           { return true }
+func (v *ExpressionWithTypeArguments) TFresh() bool            { return false }
+func (v *ExpressionWithTypeArguments) TSetFresh(bool)          {}
 func (v *ExpressionWithTypeArguments) TField(name string) (any, bool) {
 	switch name {
 	case "Expression":
@@ -3732,28 +3023,6 @@ func (v *ExpressionWithTypeArguments) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ExpressionWithTypeArguments) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "TypeArguments":
-		if v.TypeArguments == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeArguments == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeArguments))
-			for i, x := range v.TypeArguments {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *ExpressionWithTypeArguments) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TypeArguments":
@@ -3762,21 +3031,15 @@ func (v *ExpressionWithTypeArguments) TZeroField(c *rt.TActCtx, name string) (an
 	return nil, false
 }
 
-func (v *ExternalModuleReference) TName() string         { return "ExternalModuleReference" }
-func (v *ExternalModuleReference) TText() (string, bool) { return "", false }
-func (v *ExternalModuleReference) TKids() []any          { return nil }
-func (v *ExternalModuleReference) TStruct() bool         { return true }
-func (v *ExternalModuleReference) TFresh() bool          { return false }
-func (v *ExternalModuleReference) TSetFresh(bool)        {}
+func (v *ExternalModuleReference) TName() string           { return "ExternalModuleReference" }
+func (v *ExternalModuleReference) TText() (string, bool)   { return "", false }
+func (v *ExternalModuleReference) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ExternalModuleReference) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ExternalModuleReference) TKids() []any            { return nil }
+func (v *ExternalModuleReference) TStruct() bool           { return true }
+func (v *ExternalModuleReference) TFresh() bool            { return false }
+func (v *ExternalModuleReference) TSetFresh(bool)          {}
 func (v *ExternalModuleReference) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *ExternalModuleReference) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -3790,25 +3053,15 @@ func (v *ExternalModuleReference) TZeroField(c *rt.TActCtx, name string) (any, b
 	return nil, false
 }
 
-func (v *ForInStatement) TName() string         { return "ForInStatement" }
-func (v *ForInStatement) TText() (string, bool) { return "", false }
-func (v *ForInStatement) TKids() []any          { return nil }
-func (v *ForInStatement) TStruct() bool         { return true }
-func (v *ForInStatement) TFresh() bool          { return false }
-func (v *ForInStatement) TSetFresh(bool)        {}
+func (v *ForInStatement) TName() string           { return "ForInStatement" }
+func (v *ForInStatement) TText() (string, bool)   { return "", false }
+func (v *ForInStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ForInStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ForInStatement) TKids() []any            { return nil }
+func (v *ForInStatement) TStruct() bool           { return true }
+func (v *ForInStatement) TFresh() bool            { return false }
+func (v *ForInStatement) TSetFresh(bool)          {}
 func (v *ForInStatement) TField(name string) (any, bool) {
-	switch name {
-	case "Initializer":
-		return rt.TBack(SXIRHooks, v.Initializer), true
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "Statement":
-		return rt.TBack(SXIRHooks, v.Statement), true
-	}
-	return nil, false
-}
-
-func (v *ForInStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Initializer":
 		return rt.TBack(SXIRHooks, v.Initializer), true
@@ -3826,27 +3079,15 @@ func (v *ForInStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ForOfStatement) TName() string         { return "ForOfStatement" }
-func (v *ForOfStatement) TText() (string, bool) { return "", false }
-func (v *ForOfStatement) TKids() []any          { return nil }
-func (v *ForOfStatement) TStruct() bool         { return true }
-func (v *ForOfStatement) TFresh() bool          { return false }
-func (v *ForOfStatement) TSetFresh(bool)        {}
+func (v *ForOfStatement) TName() string           { return "ForOfStatement" }
+func (v *ForOfStatement) TText() (string, bool)   { return "", false }
+func (v *ForOfStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ForOfStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ForOfStatement) TKids() []any            { return nil }
+func (v *ForOfStatement) TStruct() bool           { return true }
+func (v *ForOfStatement) TFresh() bool            { return false }
+func (v *ForOfStatement) TSetFresh(bool)          {}
 func (v *ForOfStatement) TField(name string) (any, bool) {
-	switch name {
-	case "AwaitModifier":
-		return tb0(v.AwaitModifier), true
-	case "Initializer":
-		return rt.TBack(SXIRHooks, v.Initializer), true
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "Statement":
-		return rt.TBack(SXIRHooks, v.Statement), true
-	}
-	return nil, false
-}
-
-func (v *ForOfStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "AwaitModifier":
 		return tb0(v.AwaitModifier), true
@@ -3866,27 +3107,15 @@ func (v *ForOfStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ForStatement) TName() string         { return "ForStatement" }
-func (v *ForStatement) TText() (string, bool) { return "", false }
-func (v *ForStatement) TKids() []any          { return nil }
-func (v *ForStatement) TStruct() bool         { return true }
-func (v *ForStatement) TFresh() bool          { return false }
-func (v *ForStatement) TSetFresh(bool)        {}
+func (v *ForStatement) TName() string           { return "ForStatement" }
+func (v *ForStatement) TText() (string, bool)   { return "", false }
+func (v *ForStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ForStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ForStatement) TKids() []any            { return nil }
+func (v *ForStatement) TStruct() bool           { return true }
+func (v *ForStatement) TFresh() bool            { return false }
+func (v *ForStatement) TSetFresh(bool)          {}
 func (v *ForStatement) TField(name string) (any, bool) {
-	switch name {
-	case "Initializer":
-		return rt.TBack(SXIRHooks, v.Initializer), true
-	case "Condition":
-		return rt.TBack(SXIRHooks, v.Condition), true
-	case "Incrementor":
-		return rt.TBack(SXIRHooks, v.Incrementor), true
-	case "Statement":
-		return rt.TBack(SXIRHooks, v.Statement), true
-	}
-	return nil, false
-}
-
-func (v *ForStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Initializer":
 		return rt.TBack(SXIRHooks, v.Initializer), true
@@ -3906,12 +3135,14 @@ func (v *ForStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *FunctionDeclaration) TName() string         { return "FunctionDeclaration" }
-func (v *FunctionDeclaration) TText() (string, bool) { return "", false }
-func (v *FunctionDeclaration) TKids() []any          { return nil }
-func (v *FunctionDeclaration) TStruct() bool         { return true }
-func (v *FunctionDeclaration) TFresh() bool          { return false }
-func (v *FunctionDeclaration) TSetFresh(bool)        {}
+func (v *FunctionDeclaration) TName() string           { return "FunctionDeclaration" }
+func (v *FunctionDeclaration) TText() (string, bool)   { return "", false }
+func (v *FunctionDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *FunctionDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *FunctionDeclaration) TKids() []any            { return nil }
+func (v *FunctionDeclaration) TStruct() bool           { return true }
+func (v *FunctionDeclaration) TFresh() bool            { return false }
+func (v *FunctionDeclaration) TSetFresh(bool)          {}
 func (v *FunctionDeclaration) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -3968,62 +3199,6 @@ func (v *FunctionDeclaration) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *FunctionDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "AsteriskToken":
-		return tb0(v.AsteriskToken), true
-	case "Name":
-		return tb1(v.Name), true
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Body":
-		return rt.TPtr(v.Body), true
-	}
-	return nil, false
-}
-
 func (v *FunctionDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -4036,12 +3211,14 @@ func (v *FunctionDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool)
 	return nil, false
 }
 
-func (v *FunctionExpression) TName() string         { return "FunctionExpression" }
-func (v *FunctionExpression) TText() (string, bool) { return "", false }
-func (v *FunctionExpression) TKids() []any          { return nil }
-func (v *FunctionExpression) TStruct() bool         { return true }
-func (v *FunctionExpression) TFresh() bool          { return false }
-func (v *FunctionExpression) TSetFresh(bool)        {}
+func (v *FunctionExpression) TName() string           { return "FunctionExpression" }
+func (v *FunctionExpression) TText() (string, bool)   { return "", false }
+func (v *FunctionExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *FunctionExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *FunctionExpression) TKids() []any            { return nil }
+func (v *FunctionExpression) TStruct() bool           { return true }
+func (v *FunctionExpression) TFresh() bool            { return false }
+func (v *FunctionExpression) TSetFresh(bool)          {}
 func (v *FunctionExpression) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -4101,65 +3278,6 @@ func (v *FunctionExpression) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *FunctionExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "AsteriskToken":
-		return tb0(v.AsteriskToken), true
-	case "Name":
-		return tb1(v.Name), true
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Body":
-		if v.Body == nil {
-			return nil, false
-		}
-		return rt.TPtr(v.Body), true
-	}
-	return nil, false
-}
-
 func (v *FunctionExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -4174,12 +3292,14 @@ func (v *FunctionExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) 
 	return nil, false
 }
 
-func (v *FunctionType) TName() string         { return "FunctionType" }
-func (v *FunctionType) TText() (string, bool) { return "", false }
-func (v *FunctionType) TKids() []any          { return nil }
-func (v *FunctionType) TStruct() bool         { return true }
-func (v *FunctionType) TFresh() bool          { return false }
-func (v *FunctionType) TSetFresh(bool)        {}
+func (v *FunctionType) TName() string           { return "FunctionType" }
+func (v *FunctionType) TText() (string, bool)   { return "", false }
+func (v *FunctionType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *FunctionType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *FunctionType) TKids() []any            { return nil }
+func (v *FunctionType) TStruct() bool           { return true }
+func (v *FunctionType) TFresh() bool            { return false }
+func (v *FunctionType) TSetFresh(bool)          {}
 func (v *FunctionType) TField(name string) (any, bool) {
 	switch name {
 	case "TypeParameters":
@@ -4216,42 +3336,6 @@ func (v *FunctionType) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *FunctionType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
 func (v *FunctionType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TypeParameters":
@@ -4262,12 +3346,14 @@ func (v *FunctionType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *GetAccessor) TName() string         { return "GetAccessor" }
-func (v *GetAccessor) TText() (string, bool) { return "", false }
-func (v *GetAccessor) TKids() []any          { return nil }
-func (v *GetAccessor) TStruct() bool         { return true }
-func (v *GetAccessor) TFresh() bool          { return false }
-func (v *GetAccessor) TSetFresh(bool)        {}
+func (v *GetAccessor) TName() string           { return "GetAccessor" }
+func (v *GetAccessor) TText() (string, bool)   { return "", false }
+func (v *GetAccessor) TSpan() (int, int)       { return v.Start, v.End }
+func (v *GetAccessor) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *GetAccessor) TKids() []any            { return nil }
+func (v *GetAccessor) TStruct() bool           { return true }
+func (v *GetAccessor) TFresh() bool            { return false }
+func (v *GetAccessor) TSetFresh(bool)          {}
 func (v *GetAccessor) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -4322,60 +3408,6 @@ func (v *GetAccessor) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *GetAccessor) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Body":
-		return rt.TPtr(v.Body), true
-	}
-	return nil, false
-}
-
 func (v *GetAccessor) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -4388,12 +3420,14 @@ func (v *GetAccessor) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *HeritageClause) TName() string         { return "HeritageClause" }
-func (v *HeritageClause) TText() (string, bool) { return "", false }
-func (v *HeritageClause) TKids() []any          { return nil }
-func (v *HeritageClause) TStruct() bool         { return true }
-func (v *HeritageClause) TFresh() bool          { return false }
-func (v *HeritageClause) TSetFresh(bool)        {}
+func (v *HeritageClause) TName() string           { return "HeritageClause" }
+func (v *HeritageClause) TText() (string, bool)   { return "", false }
+func (v *HeritageClause) TSpan() (int, int)       { return v.Start, v.End }
+func (v *HeritageClause) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *HeritageClause) TKids() []any            { return nil }
+func (v *HeritageClause) TStruct() bool           { return true }
+func (v *HeritageClause) TFresh() bool            { return false }
+func (v *HeritageClause) TSetFresh(bool)          {}
 func (v *HeritageClause) TField(name string) (any, bool) {
 	switch name {
 	case "Token":
@@ -4424,28 +3458,6 @@ func (v *HeritageClause) TStrField(name string) (string, bool) {
 	return "", false
 }
 
-func (v *HeritageClause) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Token":
-		return any(v.Token), true
-	case "Types":
-		if v.Types == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Types == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Types))
-			for i, x := range v.Types {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *HeritageClause) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Types":
@@ -4454,25 +3466,15 @@ func (v *HeritageClause) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *IfStatement) TName() string         { return "IfStatement" }
-func (v *IfStatement) TText() (string, bool) { return "", false }
-func (v *IfStatement) TKids() []any          { return nil }
-func (v *IfStatement) TStruct() bool         { return true }
-func (v *IfStatement) TFresh() bool          { return false }
-func (v *IfStatement) TSetFresh(bool)        {}
+func (v *IfStatement) TName() string           { return "IfStatement" }
+func (v *IfStatement) TText() (string, bool)   { return "", false }
+func (v *IfStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *IfStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *IfStatement) TKids() []any            { return nil }
+func (v *IfStatement) TStruct() bool           { return true }
+func (v *IfStatement) TFresh() bool            { return false }
+func (v *IfStatement) TSetFresh(bool)          {}
 func (v *IfStatement) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "ThenStatement":
-		return rt.TBack(SXIRHooks, v.ThenStatement), true
-	case "ElseStatement":
-		return rt.TBack(SXIRHooks, v.ElseStatement), true
-	}
-	return nil, false
-}
-
-func (v *IfStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -4490,23 +3492,15 @@ func (v *IfStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ImportAttribute) TName() string         { return "ImportAttribute" }
-func (v *ImportAttribute) TText() (string, bool) { return "", false }
-func (v *ImportAttribute) TKids() []any          { return nil }
-func (v *ImportAttribute) TStruct() bool         { return true }
-func (v *ImportAttribute) TFresh() bool          { return false }
-func (v *ImportAttribute) TSetFresh(bool)        {}
+func (v *ImportAttribute) TName() string           { return "ImportAttribute" }
+func (v *ImportAttribute) TText() (string, bool)   { return "", false }
+func (v *ImportAttribute) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ImportAttribute) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ImportAttribute) TKids() []any            { return nil }
+func (v *ImportAttribute) TStruct() bool           { return true }
+func (v *ImportAttribute) TFresh() bool            { return false }
+func (v *ImportAttribute) TSetFresh(bool)          {}
 func (v *ImportAttribute) TField(name string) (any, bool) {
-	switch name {
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "Value":
-		return rt.TBack(SXIRHooks, v.Value), true
-	}
-	return nil, false
-}
-
-func (v *ImportAttribute) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Name":
 		return rt.TBack(SXIRHooks, v.Name), true
@@ -4522,12 +3516,14 @@ func (v *ImportAttribute) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ImportAttributes) TName() string         { return "ImportAttributes" }
-func (v *ImportAttributes) TText() (string, bool) { return "", false }
-func (v *ImportAttributes) TKids() []any          { return nil }
-func (v *ImportAttributes) TStruct() bool         { return true }
-func (v *ImportAttributes) TFresh() bool          { return false }
-func (v *ImportAttributes) TSetFresh(bool)        {}
+func (v *ImportAttributes) TName() string           { return "ImportAttributes" }
+func (v *ImportAttributes) TText() (string, bool)   { return "", false }
+func (v *ImportAttributes) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ImportAttributes) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ImportAttributes) TKids() []any            { return nil }
+func (v *ImportAttributes) TStruct() bool           { return true }
+func (v *ImportAttributes) TFresh() bool            { return false }
+func (v *ImportAttributes) TSetFresh(bool)          {}
 func (v *ImportAttributes) TField(name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -4558,28 +3554,6 @@ func (v *ImportAttributes) TStrField(name string) (string, bool) {
 	return "", false
 }
 
-func (v *ImportAttributes) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Elements":
-		if v.Elements == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Elements == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Elements))
-			for i, x := range v.Elements {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Token":
-		return any(v.Token), true
-	}
-	return nil, false
-}
-
 func (v *ImportAttributes) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -4588,12 +3562,14 @@ func (v *ImportAttributes) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ImportClause) TName() string         { return "ImportClause" }
-func (v *ImportClause) TText() (string, bool) { return "", false }
-func (v *ImportClause) TKids() []any          { return nil }
-func (v *ImportClause) TStruct() bool         { return true }
-func (v *ImportClause) TFresh() bool          { return false }
-func (v *ImportClause) TSetFresh(bool)        {}
+func (v *ImportClause) TName() string           { return "ImportClause" }
+func (v *ImportClause) TText() (string, bool)   { return "", false }
+func (v *ImportClause) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ImportClause) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ImportClause) TKids() []any            { return nil }
+func (v *ImportClause) TStruct() bool           { return true }
+func (v *ImportClause) TFresh() bool            { return false }
+func (v *ImportClause) TSetFresh(bool)          {}
 func (v *ImportClause) TField(name string) (any, bool) {
 	switch name {
 	case "Name":
@@ -4614,30 +3590,20 @@ func (v *ImportClause) TStrField(name string) (string, bool) {
 	return "", false
 }
 
-func (v *ImportClause) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Name":
-		return tb1(v.Name), true
-	case "NamedBindings":
-		return rt.TBack(SXIRHooks, v.NamedBindings), true
-	case "PhaseModifier":
-		return any(v.PhaseModifier), true
-	}
-	return nil, false
-}
-
 func (v *ImportClause) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	}
 	return nil, false
 }
 
-func (v *ImportDeclaration) TName() string         { return "ImportDeclaration" }
-func (v *ImportDeclaration) TText() (string, bool) { return "", false }
-func (v *ImportDeclaration) TKids() []any          { return nil }
-func (v *ImportDeclaration) TStruct() bool         { return true }
-func (v *ImportDeclaration) TFresh() bool          { return false }
-func (v *ImportDeclaration) TSetFresh(bool)        {}
+func (v *ImportDeclaration) TName() string           { return "ImportDeclaration" }
+func (v *ImportDeclaration) TText() (string, bool)   { return "", false }
+func (v *ImportDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ImportDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ImportDeclaration) TKids() []any            { return nil }
+func (v *ImportDeclaration) TStruct() bool           { return true }
+func (v *ImportDeclaration) TFresh() bool            { return false }
+func (v *ImportDeclaration) TSetFresh(bool)          {}
 func (v *ImportDeclaration) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -4664,32 +3630,6 @@ func (v *ImportDeclaration) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ImportDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "ImportClause":
-		return rt.TPtr(v.ImportClause), true
-	case "ModuleSpecifier":
-		return rt.TBack(SXIRHooks, v.ModuleSpecifier), true
-	case "Attributes":
-		return rt.TPtr(v.Attributes), true
-	}
-	return nil, false
-}
-
 func (v *ImportDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -4698,12 +3638,14 @@ func (v *ImportDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ImportEqualsDeclaration) TName() string         { return "ImportEqualsDeclaration" }
-func (v *ImportEqualsDeclaration) TText() (string, bool) { return "", false }
-func (v *ImportEqualsDeclaration) TKids() []any          { return nil }
-func (v *ImportEqualsDeclaration) TStruct() bool         { return true }
-func (v *ImportEqualsDeclaration) TFresh() bool          { return false }
-func (v *ImportEqualsDeclaration) TSetFresh(bool)        {}
+func (v *ImportEqualsDeclaration) TName() string           { return "ImportEqualsDeclaration" }
+func (v *ImportEqualsDeclaration) TText() (string, bool)   { return "", false }
+func (v *ImportEqualsDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ImportEqualsDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ImportEqualsDeclaration) TKids() []any            { return nil }
+func (v *ImportEqualsDeclaration) TStruct() bool           { return true }
+func (v *ImportEqualsDeclaration) TFresh() bool            { return false }
+func (v *ImportEqualsDeclaration) TSetFresh(bool)          {}
 func (v *ImportEqualsDeclaration) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -4730,32 +3672,6 @@ func (v *ImportEqualsDeclaration) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ImportEqualsDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return tb1(v.Name), true
-	case "ModuleReference":
-		return rt.TBack(SXIRHooks, v.ModuleReference), true
-	case "IsTypeOnly":
-		return any(v.IsTypeOnly), true
-	}
-	return nil, false
-}
-
 func (v *ImportEqualsDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -4764,25 +3680,15 @@ func (v *ImportEqualsDeclaration) TZeroField(c *rt.TActCtx, name string) (any, b
 	return nil, false
 }
 
-func (v *ImportSpecifier) TName() string         { return "ImportSpecifier" }
-func (v *ImportSpecifier) TText() (string, bool) { return "", false }
-func (v *ImportSpecifier) TKids() []any          { return nil }
-func (v *ImportSpecifier) TStruct() bool         { return true }
-func (v *ImportSpecifier) TFresh() bool          { return false }
-func (v *ImportSpecifier) TSetFresh(bool)        {}
+func (v *ImportSpecifier) TName() string           { return "ImportSpecifier" }
+func (v *ImportSpecifier) TText() (string, bool)   { return "", false }
+func (v *ImportSpecifier) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ImportSpecifier) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ImportSpecifier) TKids() []any            { return nil }
+func (v *ImportSpecifier) TStruct() bool           { return true }
+func (v *ImportSpecifier) TFresh() bool            { return false }
+func (v *ImportSpecifier) TSetFresh(bool)          {}
 func (v *ImportSpecifier) TField(name string) (any, bool) {
-	switch name {
-	case "PropertyName":
-		return rt.TBack(SXIRHooks, v.PropertyName), true
-	case "Name":
-		return tb1(v.Name), true
-	case "IsTypeOnly":
-		return any(v.IsTypeOnly), true
-	}
-	return nil, false
-}
-
-func (v *ImportSpecifier) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "PropertyName":
 		return rt.TBack(SXIRHooks, v.PropertyName), true
@@ -4800,12 +3706,14 @@ func (v *ImportSpecifier) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ImportType) TName() string         { return "ImportType" }
-func (v *ImportType) TText() (string, bool) { return "", false }
-func (v *ImportType) TKids() []any          { return nil }
-func (v *ImportType) TStruct() bool         { return true }
-func (v *ImportType) TFresh() bool          { return false }
-func (v *ImportType) TSetFresh(bool)        {}
+func (v *ImportType) TName() string           { return "ImportType" }
+func (v *ImportType) TText() (string, bool)   { return "", false }
+func (v *ImportType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ImportType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ImportType) TKids() []any            { return nil }
+func (v *ImportType) TStruct() bool           { return true }
+func (v *ImportType) TFresh() bool            { return false }
+func (v *ImportType) TSetFresh(bool)          {}
 func (v *ImportType) TField(name string) (any, bool) {
 	switch name {
 	case "Argument":
@@ -4834,34 +3742,6 @@ func (v *ImportType) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ImportType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Argument":
-		return rt.TBack(SXIRHooks, v.Argument), true
-	case "Attributes":
-		return rt.TPtr(v.Attributes), true
-	case "Qualifier":
-		return rt.TBack(SXIRHooks, v.Qualifier), true
-	case "TypeArguments":
-		if v.TypeArguments == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeArguments == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeArguments))
-			for i, x := range v.TypeArguments {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "IsTypeOf":
-		return any(v.IsTypeOf), true
-	}
-	return nil, false
-}
-
 func (v *ImportType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TypeArguments":
@@ -4870,12 +3750,14 @@ func (v *ImportType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *IndexSignature) TName() string         { return "IndexSignature" }
-func (v *IndexSignature) TText() (string, bool) { return "", false }
-func (v *IndexSignature) TKids() []any          { return nil }
-func (v *IndexSignature) TStruct() bool         { return true }
-func (v *IndexSignature) TFresh() bool          { return false }
-func (v *IndexSignature) TSetFresh(bool)        {}
+func (v *IndexSignature) TName() string           { return "IndexSignature" }
+func (v *IndexSignature) TText() (string, bool)   { return "", false }
+func (v *IndexSignature) TSpan() (int, int)       { return v.Start, v.End }
+func (v *IndexSignature) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *IndexSignature) TKids() []any            { return nil }
+func (v *IndexSignature) TStruct() bool           { return true }
+func (v *IndexSignature) TFresh() bool            { return false }
+func (v *IndexSignature) TSetFresh(bool)          {}
 func (v *IndexSignature) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -4912,42 +3794,6 @@ func (v *IndexSignature) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *IndexSignature) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
 func (v *IndexSignature) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -4958,23 +3804,15 @@ func (v *IndexSignature) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *IndexedAccessType) TName() string         { return "IndexedAccessType" }
-func (v *IndexedAccessType) TText() (string, bool) { return "", false }
-func (v *IndexedAccessType) TKids() []any          { return nil }
-func (v *IndexedAccessType) TStruct() bool         { return true }
-func (v *IndexedAccessType) TFresh() bool          { return false }
-func (v *IndexedAccessType) TSetFresh(bool)        {}
+func (v *IndexedAccessType) TName() string           { return "IndexedAccessType" }
+func (v *IndexedAccessType) TText() (string, bool)   { return "", false }
+func (v *IndexedAccessType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *IndexedAccessType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *IndexedAccessType) TKids() []any            { return nil }
+func (v *IndexedAccessType) TStruct() bool           { return true }
+func (v *IndexedAccessType) TFresh() bool            { return false }
+func (v *IndexedAccessType) TSetFresh(bool)          {}
 func (v *IndexedAccessType) TField(name string) (any, bool) {
-	switch name {
-	case "ObjectType":
-		return rt.TBack(SXIRHooks, v.ObjectType), true
-	case "IndexType":
-		return rt.TBack(SXIRHooks, v.IndexType), true
-	}
-	return nil, false
-}
-
-func (v *IndexedAccessType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "ObjectType":
 		return rt.TBack(SXIRHooks, v.ObjectType), true
@@ -4990,24 +3828,15 @@ func (v *IndexedAccessType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *InferType) TName() string         { return "InferType" }
-func (v *InferType) TText() (string, bool) { return "", false }
-func (v *InferType) TKids() []any          { return nil }
-func (v *InferType) TStruct() bool         { return true }
-func (v *InferType) TFresh() bool          { return false }
-func (v *InferType) TSetFresh(bool)        {}
+func (v *InferType) TName() string           { return "InferType" }
+func (v *InferType) TText() (string, bool)   { return "", false }
+func (v *InferType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *InferType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *InferType) TKids() []any            { return nil }
+func (v *InferType) TStruct() bool           { return true }
+func (v *InferType) TFresh() bool            { return false }
+func (v *InferType) TSetFresh(bool)          {}
 func (v *InferType) TField(name string) (any, bool) {
-	switch name {
-	case "TypeParameter":
-		if v.TypeParameter == nil {
-			return nil, false
-		}
-		return rt.TPtr(v.TypeParameter), true
-	}
-	return nil, false
-}
-
-func (v *InferType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "TypeParameter":
 		if v.TypeParameter == nil {
@@ -5026,12 +3855,14 @@ func (v *InferType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *InterfaceDeclaration) TName() string         { return "InterfaceDeclaration" }
-func (v *InterfaceDeclaration) TText() (string, bool) { return "", false }
-func (v *InterfaceDeclaration) TKids() []any          { return nil }
-func (v *InterfaceDeclaration) TStruct() bool         { return true }
-func (v *InterfaceDeclaration) TFresh() bool          { return false }
-func (v *InterfaceDeclaration) TSetFresh(bool)        {}
+func (v *InterfaceDeclaration) TName() string           { return "InterfaceDeclaration" }
+func (v *InterfaceDeclaration) TText() (string, bool)   { return "", false }
+func (v *InterfaceDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *InterfaceDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *InterfaceDeclaration) TKids() []any            { return nil }
+func (v *InterfaceDeclaration) TStruct() bool           { return true }
+func (v *InterfaceDeclaration) TFresh() bool            { return false }
+func (v *InterfaceDeclaration) TSetFresh(bool)          {}
 func (v *InterfaceDeclaration) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -5096,70 +3927,6 @@ func (v *InterfaceDeclaration) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *InterfaceDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return tb1(v.Name), true
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "HeritageClauses":
-		if v.HeritageClauses == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.HeritageClauses == nil {
-				return nil
-			}
-			kids := make([]any, len(v.HeritageClauses))
-			for i, x := range v.HeritageClauses {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Members":
-		if v.Members == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Members == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Members))
-			for i, x := range v.Members {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *InterfaceDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -5174,12 +3941,14 @@ func (v *InterfaceDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool
 	return nil, false
 }
 
-func (v *IntersectionType) TName() string         { return "IntersectionType" }
-func (v *IntersectionType) TText() (string, bool) { return "", false }
-func (v *IntersectionType) TKids() []any          { return nil }
-func (v *IntersectionType) TStruct() bool         { return true }
-func (v *IntersectionType) TFresh() bool          { return false }
-func (v *IntersectionType) TSetFresh(bool)        {}
+func (v *IntersectionType) TName() string           { return "IntersectionType" }
+func (v *IntersectionType) TText() (string, bool)   { return "", false }
+func (v *IntersectionType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *IntersectionType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *IntersectionType) TKids() []any            { return nil }
+func (v *IntersectionType) TStruct() bool           { return true }
+func (v *IntersectionType) TFresh() bool            { return false }
+func (v *IntersectionType) TSetFresh(bool)          {}
 func (v *IntersectionType) TField(name string) (any, bool) {
 	switch name {
 	case "Types":
@@ -5200,26 +3969,6 @@ func (v *IntersectionType) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *IntersectionType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Types":
-		if v.Types == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Types == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Types))
-			for i, x := range v.Types {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *IntersectionType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Types":
@@ -5228,12 +3977,14 @@ func (v *IntersectionType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JSDocFunctionType) TName() string         { return "JSDocFunctionType" }
-func (v *JSDocFunctionType) TText() (string, bool) { return "", false }
-func (v *JSDocFunctionType) TKids() []any          { return nil }
-func (v *JSDocFunctionType) TStruct() bool         { return true }
-func (v *JSDocFunctionType) TFresh() bool          { return false }
-func (v *JSDocFunctionType) TSetFresh(bool)        {}
+func (v *JSDocFunctionType) TName() string           { return "JSDocFunctionType" }
+func (v *JSDocFunctionType) TText() (string, bool)   { return "", false }
+func (v *JSDocFunctionType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *JSDocFunctionType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *JSDocFunctionType) TKids() []any            { return nil }
+func (v *JSDocFunctionType) TStruct() bool           { return true }
+func (v *JSDocFunctionType) TFresh() bool            { return false }
+func (v *JSDocFunctionType) TSetFresh(bool)          {}
 func (v *JSDocFunctionType) TField(name string) (any, bool) {
 	switch name {
 	case "Parameters":
@@ -5256,28 +4007,6 @@ func (v *JSDocFunctionType) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JSDocFunctionType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
 func (v *JSDocFunctionType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Parameters":
@@ -5286,23 +4015,15 @@ func (v *JSDocFunctionType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JSDocNonNullableType) TName() string         { return "JSDocNonNullableType" }
-func (v *JSDocNonNullableType) TText() (string, bool) { return "", false }
-func (v *JSDocNonNullableType) TKids() []any          { return nil }
-func (v *JSDocNonNullableType) TStruct() bool         { return true }
-func (v *JSDocNonNullableType) TFresh() bool          { return false }
-func (v *JSDocNonNullableType) TSetFresh(bool)        {}
+func (v *JSDocNonNullableType) TName() string           { return "JSDocNonNullableType" }
+func (v *JSDocNonNullableType) TText() (string, bool)   { return "", false }
+func (v *JSDocNonNullableType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *JSDocNonNullableType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *JSDocNonNullableType) TKids() []any            { return nil }
+func (v *JSDocNonNullableType) TStruct() bool           { return true }
+func (v *JSDocNonNullableType) TFresh() bool            { return false }
+func (v *JSDocNonNullableType) TSetFresh(bool)          {}
 func (v *JSDocNonNullableType) TField(name string) (any, bool) {
-	switch name {
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Postfix":
-		return any(v.Postfix), true
-	}
-	return nil, false
-}
-
-func (v *JSDocNonNullableType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Type":
 		return rt.TBack(SXIRHooks, v.Type), true
@@ -5318,23 +4039,15 @@ func (v *JSDocNonNullableType) TZeroField(c *rt.TActCtx, name string) (any, bool
 	return nil, false
 }
 
-func (v *JSDocNullableType) TName() string         { return "JSDocNullableType" }
-func (v *JSDocNullableType) TText() (string, bool) { return "", false }
-func (v *JSDocNullableType) TKids() []any          { return nil }
-func (v *JSDocNullableType) TStruct() bool         { return true }
-func (v *JSDocNullableType) TFresh() bool          { return false }
-func (v *JSDocNullableType) TSetFresh(bool)        {}
+func (v *JSDocNullableType) TName() string           { return "JSDocNullableType" }
+func (v *JSDocNullableType) TText() (string, bool)   { return "", false }
+func (v *JSDocNullableType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *JSDocNullableType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *JSDocNullableType) TKids() []any            { return nil }
+func (v *JSDocNullableType) TStruct() bool           { return true }
+func (v *JSDocNullableType) TFresh() bool            { return false }
+func (v *JSDocNullableType) TSetFresh(bool)          {}
 func (v *JSDocNullableType) TField(name string) (any, bool) {
-	switch name {
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Postfix":
-		return any(v.Postfix), true
-	}
-	return nil, false
-}
-
-func (v *JSDocNullableType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Type":
 		return rt.TBack(SXIRHooks, v.Type), true
@@ -5350,23 +4063,15 @@ func (v *JSDocNullableType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxAttribute) TName() string         { return "JsxAttribute" }
-func (v *JsxAttribute) TText() (string, bool) { return "", false }
-func (v *JsxAttribute) TKids() []any          { return nil }
-func (v *JsxAttribute) TStruct() bool         { return true }
-func (v *JsxAttribute) TFresh() bool          { return false }
-func (v *JsxAttribute) TSetFresh(bool)        {}
+func (v *JsxAttribute) TName() string           { return "JsxAttribute" }
+func (v *JsxAttribute) TText() (string, bool)   { return "", false }
+func (v *JsxAttribute) TSpan() (int, int)       { return v.Start, v.End }
+func (v *JsxAttribute) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *JsxAttribute) TKids() []any            { return nil }
+func (v *JsxAttribute) TStruct() bool           { return true }
+func (v *JsxAttribute) TFresh() bool            { return false }
+func (v *JsxAttribute) TSetFresh(bool)          {}
 func (v *JsxAttribute) TField(name string) (any, bool) {
-	switch name {
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "Initializer":
-		return rt.TBack(SXIRHooks, v.Initializer), true
-	}
-	return nil, false
-}
-
-func (v *JsxAttribute) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Name":
 		return rt.TBack(SXIRHooks, v.Name), true
@@ -5382,12 +4087,14 @@ func (v *JsxAttribute) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxAttributes) TName() string         { return "JsxAttributes" }
-func (v *JsxAttributes) TText() (string, bool) { return "", false }
-func (v *JsxAttributes) TKids() []any          { return nil }
-func (v *JsxAttributes) TStruct() bool         { return true }
-func (v *JsxAttributes) TFresh() bool          { return false }
-func (v *JsxAttributes) TSetFresh(bool)        {}
+func (v *JsxAttributes) TName() string           { return "JsxAttributes" }
+func (v *JsxAttributes) TText() (string, bool)   { return "", false }
+func (v *JsxAttributes) TSpan() (int, int)       { return v.Start, v.End }
+func (v *JsxAttributes) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *JsxAttributes) TKids() []any            { return nil }
+func (v *JsxAttributes) TStruct() bool           { return true }
+func (v *JsxAttributes) TFresh() bool            { return false }
+func (v *JsxAttributes) TSetFresh(bool)          {}
 func (v *JsxAttributes) TField(name string) (any, bool) {
 	switch name {
 	case "Properties":
@@ -5408,26 +4115,6 @@ func (v *JsxAttributes) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxAttributes) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Properties":
-		if v.Properties == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Properties == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Properties))
-			for i, x := range v.Properties {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *JsxAttributes) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Properties":
@@ -5436,21 +4123,15 @@ func (v *JsxAttributes) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxClosingElement) TName() string         { return "JsxClosingElement" }
-func (v *JsxClosingElement) TText() (string, bool) { return "", false }
-func (v *JsxClosingElement) TKids() []any          { return nil }
-func (v *JsxClosingElement) TStruct() bool         { return true }
-func (v *JsxClosingElement) TFresh() bool          { return false }
-func (v *JsxClosingElement) TSetFresh(bool)        {}
+func (v *JsxClosingElement) TName() string           { return "JsxClosingElement" }
+func (v *JsxClosingElement) TText() (string, bool)   { return "", false }
+func (v *JsxClosingElement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *JsxClosingElement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *JsxClosingElement) TKids() []any            { return nil }
+func (v *JsxClosingElement) TStruct() bool           { return true }
+func (v *JsxClosingElement) TFresh() bool            { return false }
+func (v *JsxClosingElement) TSetFresh(bool)          {}
 func (v *JsxClosingElement) TField(name string) (any, bool) {
-	switch name {
-	case "TagName":
-		return rt.TBack(SXIRHooks, v.TagName), true
-	}
-	return nil, false
-}
-
-func (v *JsxClosingElement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "TagName":
 		return rt.TBack(SXIRHooks, v.TagName), true
@@ -5464,12 +4145,14 @@ func (v *JsxClosingElement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxElement) TName() string         { return "JsxElement" }
-func (v *JsxElement) TText() (string, bool) { return "", false }
-func (v *JsxElement) TKids() []any          { return nil }
-func (v *JsxElement) TStruct() bool         { return true }
-func (v *JsxElement) TFresh() bool          { return false }
-func (v *JsxElement) TSetFresh(bool)        {}
+func (v *JsxElement) TName() string           { return "JsxElement" }
+func (v *JsxElement) TText() (string, bool)   { return "", false }
+func (v *JsxElement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *JsxElement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *JsxElement) TKids() []any            { return nil }
+func (v *JsxElement) TStruct() bool           { return true }
+func (v *JsxElement) TFresh() bool            { return false }
+func (v *JsxElement) TSetFresh(bool)          {}
 func (v *JsxElement) TField(name string) (any, bool) {
 	switch name {
 	case "OpeningElement":
@@ -5500,36 +4183,6 @@ func (v *JsxElement) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxElement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "OpeningElement":
-		if v.OpeningElement == nil {
-			return nil, false
-		}
-		return rt.TPtr(v.OpeningElement), true
-	case "Children":
-		if v.Children == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Children == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Children))
-			for i, x := range v.Children {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "ClosingElement":
-		if v.ClosingElement == nil {
-			return nil, false
-		}
-		return rt.TPtr(v.ClosingElement), true
-	}
-	return nil, false
-}
-
 func (v *JsxElement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "OpeningElement":
@@ -5542,23 +4195,15 @@ func (v *JsxElement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxExpression) TName() string         { return "JsxExpression" }
-func (v *JsxExpression) TText() (string, bool) { return "", false }
-func (v *JsxExpression) TKids() []any          { return nil }
-func (v *JsxExpression) TStruct() bool         { return true }
-func (v *JsxExpression) TFresh() bool          { return false }
-func (v *JsxExpression) TSetFresh(bool)        {}
+func (v *JsxExpression) TName() string           { return "JsxExpression" }
+func (v *JsxExpression) TText() (string, bool)   { return "", false }
+func (v *JsxExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *JsxExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *JsxExpression) TKids() []any            { return nil }
+func (v *JsxExpression) TStruct() bool           { return true }
+func (v *JsxExpression) TFresh() bool            { return false }
+func (v *JsxExpression) TSetFresh(bool)          {}
 func (v *JsxExpression) TField(name string) (any, bool) {
-	switch name {
-	case "DotDotDotToken":
-		return tb0(v.DotDotDotToken), true
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *JsxExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "DotDotDotToken":
 		return tb0(v.DotDotDotToken), true
@@ -5574,12 +4219,14 @@ func (v *JsxExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxFragment) TName() string         { return "JsxFragment" }
-func (v *JsxFragment) TText() (string, bool) { return "", false }
-func (v *JsxFragment) TKids() []any          { return nil }
-func (v *JsxFragment) TStruct() bool         { return true }
-func (v *JsxFragment) TFresh() bool          { return false }
-func (v *JsxFragment) TSetFresh(bool)        {}
+func (v *JsxFragment) TName() string           { return "JsxFragment" }
+func (v *JsxFragment) TText() (string, bool)   { return "", false }
+func (v *JsxFragment) TSpan() (int, int)       { return v.Start, v.End }
+func (v *JsxFragment) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *JsxFragment) TKids() []any            { return nil }
+func (v *JsxFragment) TStruct() bool           { return true }
+func (v *JsxFragment) TFresh() bool            { return false }
+func (v *JsxFragment) TSetFresh(bool)          {}
 func (v *JsxFragment) TField(name string) (any, bool) {
 	switch name {
 	case "OpeningFragment":
@@ -5604,30 +4251,6 @@ func (v *JsxFragment) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxFragment) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "OpeningFragment":
-		return tb2(v.OpeningFragment), true
-	case "Children":
-		if v.Children == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Children == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Children))
-			for i, x := range v.Children {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "ClosingFragment":
-		return tb3(v.ClosingFragment), true
-	}
-	return nil, false
-}
-
 func (v *JsxFragment) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Children":
@@ -5636,23 +4259,15 @@ func (v *JsxFragment) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxNamespacedName) TName() string         { return "JsxNamespacedName" }
-func (v *JsxNamespacedName) TText() (string, bool) { return "", false }
-func (v *JsxNamespacedName) TKids() []any          { return nil }
-func (v *JsxNamespacedName) TStruct() bool         { return true }
-func (v *JsxNamespacedName) TFresh() bool          { return false }
-func (v *JsxNamespacedName) TSetFresh(bool)        {}
+func (v *JsxNamespacedName) TName() string           { return "JsxNamespacedName" }
+func (v *JsxNamespacedName) TText() (string, bool)   { return "", false }
+func (v *JsxNamespacedName) TSpan() (int, int)       { return v.Start, v.End }
+func (v *JsxNamespacedName) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *JsxNamespacedName) TKids() []any            { return nil }
+func (v *JsxNamespacedName) TStruct() bool           { return true }
+func (v *JsxNamespacedName) TFresh() bool            { return false }
+func (v *JsxNamespacedName) TSetFresh(bool)          {}
 func (v *JsxNamespacedName) TField(name string) (any, bool) {
-	switch name {
-	case "Namespace":
-		return tb1(v.Namespace), true
-	case "Name":
-		return tb1(v.Name), true
-	}
-	return nil, false
-}
-
-func (v *JsxNamespacedName) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Namespace":
 		return tb1(v.Namespace), true
@@ -5668,12 +4283,14 @@ func (v *JsxNamespacedName) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxOpeningElement) TName() string         { return "JsxOpeningElement" }
-func (v *JsxOpeningElement) TText() (string, bool) { return "", false }
-func (v *JsxOpeningElement) TKids() []any          { return nil }
-func (v *JsxOpeningElement) TStruct() bool         { return true }
-func (v *JsxOpeningElement) TFresh() bool          { return false }
-func (v *JsxOpeningElement) TSetFresh(bool)        {}
+func (v *JsxOpeningElement) TName() string           { return "JsxOpeningElement" }
+func (v *JsxOpeningElement) TText() (string, bool)   { return "", false }
+func (v *JsxOpeningElement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *JsxOpeningElement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *JsxOpeningElement) TKids() []any            { return nil }
+func (v *JsxOpeningElement) TStruct() bool           { return true }
+func (v *JsxOpeningElement) TFresh() bool            { return false }
+func (v *JsxOpeningElement) TSetFresh(bool)          {}
 func (v *JsxOpeningElement) TField(name string) (any, bool) {
 	switch name {
 	case "TagName":
@@ -5701,33 +4318,6 @@ func (v *JsxOpeningElement) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxOpeningElement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "TagName":
-		return rt.TBack(SXIRHooks, v.TagName), true
-	case "TypeArguments":
-		if v.TypeArguments == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeArguments == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeArguments))
-			for i, x := range v.TypeArguments {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Attributes":
-		if v.Attributes == nil {
-			return nil, false
-		}
-		return rt.TPtr(v.Attributes), true
-	}
-	return nil, false
-}
-
 func (v *JsxOpeningElement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TypeArguments":
@@ -5738,12 +4328,14 @@ func (v *JsxOpeningElement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxSelfClosingElement) TName() string         { return "JsxSelfClosingElement" }
-func (v *JsxSelfClosingElement) TText() (string, bool) { return "", false }
-func (v *JsxSelfClosingElement) TKids() []any          { return nil }
-func (v *JsxSelfClosingElement) TStruct() bool         { return true }
-func (v *JsxSelfClosingElement) TFresh() bool          { return false }
-func (v *JsxSelfClosingElement) TSetFresh(bool)        {}
+func (v *JsxSelfClosingElement) TName() string           { return "JsxSelfClosingElement" }
+func (v *JsxSelfClosingElement) TText() (string, bool)   { return "", false }
+func (v *JsxSelfClosingElement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *JsxSelfClosingElement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *JsxSelfClosingElement) TKids() []any            { return nil }
+func (v *JsxSelfClosingElement) TStruct() bool           { return true }
+func (v *JsxSelfClosingElement) TFresh() bool            { return false }
+func (v *JsxSelfClosingElement) TSetFresh(bool)          {}
 func (v *JsxSelfClosingElement) TField(name string) (any, bool) {
 	switch name {
 	case "TagName":
@@ -5771,33 +4363,6 @@ func (v *JsxSelfClosingElement) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *JsxSelfClosingElement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "TagName":
-		return rt.TBack(SXIRHooks, v.TagName), true
-	case "TypeArguments":
-		if v.TypeArguments == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeArguments == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeArguments))
-			for i, x := range v.TypeArguments {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Attributes":
-		if v.Attributes == nil {
-			return nil, false
-		}
-		return rt.TPtr(v.Attributes), true
-	}
-	return nil, false
-}
-
 func (v *JsxSelfClosingElement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TypeArguments":
@@ -5808,21 +4373,15 @@ func (v *JsxSelfClosingElement) TZeroField(c *rt.TActCtx, name string) (any, boo
 	return nil, false
 }
 
-func (v *JsxSpreadAttribute) TName() string         { return "JsxSpreadAttribute" }
-func (v *JsxSpreadAttribute) TText() (string, bool) { return "", false }
-func (v *JsxSpreadAttribute) TKids() []any          { return nil }
-func (v *JsxSpreadAttribute) TStruct() bool         { return true }
-func (v *JsxSpreadAttribute) TFresh() bool          { return false }
-func (v *JsxSpreadAttribute) TSetFresh(bool)        {}
+func (v *JsxSpreadAttribute) TName() string           { return "JsxSpreadAttribute" }
+func (v *JsxSpreadAttribute) TText() (string, bool)   { return "", false }
+func (v *JsxSpreadAttribute) TSpan() (int, int)       { return v.Start, v.End }
+func (v *JsxSpreadAttribute) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *JsxSpreadAttribute) TKids() []any            { return nil }
+func (v *JsxSpreadAttribute) TStruct() bool           { return true }
+func (v *JsxSpreadAttribute) TFresh() bool            { return false }
+func (v *JsxSpreadAttribute) TSetFresh(bool)          {}
 func (v *JsxSpreadAttribute) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *JsxSpreadAttribute) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -5836,23 +4395,15 @@ func (v *JsxSpreadAttribute) TZeroField(c *rt.TActCtx, name string) (any, bool) 
 	return nil, false
 }
 
-func (v *LabeledStatement) TName() string         { return "LabeledStatement" }
-func (v *LabeledStatement) TText() (string, bool) { return "", false }
-func (v *LabeledStatement) TKids() []any          { return nil }
-func (v *LabeledStatement) TStruct() bool         { return true }
-func (v *LabeledStatement) TFresh() bool          { return false }
-func (v *LabeledStatement) TSetFresh(bool)        {}
+func (v *LabeledStatement) TName() string           { return "LabeledStatement" }
+func (v *LabeledStatement) TText() (string, bool)   { return "", false }
+func (v *LabeledStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *LabeledStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *LabeledStatement) TKids() []any            { return nil }
+func (v *LabeledStatement) TStruct() bool           { return true }
+func (v *LabeledStatement) TFresh() bool            { return false }
+func (v *LabeledStatement) TSetFresh(bool)          {}
 func (v *LabeledStatement) TField(name string) (any, bool) {
-	switch name {
-	case "Label":
-		return tb1(v.Label), true
-	case "Statement":
-		return rt.TBack(SXIRHooks, v.Statement), true
-	}
-	return nil, false
-}
-
-func (v *LabeledStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Label":
 		return tb1(v.Label), true
@@ -5868,21 +4419,15 @@ func (v *LabeledStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *LiteralType) TName() string         { return "LiteralType" }
-func (v *LiteralType) TText() (string, bool) { return "", false }
-func (v *LiteralType) TKids() []any          { return nil }
-func (v *LiteralType) TStruct() bool         { return true }
-func (v *LiteralType) TFresh() bool          { return false }
-func (v *LiteralType) TSetFresh(bool)        {}
+func (v *LiteralType) TName() string           { return "LiteralType" }
+func (v *LiteralType) TText() (string, bool)   { return "", false }
+func (v *LiteralType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *LiteralType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *LiteralType) TKids() []any            { return nil }
+func (v *LiteralType) TStruct() bool           { return true }
+func (v *LiteralType) TFresh() bool            { return false }
+func (v *LiteralType) TSetFresh(bool)          {}
 func (v *LiteralType) TField(name string) (any, bool) {
-	switch name {
-	case "Literal":
-		return rt.TBack(SXIRHooks, v.Literal), true
-	}
-	return nil, false
-}
-
-func (v *LiteralType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Literal":
 		return rt.TBack(SXIRHooks, v.Literal), true
@@ -5896,12 +4441,14 @@ func (v *LiteralType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *MappedType) TName() string         { return "MappedType" }
-func (v *MappedType) TText() (string, bool) { return "", false }
-func (v *MappedType) TKids() []any          { return nil }
-func (v *MappedType) TStruct() bool         { return true }
-func (v *MappedType) TFresh() bool          { return false }
-func (v *MappedType) TSetFresh(bool)        {}
+func (v *MappedType) TName() string           { return "MappedType" }
+func (v *MappedType) TText() (string, bool)   { return "", false }
+func (v *MappedType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *MappedType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *MappedType) TKids() []any            { return nil }
+func (v *MappedType) TStruct() bool           { return true }
+func (v *MappedType) TFresh() bool            { return false }
+func (v *MappedType) TSetFresh(bool)          {}
 func (v *MappedType) TField(name string) (any, bool) {
 	switch name {
 	case "ReadonlyToken":
@@ -5935,39 +4482,6 @@ func (v *MappedType) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *MappedType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "ReadonlyToken":
-		return tb0(v.ReadonlyToken), true
-	case "TypeParameter":
-		if v.TypeParameter == nil {
-			return nil, false
-		}
-		return rt.TPtr(v.TypeParameter), true
-	case "NameType":
-		return rt.TBack(SXIRHooks, v.NameType), true
-	case "QuestionToken":
-		return tb0(v.QuestionToken), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Members":
-		if v.Members == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Members == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Members))
-			for i, x := range v.Members {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *MappedType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TypeParameter":
@@ -5978,12 +4492,14 @@ func (v *MappedType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *MetaProperty) TName() string         { return "MetaProperty" }
-func (v *MetaProperty) TText() (string, bool) { return "", false }
-func (v *MetaProperty) TKids() []any          { return nil }
-func (v *MetaProperty) TStruct() bool         { return true }
-func (v *MetaProperty) TFresh() bool          { return false }
-func (v *MetaProperty) TSetFresh(bool)        {}
+func (v *MetaProperty) TName() string           { return "MetaProperty" }
+func (v *MetaProperty) TText() (string, bool)   { return "", false }
+func (v *MetaProperty) TSpan() (int, int)       { return v.Start, v.End }
+func (v *MetaProperty) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *MetaProperty) TKids() []any            { return nil }
+func (v *MetaProperty) TStruct() bool           { return true }
+func (v *MetaProperty) TFresh() bool            { return false }
+func (v *MetaProperty) TSetFresh(bool)          {}
 func (v *MetaProperty) TField(name string) (any, bool) {
 	switch name {
 	case "KeywordToken":
@@ -6002,28 +4518,20 @@ func (v *MetaProperty) TStrField(name string) (string, bool) {
 	return "", false
 }
 
-func (v *MetaProperty) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "KeywordToken":
-		return any(v.KeywordToken), true
-	case "Name":
-		return tb1(v.Name), true
-	}
-	return nil, false
-}
-
 func (v *MetaProperty) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	}
 	return nil, false
 }
 
-func (v *MethodDeclaration) TName() string         { return "MethodDeclaration" }
-func (v *MethodDeclaration) TText() (string, bool) { return "", false }
-func (v *MethodDeclaration) TKids() []any          { return nil }
-func (v *MethodDeclaration) TStruct() bool         { return true }
-func (v *MethodDeclaration) TFresh() bool          { return false }
-func (v *MethodDeclaration) TSetFresh(bool)        {}
+func (v *MethodDeclaration) TName() string           { return "MethodDeclaration" }
+func (v *MethodDeclaration) TText() (string, bool)   { return "", false }
+func (v *MethodDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *MethodDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *MethodDeclaration) TKids() []any            { return nil }
+func (v *MethodDeclaration) TStruct() bool           { return true }
+func (v *MethodDeclaration) TFresh() bool            { return false }
+func (v *MethodDeclaration) TSetFresh(bool)          {}
 func (v *MethodDeclaration) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -6084,66 +4592,6 @@ func (v *MethodDeclaration) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *MethodDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "AsteriskToken":
-		return tb0(v.AsteriskToken), true
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "QuestionToken":
-		return tb0(v.QuestionToken), true
-	case "ExclamationToken":
-		return tb0(v.ExclamationToken), true
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Body":
-		return rt.TPtr(v.Body), true
-	}
-	return nil, false
-}
-
 func (v *MethodDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -6156,12 +4604,14 @@ func (v *MethodDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *MethodSignature) TName() string         { return "MethodSignature" }
-func (v *MethodSignature) TText() (string, bool) { return "", false }
-func (v *MethodSignature) TKids() []any          { return nil }
-func (v *MethodSignature) TStruct() bool         { return true }
-func (v *MethodSignature) TFresh() bool          { return false }
-func (v *MethodSignature) TSetFresh(bool)        {}
+func (v *MethodSignature) TName() string           { return "MethodSignature" }
+func (v *MethodSignature) TText() (string, bool)   { return "", false }
+func (v *MethodSignature) TSpan() (int, int)       { return v.Start, v.End }
+func (v *MethodSignature) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *MethodSignature) TKids() []any            { return nil }
+func (v *MethodSignature) TStruct() bool           { return true }
+func (v *MethodSignature) TFresh() bool            { return false }
+func (v *MethodSignature) TSetFresh(bool)          {}
 func (v *MethodSignature) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -6216,60 +4666,6 @@ func (v *MethodSignature) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *MethodSignature) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "QuestionToken":
-		return tb0(v.QuestionToken), true
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
 func (v *MethodSignature) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -6282,12 +4678,14 @@ func (v *MethodSignature) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ModuleBlock) TName() string         { return "ModuleBlock" }
-func (v *ModuleBlock) TText() (string, bool) { return "", false }
-func (v *ModuleBlock) TKids() []any          { return nil }
-func (v *ModuleBlock) TStruct() bool         { return true }
-func (v *ModuleBlock) TFresh() bool          { return false }
-func (v *ModuleBlock) TSetFresh(bool)        {}
+func (v *ModuleBlock) TName() string           { return "ModuleBlock" }
+func (v *ModuleBlock) TText() (string, bool)   { return "", false }
+func (v *ModuleBlock) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ModuleBlock) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ModuleBlock) TKids() []any            { return nil }
+func (v *ModuleBlock) TStruct() bool           { return true }
+func (v *ModuleBlock) TFresh() bool            { return false }
+func (v *ModuleBlock) TSetFresh(bool)          {}
 func (v *ModuleBlock) TField(name string) (any, bool) {
 	switch name {
 	case "Statements":
@@ -6308,26 +4706,6 @@ func (v *ModuleBlock) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ModuleBlock) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Statements":
-		if v.Statements == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Statements == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Statements))
-			for i, x := range v.Statements {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *ModuleBlock) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Statements":
@@ -6336,12 +4714,14 @@ func (v *ModuleBlock) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ModuleDeclaration) TName() string         { return "ModuleDeclaration" }
-func (v *ModuleDeclaration) TText() (string, bool) { return "", false }
-func (v *ModuleDeclaration) TKids() []any          { return nil }
-func (v *ModuleDeclaration) TStruct() bool         { return true }
-func (v *ModuleDeclaration) TFresh() bool          { return false }
-func (v *ModuleDeclaration) TSetFresh(bool)        {}
+func (v *ModuleDeclaration) TName() string           { return "ModuleDeclaration" }
+func (v *ModuleDeclaration) TText() (string, bool)   { return "", false }
+func (v *ModuleDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ModuleDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ModuleDeclaration) TKids() []any            { return nil }
+func (v *ModuleDeclaration) TStruct() bool           { return true }
+func (v *ModuleDeclaration) TFresh() bool            { return false }
+func (v *ModuleDeclaration) TSetFresh(bool)          {}
 func (v *ModuleDeclaration) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -6366,30 +4746,6 @@ func (v *ModuleDeclaration) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ModuleDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "Body":
-		return rt.TBack(SXIRHooks, v.Body), true
-	}
-	return nil, false
-}
-
 func (v *ModuleDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -6398,12 +4754,14 @@ func (v *ModuleDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *NamedExports) TName() string         { return "NamedExports" }
-func (v *NamedExports) TText() (string, bool) { return "", false }
-func (v *NamedExports) TKids() []any          { return nil }
-func (v *NamedExports) TStruct() bool         { return true }
-func (v *NamedExports) TFresh() bool          { return false }
-func (v *NamedExports) TSetFresh(bool)        {}
+func (v *NamedExports) TName() string           { return "NamedExports" }
+func (v *NamedExports) TText() (string, bool)   { return "", false }
+func (v *NamedExports) TSpan() (int, int)       { return v.Start, v.End }
+func (v *NamedExports) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *NamedExports) TKids() []any            { return nil }
+func (v *NamedExports) TStruct() bool           { return true }
+func (v *NamedExports) TFresh() bool            { return false }
+func (v *NamedExports) TSetFresh(bool)          {}
 func (v *NamedExports) TField(name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -6424,26 +4782,6 @@ func (v *NamedExports) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *NamedExports) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Elements":
-		if v.Elements == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Elements == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Elements))
-			for i, x := range v.Elements {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *NamedExports) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -6452,12 +4790,14 @@ func (v *NamedExports) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *NamedImports) TName() string         { return "NamedImports" }
-func (v *NamedImports) TText() (string, bool) { return "", false }
-func (v *NamedImports) TKids() []any          { return nil }
-func (v *NamedImports) TStruct() bool         { return true }
-func (v *NamedImports) TFresh() bool          { return false }
-func (v *NamedImports) TSetFresh(bool)        {}
+func (v *NamedImports) TName() string           { return "NamedImports" }
+func (v *NamedImports) TText() (string, bool)   { return "", false }
+func (v *NamedImports) TSpan() (int, int)       { return v.Start, v.End }
+func (v *NamedImports) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *NamedImports) TKids() []any            { return nil }
+func (v *NamedImports) TStruct() bool           { return true }
+func (v *NamedImports) TFresh() bool            { return false }
+func (v *NamedImports) TSetFresh(bool)          {}
 func (v *NamedImports) TField(name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -6478,26 +4818,6 @@ func (v *NamedImports) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *NamedImports) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Elements":
-		if v.Elements == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Elements == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Elements))
-			for i, x := range v.Elements {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *NamedImports) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -6506,27 +4826,15 @@ func (v *NamedImports) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *NamedTupleMember) TName() string         { return "NamedTupleMember" }
-func (v *NamedTupleMember) TText() (string, bool) { return "", false }
-func (v *NamedTupleMember) TKids() []any          { return nil }
-func (v *NamedTupleMember) TStruct() bool         { return true }
-func (v *NamedTupleMember) TFresh() bool          { return false }
-func (v *NamedTupleMember) TSetFresh(bool)        {}
+func (v *NamedTupleMember) TName() string           { return "NamedTupleMember" }
+func (v *NamedTupleMember) TText() (string, bool)   { return "", false }
+func (v *NamedTupleMember) TSpan() (int, int)       { return v.Start, v.End }
+func (v *NamedTupleMember) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *NamedTupleMember) TKids() []any            { return nil }
+func (v *NamedTupleMember) TStruct() bool           { return true }
+func (v *NamedTupleMember) TFresh() bool            { return false }
+func (v *NamedTupleMember) TSetFresh(bool)          {}
 func (v *NamedTupleMember) TField(name string) (any, bool) {
-	switch name {
-	case "DotDotDotToken":
-		return tb0(v.DotDotDotToken), true
-	case "Name":
-		return tb1(v.Name), true
-	case "QuestionToken":
-		return tb0(v.QuestionToken), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
-func (v *NamedTupleMember) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "DotDotDotToken":
 		return tb0(v.DotDotDotToken), true
@@ -6546,21 +4854,15 @@ func (v *NamedTupleMember) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *NamespaceExport) TName() string         { return "NamespaceExport" }
-func (v *NamespaceExport) TText() (string, bool) { return "", false }
-func (v *NamespaceExport) TKids() []any          { return nil }
-func (v *NamespaceExport) TStruct() bool         { return true }
-func (v *NamespaceExport) TFresh() bool          { return false }
-func (v *NamespaceExport) TSetFresh(bool)        {}
+func (v *NamespaceExport) TName() string           { return "NamespaceExport" }
+func (v *NamespaceExport) TText() (string, bool)   { return "", false }
+func (v *NamespaceExport) TSpan() (int, int)       { return v.Start, v.End }
+func (v *NamespaceExport) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *NamespaceExport) TKids() []any            { return nil }
+func (v *NamespaceExport) TStruct() bool           { return true }
+func (v *NamespaceExport) TFresh() bool            { return false }
+func (v *NamespaceExport) TSetFresh(bool)          {}
 func (v *NamespaceExport) TField(name string) (any, bool) {
-	switch name {
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	}
-	return nil, false
-}
-
-func (v *NamespaceExport) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Name":
 		return rt.TBack(SXIRHooks, v.Name), true
@@ -6574,12 +4876,14 @@ func (v *NamespaceExport) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *NamespaceExportDeclaration) TName() string         { return "NamespaceExportDeclaration" }
-func (v *NamespaceExportDeclaration) TText() (string, bool) { return "", false }
-func (v *NamespaceExportDeclaration) TKids() []any          { return nil }
-func (v *NamespaceExportDeclaration) TStruct() bool         { return true }
-func (v *NamespaceExportDeclaration) TFresh() bool          { return false }
-func (v *NamespaceExportDeclaration) TSetFresh(bool)        {}
+func (v *NamespaceExportDeclaration) TName() string           { return "NamespaceExportDeclaration" }
+func (v *NamespaceExportDeclaration) TText() (string, bool)   { return "", false }
+func (v *NamespaceExportDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *NamespaceExportDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *NamespaceExportDeclaration) TKids() []any            { return nil }
+func (v *NamespaceExportDeclaration) TStruct() bool           { return true }
+func (v *NamespaceExportDeclaration) TFresh() bool            { return false }
+func (v *NamespaceExportDeclaration) TSetFresh(bool)          {}
 func (v *NamespaceExportDeclaration) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -6602,28 +4906,6 @@ func (v *NamespaceExportDeclaration) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *NamespaceExportDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return tb1(v.Name), true
-	}
-	return nil, false
-}
-
 func (v *NamespaceExportDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -6632,21 +4914,15 @@ func (v *NamespaceExportDeclaration) TZeroField(c *rt.TActCtx, name string) (any
 	return nil, false
 }
 
-func (v *NamespaceImport) TName() string         { return "NamespaceImport" }
-func (v *NamespaceImport) TText() (string, bool) { return "", false }
-func (v *NamespaceImport) TKids() []any          { return nil }
-func (v *NamespaceImport) TStruct() bool         { return true }
-func (v *NamespaceImport) TFresh() bool          { return false }
-func (v *NamespaceImport) TSetFresh(bool)        {}
+func (v *NamespaceImport) TName() string           { return "NamespaceImport" }
+func (v *NamespaceImport) TText() (string, bool)   { return "", false }
+func (v *NamespaceImport) TSpan() (int, int)       { return v.Start, v.End }
+func (v *NamespaceImport) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *NamespaceImport) TKids() []any            { return nil }
+func (v *NamespaceImport) TStruct() bool           { return true }
+func (v *NamespaceImport) TFresh() bool            { return false }
+func (v *NamespaceImport) TSetFresh(bool)          {}
 func (v *NamespaceImport) TField(name string) (any, bool) {
-	switch name {
-	case "Name":
-		return tb1(v.Name), true
-	}
-	return nil, false
-}
-
-func (v *NamespaceImport) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Name":
 		return tb1(v.Name), true
@@ -6660,12 +4936,14 @@ func (v *NamespaceImport) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *NewExpression) TName() string         { return "NewExpression" }
-func (v *NewExpression) TText() (string, bool) { return "", false }
-func (v *NewExpression) TKids() []any          { return nil }
-func (v *NewExpression) TStruct() bool         { return true }
-func (v *NewExpression) TFresh() bool          { return false }
-func (v *NewExpression) TSetFresh(bool)        {}
+func (v *NewExpression) TName() string           { return "NewExpression" }
+func (v *NewExpression) TText() (string, bool)   { return "", false }
+func (v *NewExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *NewExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *NewExpression) TKids() []any            { return nil }
+func (v *NewExpression) TStruct() bool           { return true }
+func (v *NewExpression) TFresh() bool            { return false }
+func (v *NewExpression) TSetFresh(bool)          {}
 func (v *NewExpression) TField(name string) (any, bool) {
 	switch name {
 	case "Expression":
@@ -6699,39 +4977,6 @@ func (v *NewExpression) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *NewExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "TypeArguments":
-		if v.TypeArguments == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeArguments == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeArguments))
-			for i, x := range v.TypeArguments {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Arguments":
-		return func() any {
-			if v.Arguments == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Arguments))
-			for i, x := range v.Arguments {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *NewExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TypeArguments":
@@ -6740,21 +4985,15 @@ func (v *NewExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *NonNullExpression) TName() string         { return "NonNullExpression" }
-func (v *NonNullExpression) TText() (string, bool) { return "", false }
-func (v *NonNullExpression) TKids() []any          { return nil }
-func (v *NonNullExpression) TStruct() bool         { return true }
-func (v *NonNullExpression) TFresh() bool          { return false }
-func (v *NonNullExpression) TSetFresh(bool)        {}
+func (v *NonNullExpression) TName() string           { return "NonNullExpression" }
+func (v *NonNullExpression) TText() (string, bool)   { return "", false }
+func (v *NonNullExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *NonNullExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *NonNullExpression) TKids() []any            { return nil }
+func (v *NonNullExpression) TStruct() bool           { return true }
+func (v *NonNullExpression) TFresh() bool            { return false }
+func (v *NonNullExpression) TSetFresh(bool)          {}
 func (v *NonNullExpression) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *NonNullExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -6768,12 +5007,14 @@ func (v *NonNullExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ObjectBindingPattern) TName() string         { return "ObjectBindingPattern" }
-func (v *ObjectBindingPattern) TText() (string, bool) { return "", false }
-func (v *ObjectBindingPattern) TKids() []any          { return nil }
-func (v *ObjectBindingPattern) TStruct() bool         { return true }
-func (v *ObjectBindingPattern) TFresh() bool          { return false }
-func (v *ObjectBindingPattern) TSetFresh(bool)        {}
+func (v *ObjectBindingPattern) TName() string           { return "ObjectBindingPattern" }
+func (v *ObjectBindingPattern) TText() (string, bool)   { return "", false }
+func (v *ObjectBindingPattern) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ObjectBindingPattern) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ObjectBindingPattern) TKids() []any            { return nil }
+func (v *ObjectBindingPattern) TStruct() bool           { return true }
+func (v *ObjectBindingPattern) TFresh() bool            { return false }
+func (v *ObjectBindingPattern) TSetFresh(bool)          {}
 func (v *ObjectBindingPattern) TField(name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -6794,26 +5035,6 @@ func (v *ObjectBindingPattern) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ObjectBindingPattern) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Elements":
-		if v.Elements == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Elements == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Elements))
-			for i, x := range v.Elements {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *ObjectBindingPattern) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -6822,12 +5043,14 @@ func (v *ObjectBindingPattern) TZeroField(c *rt.TActCtx, name string) (any, bool
 	return nil, false
 }
 
-func (v *ObjectLiteralExpression) TName() string         { return "ObjectLiteralExpression" }
-func (v *ObjectLiteralExpression) TText() (string, bool) { return "", false }
-func (v *ObjectLiteralExpression) TKids() []any          { return nil }
-func (v *ObjectLiteralExpression) TStruct() bool         { return true }
-func (v *ObjectLiteralExpression) TFresh() bool          { return false }
-func (v *ObjectLiteralExpression) TSetFresh(bool)        {}
+func (v *ObjectLiteralExpression) TName() string           { return "ObjectLiteralExpression" }
+func (v *ObjectLiteralExpression) TText() (string, bool)   { return "", false }
+func (v *ObjectLiteralExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ObjectLiteralExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ObjectLiteralExpression) TKids() []any            { return nil }
+func (v *ObjectLiteralExpression) TStruct() bool           { return true }
+func (v *ObjectLiteralExpression) TFresh() bool            { return false }
+func (v *ObjectLiteralExpression) TSetFresh(bool)          {}
 func (v *ObjectLiteralExpression) TField(name string) (any, bool) {
 	switch name {
 	case "Properties":
@@ -6848,26 +5071,6 @@ func (v *ObjectLiteralExpression) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ObjectLiteralExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Properties":
-		if v.Properties == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Properties == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Properties))
-			for i, x := range v.Properties {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *ObjectLiteralExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Properties":
@@ -6876,21 +5079,15 @@ func (v *ObjectLiteralExpression) TZeroField(c *rt.TActCtx, name string) (any, b
 	return nil, false
 }
 
-func (v *OptionalType) TName() string         { return "OptionalType" }
-func (v *OptionalType) TText() (string, bool) { return "", false }
-func (v *OptionalType) TKids() []any          { return nil }
-func (v *OptionalType) TStruct() bool         { return true }
-func (v *OptionalType) TFresh() bool          { return false }
-func (v *OptionalType) TSetFresh(bool)        {}
+func (v *OptionalType) TName() string           { return "OptionalType" }
+func (v *OptionalType) TText() (string, bool)   { return "", false }
+func (v *OptionalType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *OptionalType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *OptionalType) TKids() []any            { return nil }
+func (v *OptionalType) TStruct() bool           { return true }
+func (v *OptionalType) TFresh() bool            { return false }
+func (v *OptionalType) TSetFresh(bool)          {}
 func (v *OptionalType) TField(name string) (any, bool) {
-	switch name {
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
-func (v *OptionalType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Type":
 		return rt.TBack(SXIRHooks, v.Type), true
@@ -6904,12 +5101,14 @@ func (v *OptionalType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Parameter) TName() string         { return "Parameter" }
-func (v *Parameter) TText() (string, bool) { return "", false }
-func (v *Parameter) TKids() []any          { return nil }
-func (v *Parameter) TStruct() bool         { return true }
-func (v *Parameter) TFresh() bool          { return false }
-func (v *Parameter) TSetFresh(bool)        {}
+func (v *Parameter) TName() string           { return "Parameter" }
+func (v *Parameter) TText() (string, bool)   { return "", false }
+func (v *Parameter) TSpan() (int, int)       { return v.Start, v.End }
+func (v *Parameter) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *Parameter) TKids() []any            { return nil }
+func (v *Parameter) TStruct() bool           { return true }
+func (v *Parameter) TFresh() bool            { return false }
+func (v *Parameter) TSetFresh(bool)          {}
 func (v *Parameter) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -6940,36 +5139,6 @@ func (v *Parameter) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *Parameter) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "DotDotDotToken":
-		return tb0(v.DotDotDotToken), true
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "QuestionToken":
-		return tb0(v.QuestionToken), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Initializer":
-		return rt.TBack(SXIRHooks, v.Initializer), true
-	}
-	return nil, false
-}
-
 func (v *Parameter) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -6978,21 +5147,15 @@ func (v *Parameter) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ParenthesizedExpression) TName() string         { return "ParenthesizedExpression" }
-func (v *ParenthesizedExpression) TText() (string, bool) { return "", false }
-func (v *ParenthesizedExpression) TKids() []any          { return nil }
-func (v *ParenthesizedExpression) TStruct() bool         { return true }
-func (v *ParenthesizedExpression) TFresh() bool          { return false }
-func (v *ParenthesizedExpression) TSetFresh(bool)        {}
+func (v *ParenthesizedExpression) TName() string           { return "ParenthesizedExpression" }
+func (v *ParenthesizedExpression) TText() (string, bool)   { return "", false }
+func (v *ParenthesizedExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ParenthesizedExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ParenthesizedExpression) TKids() []any            { return nil }
+func (v *ParenthesizedExpression) TStruct() bool           { return true }
+func (v *ParenthesizedExpression) TFresh() bool            { return false }
+func (v *ParenthesizedExpression) TSetFresh(bool)          {}
 func (v *ParenthesizedExpression) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *ParenthesizedExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -7006,21 +5169,15 @@ func (v *ParenthesizedExpression) TZeroField(c *rt.TActCtx, name string) (any, b
 	return nil, false
 }
 
-func (v *ParenthesizedType) TName() string         { return "ParenthesizedType" }
-func (v *ParenthesizedType) TText() (string, bool) { return "", false }
-func (v *ParenthesizedType) TKids() []any          { return nil }
-func (v *ParenthesizedType) TStruct() bool         { return true }
-func (v *ParenthesizedType) TFresh() bool          { return false }
-func (v *ParenthesizedType) TSetFresh(bool)        {}
+func (v *ParenthesizedType) TName() string           { return "ParenthesizedType" }
+func (v *ParenthesizedType) TText() (string, bool)   { return "", false }
+func (v *ParenthesizedType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ParenthesizedType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ParenthesizedType) TKids() []any            { return nil }
+func (v *ParenthesizedType) TStruct() bool           { return true }
+func (v *ParenthesizedType) TFresh() bool            { return false }
+func (v *ParenthesizedType) TSetFresh(bool)          {}
 func (v *ParenthesizedType) TField(name string) (any, bool) {
-	switch name {
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
-func (v *ParenthesizedType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Type":
 		return rt.TBack(SXIRHooks, v.Type), true
@@ -7034,12 +5191,14 @@ func (v *ParenthesizedType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *PostfixUnaryExpression) TName() string         { return "PostfixUnaryExpression" }
-func (v *PostfixUnaryExpression) TText() (string, bool) { return "", false }
-func (v *PostfixUnaryExpression) TKids() []any          { return nil }
-func (v *PostfixUnaryExpression) TStruct() bool         { return true }
-func (v *PostfixUnaryExpression) TFresh() bool          { return false }
-func (v *PostfixUnaryExpression) TSetFresh(bool)        {}
+func (v *PostfixUnaryExpression) TName() string           { return "PostfixUnaryExpression" }
+func (v *PostfixUnaryExpression) TText() (string, bool)   { return "", false }
+func (v *PostfixUnaryExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *PostfixUnaryExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *PostfixUnaryExpression) TKids() []any            { return nil }
+func (v *PostfixUnaryExpression) TStruct() bool           { return true }
+func (v *PostfixUnaryExpression) TFresh() bool            { return false }
+func (v *PostfixUnaryExpression) TSetFresh(bool)          {}
 func (v *PostfixUnaryExpression) TField(name string) (any, bool) {
 	switch name {
 	case "Operand":
@@ -7058,28 +5217,20 @@ func (v *PostfixUnaryExpression) TStrField(name string) (string, bool) {
 	return "", false
 }
 
-func (v *PostfixUnaryExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Operand":
-		return rt.TBack(SXIRHooks, v.Operand), true
-	case "Operator":
-		return any(v.Operator), true
-	}
-	return nil, false
-}
-
 func (v *PostfixUnaryExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	}
 	return nil, false
 }
 
-func (v *PrefixUnaryExpression) TName() string         { return "PrefixUnaryExpression" }
-func (v *PrefixUnaryExpression) TText() (string, bool) { return "", false }
-func (v *PrefixUnaryExpression) TKids() []any          { return nil }
-func (v *PrefixUnaryExpression) TStruct() bool         { return true }
-func (v *PrefixUnaryExpression) TFresh() bool          { return false }
-func (v *PrefixUnaryExpression) TSetFresh(bool)        {}
+func (v *PrefixUnaryExpression) TName() string           { return "PrefixUnaryExpression" }
+func (v *PrefixUnaryExpression) TText() (string, bool)   { return "", false }
+func (v *PrefixUnaryExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *PrefixUnaryExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *PrefixUnaryExpression) TKids() []any            { return nil }
+func (v *PrefixUnaryExpression) TStruct() bool           { return true }
+func (v *PrefixUnaryExpression) TFresh() bool            { return false }
+func (v *PrefixUnaryExpression) TSetFresh(bool)          {}
 func (v *PrefixUnaryExpression) TField(name string) (any, bool) {
 	switch name {
 	case "Operator":
@@ -7098,41 +5249,21 @@ func (v *PrefixUnaryExpression) TStrField(name string) (string, bool) {
 	return "", false
 }
 
-func (v *PrefixUnaryExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Operator":
-		return any(v.Operator), true
-	case "Operand":
-		return rt.TBack(SXIRHooks, v.Operand), true
-	}
-	return nil, false
-}
-
 func (v *PrefixUnaryExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	}
 	return nil, false
 }
 
-func (v *PropertyAccessExpression) TName() string         { return "PropertyAccessExpression" }
-func (v *PropertyAccessExpression) TText() (string, bool) { return "", false }
-func (v *PropertyAccessExpression) TKids() []any          { return nil }
-func (v *PropertyAccessExpression) TStruct() bool         { return true }
-func (v *PropertyAccessExpression) TFresh() bool          { return false }
-func (v *PropertyAccessExpression) TSetFresh(bool)        {}
+func (v *PropertyAccessExpression) TName() string           { return "PropertyAccessExpression" }
+func (v *PropertyAccessExpression) TText() (string, bool)   { return "", false }
+func (v *PropertyAccessExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *PropertyAccessExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *PropertyAccessExpression) TKids() []any            { return nil }
+func (v *PropertyAccessExpression) TStruct() bool           { return true }
+func (v *PropertyAccessExpression) TFresh() bool            { return false }
+func (v *PropertyAccessExpression) TSetFresh(bool)          {}
 func (v *PropertyAccessExpression) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "QuestionDotToken":
-		return tb0(v.QuestionDotToken), true
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	}
-	return nil, false
-}
-
-func (v *PropertyAccessExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -7150,12 +5281,14 @@ func (v *PropertyAccessExpression) TZeroField(c *rt.TActCtx, name string) (any, 
 	return nil, false
 }
 
-func (v *PropertyAssignment) TName() string         { return "PropertyAssignment" }
-func (v *PropertyAssignment) TText() (string, bool) { return "", false }
-func (v *PropertyAssignment) TKids() []any          { return nil }
-func (v *PropertyAssignment) TStruct() bool         { return true }
-func (v *PropertyAssignment) TFresh() bool          { return false }
-func (v *PropertyAssignment) TSetFresh(bool)        {}
+func (v *PropertyAssignment) TName() string           { return "PropertyAssignment" }
+func (v *PropertyAssignment) TText() (string, bool)   { return "", false }
+func (v *PropertyAssignment) TSpan() (int, int)       { return v.Start, v.End }
+func (v *PropertyAssignment) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *PropertyAssignment) TKids() []any            { return nil }
+func (v *PropertyAssignment) TStruct() bool           { return true }
+func (v *PropertyAssignment) TFresh() bool            { return false }
+func (v *PropertyAssignment) TSetFresh(bool)          {}
 func (v *PropertyAssignment) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -7184,34 +5317,6 @@ func (v *PropertyAssignment) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *PropertyAssignment) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "QuestionToken":
-		return tb0(v.QuestionToken), true
-	case "ExclamationToken":
-		return tb0(v.ExclamationToken), true
-	case "Initializer":
-		return rt.TBack(SXIRHooks, v.Initializer), true
-	}
-	return nil, false
-}
-
 func (v *PropertyAssignment) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -7220,12 +5325,14 @@ func (v *PropertyAssignment) TZeroField(c *rt.TActCtx, name string) (any, bool) 
 	return nil, false
 }
 
-func (v *PropertyDeclaration) TName() string         { return "PropertyDeclaration" }
-func (v *PropertyDeclaration) TText() (string, bool) { return "", false }
-func (v *PropertyDeclaration) TKids() []any          { return nil }
-func (v *PropertyDeclaration) TStruct() bool         { return true }
-func (v *PropertyDeclaration) TFresh() bool          { return false }
-func (v *PropertyDeclaration) TSetFresh(bool)        {}
+func (v *PropertyDeclaration) TName() string           { return "PropertyDeclaration" }
+func (v *PropertyDeclaration) TText() (string, bool)   { return "", false }
+func (v *PropertyDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *PropertyDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *PropertyDeclaration) TKids() []any            { return nil }
+func (v *PropertyDeclaration) TStruct() bool           { return true }
+func (v *PropertyDeclaration) TFresh() bool            { return false }
+func (v *PropertyDeclaration) TSetFresh(bool)          {}
 func (v *PropertyDeclaration) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -7256,36 +5363,6 @@ func (v *PropertyDeclaration) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *PropertyDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "QuestionToken":
-		return tb0(v.QuestionToken), true
-	case "ExclamationToken":
-		return tb0(v.ExclamationToken), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Initializer":
-		return rt.TBack(SXIRHooks, v.Initializer), true
-	}
-	return nil, false
-}
-
 func (v *PropertyDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -7294,12 +5371,14 @@ func (v *PropertyDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool)
 	return nil, false
 }
 
-func (v *PropertySignature) TName() string         { return "PropertySignature" }
-func (v *PropertySignature) TText() (string, bool) { return "", false }
-func (v *PropertySignature) TKids() []any          { return nil }
-func (v *PropertySignature) TStruct() bool         { return true }
-func (v *PropertySignature) TFresh() bool          { return false }
-func (v *PropertySignature) TSetFresh(bool)        {}
+func (v *PropertySignature) TName() string           { return "PropertySignature" }
+func (v *PropertySignature) TText() (string, bool)   { return "", false }
+func (v *PropertySignature) TSpan() (int, int)       { return v.Start, v.End }
+func (v *PropertySignature) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *PropertySignature) TKids() []any            { return nil }
+func (v *PropertySignature) TStruct() bool           { return true }
+func (v *PropertySignature) TFresh() bool            { return false }
+func (v *PropertySignature) TSetFresh(bool)          {}
 func (v *PropertySignature) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -7328,34 +5407,6 @@ func (v *PropertySignature) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *PropertySignature) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "QuestionToken":
-		return tb0(v.QuestionToken), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Initializer":
-		return rt.TBack(SXIRHooks, v.Initializer), true
-	}
-	return nil, false
-}
-
 func (v *PropertySignature) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -7364,23 +5415,15 @@ func (v *PropertySignature) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *QualifiedName) TName() string         { return "QualifiedName" }
-func (v *QualifiedName) TText() (string, bool) { return "", false }
-func (v *QualifiedName) TKids() []any          { return nil }
-func (v *QualifiedName) TStruct() bool         { return true }
-func (v *QualifiedName) TFresh() bool          { return false }
-func (v *QualifiedName) TSetFresh(bool)        {}
+func (v *QualifiedName) TName() string           { return "QualifiedName" }
+func (v *QualifiedName) TText() (string, bool)   { return "", false }
+func (v *QualifiedName) TSpan() (int, int)       { return v.Start, v.End }
+func (v *QualifiedName) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *QualifiedName) TKids() []any            { return nil }
+func (v *QualifiedName) TStruct() bool           { return true }
+func (v *QualifiedName) TFresh() bool            { return false }
+func (v *QualifiedName) TSetFresh(bool)          {}
 func (v *QualifiedName) TField(name string) (any, bool) {
-	switch name {
-	case "Left":
-		return rt.TBack(SXIRHooks, v.Left), true
-	case "Right":
-		return tb1(v.Right), true
-	}
-	return nil, false
-}
-
-func (v *QualifiedName) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Left":
 		return rt.TBack(SXIRHooks, v.Left), true
@@ -7396,21 +5439,15 @@ func (v *QualifiedName) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *RestType) TName() string         { return "RestType" }
-func (v *RestType) TText() (string, bool) { return "", false }
-func (v *RestType) TKids() []any          { return nil }
-func (v *RestType) TStruct() bool         { return true }
-func (v *RestType) TFresh() bool          { return false }
-func (v *RestType) TSetFresh(bool)        {}
+func (v *RestType) TName() string           { return "RestType" }
+func (v *RestType) TText() (string, bool)   { return "", false }
+func (v *RestType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *RestType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *RestType) TKids() []any            { return nil }
+func (v *RestType) TStruct() bool           { return true }
+func (v *RestType) TFresh() bool            { return false }
+func (v *RestType) TSetFresh(bool)          {}
 func (v *RestType) TField(name string) (any, bool) {
-	switch name {
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
-func (v *RestType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Type":
 		return rt.TBack(SXIRHooks, v.Type), true
@@ -7424,21 +5461,15 @@ func (v *RestType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ReturnStatement) TName() string         { return "ReturnStatement" }
-func (v *ReturnStatement) TText() (string, bool) { return "", false }
-func (v *ReturnStatement) TKids() []any          { return nil }
-func (v *ReturnStatement) TStruct() bool         { return true }
-func (v *ReturnStatement) TFresh() bool          { return false }
-func (v *ReturnStatement) TSetFresh(bool)        {}
+func (v *ReturnStatement) TName() string           { return "ReturnStatement" }
+func (v *ReturnStatement) TText() (string, bool)   { return "", false }
+func (v *ReturnStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ReturnStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ReturnStatement) TKids() []any            { return nil }
+func (v *ReturnStatement) TStruct() bool           { return true }
+func (v *ReturnStatement) TFresh() bool            { return false }
+func (v *ReturnStatement) TSetFresh(bool)          {}
 func (v *ReturnStatement) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *ReturnStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -7452,23 +5483,15 @@ func (v *ReturnStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *SatisfiesExpression) TName() string         { return "SatisfiesExpression" }
-func (v *SatisfiesExpression) TText() (string, bool) { return "", false }
-func (v *SatisfiesExpression) TKids() []any          { return nil }
-func (v *SatisfiesExpression) TStruct() bool         { return true }
-func (v *SatisfiesExpression) TFresh() bool          { return false }
-func (v *SatisfiesExpression) TSetFresh(bool)        {}
+func (v *SatisfiesExpression) TName() string           { return "SatisfiesExpression" }
+func (v *SatisfiesExpression) TText() (string, bool)   { return "", false }
+func (v *SatisfiesExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *SatisfiesExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *SatisfiesExpression) TKids() []any            { return nil }
+func (v *SatisfiesExpression) TStruct() bool           { return true }
+func (v *SatisfiesExpression) TFresh() bool            { return false }
+func (v *SatisfiesExpression) TSetFresh(bool)          {}
 func (v *SatisfiesExpression) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
-func (v *SatisfiesExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -7484,12 +5507,14 @@ func (v *SatisfiesExpression) TZeroField(c *rt.TActCtx, name string) (any, bool)
 	return nil, false
 }
 
-func (v *SetAccessor) TName() string         { return "SetAccessor" }
-func (v *SetAccessor) TText() (string, bool) { return "", false }
-func (v *SetAccessor) TKids() []any          { return nil }
-func (v *SetAccessor) TStruct() bool         { return true }
-func (v *SetAccessor) TFresh() bool          { return false }
-func (v *SetAccessor) TSetFresh(bool)        {}
+func (v *SetAccessor) TName() string           { return "SetAccessor" }
+func (v *SetAccessor) TText() (string, bool)   { return "", false }
+func (v *SetAccessor) TSpan() (int, int)       { return v.Start, v.End }
+func (v *SetAccessor) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *SetAccessor) TKids() []any            { return nil }
+func (v *SetAccessor) TStruct() bool           { return true }
+func (v *SetAccessor) TFresh() bool            { return false }
+func (v *SetAccessor) TSetFresh(bool)          {}
 func (v *SetAccessor) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -7544,60 +5569,6 @@ func (v *SetAccessor) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *SetAccessor) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Parameters":
-		if v.Parameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Parameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Parameters))
-			for i, x := range v.Parameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Body":
-		return rt.TPtr(v.Body), true
-	}
-	return nil, false
-}
-
 func (v *SetAccessor) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -7610,12 +5581,14 @@ func (v *SetAccessor) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ShorthandPropertyAssignment) TName() string         { return "ShorthandPropertyAssignment" }
-func (v *ShorthandPropertyAssignment) TText() (string, bool) { return "", false }
-func (v *ShorthandPropertyAssignment) TKids() []any          { return nil }
-func (v *ShorthandPropertyAssignment) TStruct() bool         { return true }
-func (v *ShorthandPropertyAssignment) TFresh() bool          { return false }
-func (v *ShorthandPropertyAssignment) TSetFresh(bool)        {}
+func (v *ShorthandPropertyAssignment) TName() string           { return "ShorthandPropertyAssignment" }
+func (v *ShorthandPropertyAssignment) TText() (string, bool)   { return "", false }
+func (v *ShorthandPropertyAssignment) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ShorthandPropertyAssignment) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ShorthandPropertyAssignment) TKids() []any            { return nil }
+func (v *ShorthandPropertyAssignment) TStruct() bool           { return true }
+func (v *ShorthandPropertyAssignment) TFresh() bool            { return false }
+func (v *ShorthandPropertyAssignment) TSetFresh(bool)          {}
 func (v *ShorthandPropertyAssignment) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -7646,36 +5619,6 @@ func (v *ShorthandPropertyAssignment) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ShorthandPropertyAssignment) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return tb1(v.Name), true
-	case "QuestionToken":
-		return tb0(v.QuestionToken), true
-	case "ExclamationToken":
-		return tb0(v.ExclamationToken), true
-	case "EqualsToken":
-		return tb0(v.EqualsToken), true
-	case "ObjectAssignmentInitializer":
-		return rt.TBack(SXIRHooks, v.ObjectAssignmentInitializer), true
-	}
-	return nil, false
-}
-
 func (v *ShorthandPropertyAssignment) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -7684,12 +5627,14 @@ func (v *ShorthandPropertyAssignment) TZeroField(c *rt.TActCtx, name string) (an
 	return nil, false
 }
 
-func (v *SourceFile) TName() string         { return "SourceFile" }
-func (v *SourceFile) TText() (string, bool) { return "", false }
-func (v *SourceFile) TKids() []any          { return nil }
-func (v *SourceFile) TStruct() bool         { return true }
-func (v *SourceFile) TFresh() bool          { return false }
-func (v *SourceFile) TSetFresh(bool)        {}
+func (v *SourceFile) TName() string           { return "SourceFile" }
+func (v *SourceFile) TText() (string, bool)   { return "", false }
+func (v *SourceFile) TSpan() (int, int)       { return v.Start, v.End }
+func (v *SourceFile) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *SourceFile) TKids() []any            { return nil }
+func (v *SourceFile) TStruct() bool           { return true }
+func (v *SourceFile) TFresh() bool            { return false }
+func (v *SourceFile) TSetFresh(bool)          {}
 func (v *SourceFile) TField(name string) (any, bool) {
 	switch name {
 	case "Statements":
@@ -7712,28 +5657,6 @@ func (v *SourceFile) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *SourceFile) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Statements":
-		if v.Statements == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Statements == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Statements))
-			for i, x := range v.Statements {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "EndOfFileToken":
-		return tb4(v.EndOfFileToken), true
-	}
-	return nil, false
-}
-
 func (v *SourceFile) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Statements":
@@ -7742,21 +5665,15 @@ func (v *SourceFile) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *SpreadAssignment) TName() string         { return "SpreadAssignment" }
-func (v *SpreadAssignment) TText() (string, bool) { return "", false }
-func (v *SpreadAssignment) TKids() []any          { return nil }
-func (v *SpreadAssignment) TStruct() bool         { return true }
-func (v *SpreadAssignment) TFresh() bool          { return false }
-func (v *SpreadAssignment) TSetFresh(bool)        {}
+func (v *SpreadAssignment) TName() string           { return "SpreadAssignment" }
+func (v *SpreadAssignment) TText() (string, bool)   { return "", false }
+func (v *SpreadAssignment) TSpan() (int, int)       { return v.Start, v.End }
+func (v *SpreadAssignment) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *SpreadAssignment) TKids() []any            { return nil }
+func (v *SpreadAssignment) TStruct() bool           { return true }
+func (v *SpreadAssignment) TFresh() bool            { return false }
+func (v *SpreadAssignment) TSetFresh(bool)          {}
 func (v *SpreadAssignment) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *SpreadAssignment) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -7770,21 +5687,15 @@ func (v *SpreadAssignment) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *SpreadElement) TName() string         { return "SpreadElement" }
-func (v *SpreadElement) TText() (string, bool) { return "", false }
-func (v *SpreadElement) TKids() []any          { return nil }
-func (v *SpreadElement) TStruct() bool         { return true }
-func (v *SpreadElement) TFresh() bool          { return false }
-func (v *SpreadElement) TSetFresh(bool)        {}
+func (v *SpreadElement) TName() string           { return "SpreadElement" }
+func (v *SpreadElement) TText() (string, bool)   { return "", false }
+func (v *SpreadElement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *SpreadElement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *SpreadElement) TKids() []any            { return nil }
+func (v *SpreadElement) TStruct() bool           { return true }
+func (v *SpreadElement) TFresh() bool            { return false }
+func (v *SpreadElement) TSetFresh(bool)          {}
 func (v *SpreadElement) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *SpreadElement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -7798,26 +5709,15 @@ func (v *SpreadElement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *SwitchStatement) TName() string         { return "SwitchStatement" }
-func (v *SwitchStatement) TText() (string, bool) { return "", false }
-func (v *SwitchStatement) TKids() []any          { return nil }
-func (v *SwitchStatement) TStruct() bool         { return true }
-func (v *SwitchStatement) TFresh() bool          { return false }
-func (v *SwitchStatement) TSetFresh(bool)        {}
+func (v *SwitchStatement) TName() string           { return "SwitchStatement" }
+func (v *SwitchStatement) TText() (string, bool)   { return "", false }
+func (v *SwitchStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *SwitchStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *SwitchStatement) TKids() []any            { return nil }
+func (v *SwitchStatement) TStruct() bool           { return true }
+func (v *SwitchStatement) TFresh() bool            { return false }
+func (v *SwitchStatement) TSetFresh(bool)          {}
 func (v *SwitchStatement) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "CaseBlock":
-		if v.CaseBlock == nil {
-			return nil, false
-		}
-		return rt.TPtr(v.CaseBlock), true
-	}
-	return nil, false
-}
-
-func (v *SwitchStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -7838,12 +5738,14 @@ func (v *SwitchStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TaggedTemplateExpression) TName() string         { return "TaggedTemplateExpression" }
-func (v *TaggedTemplateExpression) TText() (string, bool) { return "", false }
-func (v *TaggedTemplateExpression) TKids() []any          { return nil }
-func (v *TaggedTemplateExpression) TStruct() bool         { return true }
-func (v *TaggedTemplateExpression) TFresh() bool          { return false }
-func (v *TaggedTemplateExpression) TSetFresh(bool)        {}
+func (v *TaggedTemplateExpression) TName() string           { return "TaggedTemplateExpression" }
+func (v *TaggedTemplateExpression) TText() (string, bool)   { return "", false }
+func (v *TaggedTemplateExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TaggedTemplateExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TaggedTemplateExpression) TKids() []any            { return nil }
+func (v *TaggedTemplateExpression) TStruct() bool           { return true }
+func (v *TaggedTemplateExpression) TFresh() bool            { return false }
+func (v *TaggedTemplateExpression) TSetFresh(bool)          {}
 func (v *TaggedTemplateExpression) TField(name string) (any, bool) {
 	switch name {
 	case "Tag":
@@ -7870,32 +5772,6 @@ func (v *TaggedTemplateExpression) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TaggedTemplateExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Tag":
-		return rt.TBack(SXIRHooks, v.Tag), true
-	case "QuestionDotToken":
-		return tb0(v.QuestionDotToken), true
-	case "TypeArguments":
-		if v.TypeArguments == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeArguments == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeArguments))
-			for i, x := range v.TypeArguments {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Template":
-		return rt.TBack(SXIRHooks, v.Template), true
-	}
-	return nil, false
-}
-
 func (v *TaggedTemplateExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TypeArguments":
@@ -7904,12 +5780,14 @@ func (v *TaggedTemplateExpression) TZeroField(c *rt.TActCtx, name string) (any, 
 	return nil, false
 }
 
-func (v *TemplateExpression) TName() string         { return "TemplateExpression" }
-func (v *TemplateExpression) TText() (string, bool) { return "", false }
-func (v *TemplateExpression) TKids() []any          { return nil }
-func (v *TemplateExpression) TStruct() bool         { return true }
-func (v *TemplateExpression) TFresh() bool          { return false }
-func (v *TemplateExpression) TSetFresh(bool)        {}
+func (v *TemplateExpression) TName() string           { return "TemplateExpression" }
+func (v *TemplateExpression) TText() (string, bool)   { return "", false }
+func (v *TemplateExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TemplateExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TemplateExpression) TKids() []any            { return nil }
+func (v *TemplateExpression) TStruct() bool           { return true }
+func (v *TemplateExpression) TFresh() bool            { return false }
+func (v *TemplateExpression) TSetFresh(bool)          {}
 func (v *TemplateExpression) TField(name string) (any, bool) {
 	switch name {
 	case "Head":
@@ -7932,28 +5810,6 @@ func (v *TemplateExpression) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TemplateExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Head":
-		return tb5(v.Head), true
-	case "TemplateSpans":
-		if v.TemplateSpans == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TemplateSpans == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TemplateSpans))
-			for i, x := range v.TemplateSpans {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *TemplateExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TemplateSpans":
@@ -7962,12 +5818,14 @@ func (v *TemplateExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) 
 	return nil, false
 }
 
-func (v *TemplateLiteralType) TName() string         { return "TemplateLiteralType" }
-func (v *TemplateLiteralType) TText() (string, bool) { return "", false }
-func (v *TemplateLiteralType) TKids() []any          { return nil }
-func (v *TemplateLiteralType) TStruct() bool         { return true }
-func (v *TemplateLiteralType) TFresh() bool          { return false }
-func (v *TemplateLiteralType) TSetFresh(bool)        {}
+func (v *TemplateLiteralType) TName() string           { return "TemplateLiteralType" }
+func (v *TemplateLiteralType) TText() (string, bool)   { return "", false }
+func (v *TemplateLiteralType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TemplateLiteralType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TemplateLiteralType) TKids() []any            { return nil }
+func (v *TemplateLiteralType) TStruct() bool           { return true }
+func (v *TemplateLiteralType) TFresh() bool            { return false }
+func (v *TemplateLiteralType) TSetFresh(bool)          {}
 func (v *TemplateLiteralType) TField(name string) (any, bool) {
 	switch name {
 	case "Head":
@@ -7990,28 +5848,6 @@ func (v *TemplateLiteralType) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TemplateLiteralType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Head":
-		return tb5(v.Head), true
-	case "TemplateSpans":
-		if v.TemplateSpans == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TemplateSpans == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TemplateSpans))
-			for i, x := range v.TemplateSpans {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *TemplateLiteralType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TemplateSpans":
@@ -8020,23 +5856,15 @@ func (v *TemplateLiteralType) TZeroField(c *rt.TActCtx, name string) (any, bool)
 	return nil, false
 }
 
-func (v *TemplateLiteralTypeSpan) TName() string         { return "TemplateLiteralTypeSpan" }
-func (v *TemplateLiteralTypeSpan) TText() (string, bool) { return "", false }
-func (v *TemplateLiteralTypeSpan) TKids() []any          { return nil }
-func (v *TemplateLiteralTypeSpan) TStruct() bool         { return true }
-func (v *TemplateLiteralTypeSpan) TFresh() bool          { return false }
-func (v *TemplateLiteralTypeSpan) TSetFresh(bool)        {}
+func (v *TemplateLiteralTypeSpan) TName() string           { return "TemplateLiteralTypeSpan" }
+func (v *TemplateLiteralTypeSpan) TText() (string, bool)   { return "", false }
+func (v *TemplateLiteralTypeSpan) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TemplateLiteralTypeSpan) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TemplateLiteralTypeSpan) TKids() []any            { return nil }
+func (v *TemplateLiteralTypeSpan) TStruct() bool           { return true }
+func (v *TemplateLiteralTypeSpan) TFresh() bool            { return false }
+func (v *TemplateLiteralTypeSpan) TSetFresh(bool)          {}
 func (v *TemplateLiteralTypeSpan) TField(name string) (any, bool) {
-	switch name {
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Literal":
-		return rt.TBack(SXIRHooks, v.Literal), true
-	}
-	return nil, false
-}
-
-func (v *TemplateLiteralTypeSpan) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Type":
 		return rt.TBack(SXIRHooks, v.Type), true
@@ -8052,23 +5880,15 @@ func (v *TemplateLiteralTypeSpan) TZeroField(c *rt.TActCtx, name string) (any, b
 	return nil, false
 }
 
-func (v *TemplateSpan) TName() string         { return "TemplateSpan" }
-func (v *TemplateSpan) TText() (string, bool) { return "", false }
-func (v *TemplateSpan) TKids() []any          { return nil }
-func (v *TemplateSpan) TStruct() bool         { return true }
-func (v *TemplateSpan) TFresh() bool          { return false }
-func (v *TemplateSpan) TSetFresh(bool)        {}
+func (v *TemplateSpan) TName() string           { return "TemplateSpan" }
+func (v *TemplateSpan) TText() (string, bool)   { return "", false }
+func (v *TemplateSpan) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TemplateSpan) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TemplateSpan) TKids() []any            { return nil }
+func (v *TemplateSpan) TStruct() bool           { return true }
+func (v *TemplateSpan) TFresh() bool            { return false }
+func (v *TemplateSpan) TSetFresh(bool)          {}
 func (v *TemplateSpan) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "Literal":
-		return rt.TBack(SXIRHooks, v.Literal), true
-	}
-	return nil, false
-}
-
-func (v *TemplateSpan) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -8084,21 +5904,15 @@ func (v *TemplateSpan) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *ThrowStatement) TName() string         { return "ThrowStatement" }
-func (v *ThrowStatement) TText() (string, bool) { return "", false }
-func (v *ThrowStatement) TKids() []any          { return nil }
-func (v *ThrowStatement) TStruct() bool         { return true }
-func (v *ThrowStatement) TFresh() bool          { return false }
-func (v *ThrowStatement) TSetFresh(bool)        {}
+func (v *ThrowStatement) TName() string           { return "ThrowStatement" }
+func (v *ThrowStatement) TText() (string, bool)   { return "", false }
+func (v *ThrowStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *ThrowStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *ThrowStatement) TKids() []any            { return nil }
+func (v *ThrowStatement) TStruct() bool           { return true }
+func (v *ThrowStatement) TFresh() bool            { return false }
+func (v *ThrowStatement) TSetFresh(bool)          {}
 func (v *ThrowStatement) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *ThrowStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -8112,28 +5926,15 @@ func (v *ThrowStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TryStatement) TName() string         { return "TryStatement" }
-func (v *TryStatement) TText() (string, bool) { return "", false }
-func (v *TryStatement) TKids() []any          { return nil }
-func (v *TryStatement) TStruct() bool         { return true }
-func (v *TryStatement) TFresh() bool          { return false }
-func (v *TryStatement) TSetFresh(bool)        {}
+func (v *TryStatement) TName() string           { return "TryStatement" }
+func (v *TryStatement) TText() (string, bool)   { return "", false }
+func (v *TryStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TryStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TryStatement) TKids() []any            { return nil }
+func (v *TryStatement) TStruct() bool           { return true }
+func (v *TryStatement) TFresh() bool            { return false }
+func (v *TryStatement) TSetFresh(bool)          {}
 func (v *TryStatement) TField(name string) (any, bool) {
-	switch name {
-	case "TryBlock":
-		if v.TryBlock == nil {
-			return nil, false
-		}
-		return rt.TPtr(v.TryBlock), true
-	case "CatchClause":
-		return rt.TPtr(v.CatchClause), true
-	case "FinallyBlock":
-		return rt.TPtr(v.FinallyBlock), true
-	}
-	return nil, false
-}
-
-func (v *TryStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "TryBlock":
 		if v.TryBlock == nil {
@@ -8156,12 +5957,14 @@ func (v *TryStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TupleType) TName() string         { return "TupleType" }
-func (v *TupleType) TText() (string, bool) { return "", false }
-func (v *TupleType) TKids() []any          { return nil }
-func (v *TupleType) TStruct() bool         { return true }
-func (v *TupleType) TFresh() bool          { return false }
-func (v *TupleType) TSetFresh(bool)        {}
+func (v *TupleType) TName() string           { return "TupleType" }
+func (v *TupleType) TText() (string, bool)   { return "", false }
+func (v *TupleType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TupleType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TupleType) TKids() []any            { return nil }
+func (v *TupleType) TStruct() bool           { return true }
+func (v *TupleType) TFresh() bool            { return false }
+func (v *TupleType) TSetFresh(bool)          {}
 func (v *TupleType) TField(name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -8182,26 +5985,6 @@ func (v *TupleType) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TupleType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Elements":
-		if v.Elements == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Elements == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Elements))
-			for i, x := range v.Elements {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *TupleType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Elements":
@@ -8210,12 +5993,14 @@ func (v *TupleType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TypeAliasDeclaration) TName() string         { return "TypeAliasDeclaration" }
-func (v *TypeAliasDeclaration) TText() (string, bool) { return "", false }
-func (v *TypeAliasDeclaration) TKids() []any          { return nil }
-func (v *TypeAliasDeclaration) TStruct() bool         { return true }
-func (v *TypeAliasDeclaration) TFresh() bool          { return false }
-func (v *TypeAliasDeclaration) TSetFresh(bool)        {}
+func (v *TypeAliasDeclaration) TName() string           { return "TypeAliasDeclaration" }
+func (v *TypeAliasDeclaration) TText() (string, bool)   { return "", false }
+func (v *TypeAliasDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TypeAliasDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TypeAliasDeclaration) TKids() []any            { return nil }
+func (v *TypeAliasDeclaration) TStruct() bool           { return true }
+func (v *TypeAliasDeclaration) TFresh() bool            { return false }
+func (v *TypeAliasDeclaration) TSetFresh(bool)          {}
 func (v *TypeAliasDeclaration) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -8254,44 +6039,6 @@ func (v *TypeAliasDeclaration) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TypeAliasDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return tb1(v.Name), true
-	case "TypeParameters":
-		if v.TypeParameters == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeParameters == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeParameters))
-			for i, x := range v.TypeParameters {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
 func (v *TypeAliasDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -8302,23 +6049,15 @@ func (v *TypeAliasDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool
 	return nil, false
 }
 
-func (v *TypeAssertionExpression) TName() string         { return "TypeAssertionExpression" }
-func (v *TypeAssertionExpression) TText() (string, bool) { return "", false }
-func (v *TypeAssertionExpression) TKids() []any          { return nil }
-func (v *TypeAssertionExpression) TStruct() bool         { return true }
-func (v *TypeAssertionExpression) TFresh() bool          { return false }
-func (v *TypeAssertionExpression) TSetFresh(bool)        {}
+func (v *TypeAssertionExpression) TName() string           { return "TypeAssertionExpression" }
+func (v *TypeAssertionExpression) TText() (string, bool)   { return "", false }
+func (v *TypeAssertionExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TypeAssertionExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TypeAssertionExpression) TKids() []any            { return nil }
+func (v *TypeAssertionExpression) TStruct() bool           { return true }
+func (v *TypeAssertionExpression) TFresh() bool            { return false }
+func (v *TypeAssertionExpression) TSetFresh(bool)          {}
 func (v *TypeAssertionExpression) TField(name string) (any, bool) {
-	switch name {
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *TypeAssertionExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Type":
 		return rt.TBack(SXIRHooks, v.Type), true
@@ -8334,12 +6073,14 @@ func (v *TypeAssertionExpression) TZeroField(c *rt.TActCtx, name string) (any, b
 	return nil, false
 }
 
-func (v *TypeLiteral) TName() string         { return "TypeLiteral" }
-func (v *TypeLiteral) TText() (string, bool) { return "", false }
-func (v *TypeLiteral) TKids() []any          { return nil }
-func (v *TypeLiteral) TStruct() bool         { return true }
-func (v *TypeLiteral) TFresh() bool          { return false }
-func (v *TypeLiteral) TSetFresh(bool)        {}
+func (v *TypeLiteral) TName() string           { return "TypeLiteral" }
+func (v *TypeLiteral) TText() (string, bool)   { return "", false }
+func (v *TypeLiteral) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TypeLiteral) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TypeLiteral) TKids() []any            { return nil }
+func (v *TypeLiteral) TStruct() bool           { return true }
+func (v *TypeLiteral) TFresh() bool            { return false }
+func (v *TypeLiteral) TSetFresh(bool)          {}
 func (v *TypeLiteral) TField(name string) (any, bool) {
 	switch name {
 	case "Members":
@@ -8360,26 +6101,6 @@ func (v *TypeLiteral) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TypeLiteral) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Members":
-		if v.Members == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Members == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Members))
-			for i, x := range v.Members {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *TypeLiteral) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Members":
@@ -8388,21 +6109,15 @@ func (v *TypeLiteral) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TypeOfExpression) TName() string         { return "TypeOfExpression" }
-func (v *TypeOfExpression) TText() (string, bool) { return "", false }
-func (v *TypeOfExpression) TKids() []any          { return nil }
-func (v *TypeOfExpression) TStruct() bool         { return true }
-func (v *TypeOfExpression) TFresh() bool          { return false }
-func (v *TypeOfExpression) TSetFresh(bool)        {}
+func (v *TypeOfExpression) TName() string           { return "TypeOfExpression" }
+func (v *TypeOfExpression) TText() (string, bool)   { return "", false }
+func (v *TypeOfExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TypeOfExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TypeOfExpression) TKids() []any            { return nil }
+func (v *TypeOfExpression) TStruct() bool           { return true }
+func (v *TypeOfExpression) TFresh() bool            { return false }
+func (v *TypeOfExpression) TSetFresh(bool)          {}
 func (v *TypeOfExpression) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *TypeOfExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -8416,12 +6131,14 @@ func (v *TypeOfExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TypeOperator) TName() string         { return "TypeOperator" }
-func (v *TypeOperator) TText() (string, bool) { return "", false }
-func (v *TypeOperator) TKids() []any          { return nil }
-func (v *TypeOperator) TStruct() bool         { return true }
-func (v *TypeOperator) TFresh() bool          { return false }
-func (v *TypeOperator) TSetFresh(bool)        {}
+func (v *TypeOperator) TName() string           { return "TypeOperator" }
+func (v *TypeOperator) TText() (string, bool)   { return "", false }
+func (v *TypeOperator) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TypeOperator) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TypeOperator) TKids() []any            { return nil }
+func (v *TypeOperator) TStruct() bool           { return true }
+func (v *TypeOperator) TFresh() bool            { return false }
+func (v *TypeOperator) TSetFresh(bool)          {}
 func (v *TypeOperator) TField(name string) (any, bool) {
 	switch name {
 	case "Operator":
@@ -8440,28 +6157,20 @@ func (v *TypeOperator) TStrField(name string) (string, bool) {
 	return "", false
 }
 
-func (v *TypeOperator) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Operator":
-		return any(v.Operator), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
 func (v *TypeOperator) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	}
 	return nil, false
 }
 
-func (v *TypeParameter) TName() string         { return "TypeParameter" }
-func (v *TypeParameter) TText() (string, bool) { return "", false }
-func (v *TypeParameter) TKids() []any          { return nil }
-func (v *TypeParameter) TStruct() bool         { return true }
-func (v *TypeParameter) TFresh() bool          { return false }
-func (v *TypeParameter) TSetFresh(bool)        {}
+func (v *TypeParameter) TName() string           { return "TypeParameter" }
+func (v *TypeParameter) TText() (string, bool)   { return "", false }
+func (v *TypeParameter) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TypeParameter) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TypeParameter) TKids() []any            { return nil }
+func (v *TypeParameter) TStruct() bool           { return true }
+func (v *TypeParameter) TFresh() bool            { return false }
+func (v *TypeParameter) TSetFresh(bool)          {}
 func (v *TypeParameter) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -8490,34 +6199,6 @@ func (v *TypeParameter) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TypeParameter) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "Name":
-		return tb1(v.Name), true
-	case "Constraint":
-		return rt.TBack(SXIRHooks, v.Constraint), true
-	case "Default":
-		return rt.TBack(SXIRHooks, v.Default), true
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
 func (v *TypeParameter) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -8526,25 +6207,15 @@ func (v *TypeParameter) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TypePredicate) TName() string         { return "TypePredicate" }
-func (v *TypePredicate) TText() (string, bool) { return "", false }
-func (v *TypePredicate) TKids() []any          { return nil }
-func (v *TypePredicate) TStruct() bool         { return true }
-func (v *TypePredicate) TFresh() bool          { return false }
-func (v *TypePredicate) TSetFresh(bool)        {}
+func (v *TypePredicate) TName() string           { return "TypePredicate" }
+func (v *TypePredicate) TText() (string, bool)   { return "", false }
+func (v *TypePredicate) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TypePredicate) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TypePredicate) TKids() []any            { return nil }
+func (v *TypePredicate) TStruct() bool           { return true }
+func (v *TypePredicate) TFresh() bool            { return false }
+func (v *TypePredicate) TSetFresh(bool)          {}
 func (v *TypePredicate) TField(name string) (any, bool) {
-	switch name {
-	case "AssertsModifier":
-		return tb0(v.AssertsModifier), true
-	case "ParameterName":
-		return rt.TBack(SXIRHooks, v.ParameterName), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	}
-	return nil, false
-}
-
-func (v *TypePredicate) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "AssertsModifier":
 		return tb0(v.AssertsModifier), true
@@ -8562,12 +6233,14 @@ func (v *TypePredicate) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TypeQuery) TName() string         { return "TypeQuery" }
-func (v *TypeQuery) TText() (string, bool) { return "", false }
-func (v *TypeQuery) TKids() []any          { return nil }
-func (v *TypeQuery) TStruct() bool         { return true }
-func (v *TypeQuery) TFresh() bool          { return false }
-func (v *TypeQuery) TSetFresh(bool)        {}
+func (v *TypeQuery) TName() string           { return "TypeQuery" }
+func (v *TypeQuery) TText() (string, bool)   { return "", false }
+func (v *TypeQuery) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TypeQuery) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TypeQuery) TKids() []any            { return nil }
+func (v *TypeQuery) TStruct() bool           { return true }
+func (v *TypeQuery) TFresh() bool            { return false }
+func (v *TypeQuery) TSetFresh(bool)          {}
 func (v *TypeQuery) TField(name string) (any, bool) {
 	switch name {
 	case "ExprName":
@@ -8590,28 +6263,6 @@ func (v *TypeQuery) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TypeQuery) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "ExprName":
-		return rt.TBack(SXIRHooks, v.ExprName), true
-	case "TypeArguments":
-		if v.TypeArguments == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeArguments == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeArguments))
-			for i, x := range v.TypeArguments {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *TypeQuery) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TypeArguments":
@@ -8620,12 +6271,14 @@ func (v *TypeQuery) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TypeReference) TName() string         { return "TypeReference" }
-func (v *TypeReference) TText() (string, bool) { return "", false }
-func (v *TypeReference) TKids() []any          { return nil }
-func (v *TypeReference) TStruct() bool         { return true }
-func (v *TypeReference) TFresh() bool          { return false }
-func (v *TypeReference) TSetFresh(bool)        {}
+func (v *TypeReference) TName() string           { return "TypeReference" }
+func (v *TypeReference) TText() (string, bool)   { return "", false }
+func (v *TypeReference) TSpan() (int, int)       { return v.Start, v.End }
+func (v *TypeReference) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *TypeReference) TKids() []any            { return nil }
+func (v *TypeReference) TStruct() bool           { return true }
+func (v *TypeReference) TFresh() bool            { return false }
+func (v *TypeReference) TSetFresh(bool)          {}
 func (v *TypeReference) TField(name string) (any, bool) {
 	switch name {
 	case "TypeName":
@@ -8648,28 +6301,6 @@ func (v *TypeReference) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *TypeReference) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "TypeName":
-		return rt.TBack(SXIRHooks, v.TypeName), true
-	case "TypeArguments":
-		if v.TypeArguments == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.TypeArguments == nil {
-				return nil
-			}
-			kids := make([]any, len(v.TypeArguments))
-			for i, x := range v.TypeArguments {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *TypeReference) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "TypeArguments":
@@ -8678,12 +6309,14 @@ func (v *TypeReference) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *UnionType) TName() string         { return "UnionType" }
-func (v *UnionType) TText() (string, bool) { return "", false }
-func (v *UnionType) TKids() []any          { return nil }
-func (v *UnionType) TStruct() bool         { return true }
-func (v *UnionType) TFresh() bool          { return false }
-func (v *UnionType) TSetFresh(bool)        {}
+func (v *UnionType) TName() string           { return "UnionType" }
+func (v *UnionType) TText() (string, bool)   { return "", false }
+func (v *UnionType) TSpan() (int, int)       { return v.Start, v.End }
+func (v *UnionType) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *UnionType) TKids() []any            { return nil }
+func (v *UnionType) TStruct() bool           { return true }
+func (v *UnionType) TFresh() bool            { return false }
+func (v *UnionType) TSetFresh(bool)          {}
 func (v *UnionType) TField(name string) (any, bool) {
 	switch name {
 	case "Types":
@@ -8704,26 +6337,6 @@ func (v *UnionType) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *UnionType) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Types":
-		if v.Types == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Types == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Types))
-			for i, x := range v.Types {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *UnionType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Types":
@@ -8732,27 +6345,15 @@ func (v *UnionType) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *VariableDeclaration) TName() string         { return "VariableDeclaration" }
-func (v *VariableDeclaration) TText() (string, bool) { return "", false }
-func (v *VariableDeclaration) TKids() []any          { return nil }
-func (v *VariableDeclaration) TStruct() bool         { return true }
-func (v *VariableDeclaration) TFresh() bool          { return false }
-func (v *VariableDeclaration) TSetFresh(bool)        {}
+func (v *VariableDeclaration) TName() string           { return "VariableDeclaration" }
+func (v *VariableDeclaration) TText() (string, bool)   { return "", false }
+func (v *VariableDeclaration) TSpan() (int, int)       { return v.Start, v.End }
+func (v *VariableDeclaration) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *VariableDeclaration) TKids() []any            { return nil }
+func (v *VariableDeclaration) TStruct() bool           { return true }
+func (v *VariableDeclaration) TFresh() bool            { return false }
+func (v *VariableDeclaration) TSetFresh(bool)          {}
 func (v *VariableDeclaration) TField(name string) (any, bool) {
-	switch name {
-	case "Name":
-		return rt.TBack(SXIRHooks, v.Name), true
-	case "ExclamationToken":
-		return tb0(v.ExclamationToken), true
-	case "Type":
-		return rt.TBack(SXIRHooks, v.Type), true
-	case "Initializer":
-		return rt.TBack(SXIRHooks, v.Initializer), true
-	}
-	return nil, false
-}
-
-func (v *VariableDeclaration) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Name":
 		return rt.TBack(SXIRHooks, v.Name), true
@@ -8772,12 +6373,14 @@ func (v *VariableDeclaration) TZeroField(c *rt.TActCtx, name string) (any, bool)
 	return nil, false
 }
 
-func (v *VariableDeclarationList) TName() string         { return "VariableDeclarationList" }
-func (v *VariableDeclarationList) TText() (string, bool) { return "", false }
-func (v *VariableDeclarationList) TKids() []any          { return nil }
-func (v *VariableDeclarationList) TStruct() bool         { return true }
-func (v *VariableDeclarationList) TFresh() bool          { return false }
-func (v *VariableDeclarationList) TSetFresh(bool)        {}
+func (v *VariableDeclarationList) TName() string           { return "VariableDeclarationList" }
+func (v *VariableDeclarationList) TText() (string, bool)   { return "", false }
+func (v *VariableDeclarationList) TSpan() (int, int)       { return v.Start, v.End }
+func (v *VariableDeclarationList) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *VariableDeclarationList) TKids() []any            { return nil }
+func (v *VariableDeclarationList) TStruct() bool           { return true }
+func (v *VariableDeclarationList) TFresh() bool            { return false }
+func (v *VariableDeclarationList) TSetFresh(bool)          {}
 func (v *VariableDeclarationList) TField(name string) (any, bool) {
 	switch name {
 	case "Keyword":
@@ -8808,28 +6411,6 @@ func (v *VariableDeclarationList) TStrField(name string) (string, bool) {
 	return "", false
 }
 
-func (v *VariableDeclarationList) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Keyword":
-		return any(v.Keyword), true
-	case "Declarations":
-		if v.Declarations == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Declarations == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Declarations))
-			for i, x := range v.Declarations {
-				kids[i] = rt.TPtr(x)
-			}
-			return p.ListField(kids)
-		}(), true
-	}
-	return nil, false
-}
-
 func (v *VariableDeclarationList) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Declarations":
@@ -8838,12 +6419,14 @@ func (v *VariableDeclarationList) TZeroField(c *rt.TActCtx, name string) (any, b
 	return nil, false
 }
 
-func (v *VariableStatement) TName() string         { return "VariableStatement" }
-func (v *VariableStatement) TText() (string, bool) { return "", false }
-func (v *VariableStatement) TKids() []any          { return nil }
-func (v *VariableStatement) TStruct() bool         { return true }
-func (v *VariableStatement) TFresh() bool          { return false }
-func (v *VariableStatement) TSetFresh(bool)        {}
+func (v *VariableStatement) TName() string           { return "VariableStatement" }
+func (v *VariableStatement) TText() (string, bool)   { return "", false }
+func (v *VariableStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *VariableStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *VariableStatement) TKids() []any            { return nil }
+func (v *VariableStatement) TStruct() bool           { return true }
+func (v *VariableStatement) TFresh() bool            { return false }
+func (v *VariableStatement) TSetFresh(bool)          {}
 func (v *VariableStatement) TField(name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -8869,31 +6452,6 @@ func (v *VariableStatement) TField(name string) (any, bool) {
 	return nil, false
 }
 
-func (v *VariableStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
-	switch name {
-	case "Modifiers":
-		if v.Modifiers == nil {
-			return nil, false
-		}
-		return func() any {
-			if v.Modifiers == nil {
-				return nil
-			}
-			kids := make([]any, len(v.Modifiers))
-			for i, x := range v.Modifiers {
-				kids[i] = rt.TBack(SXIRHooks, x)
-			}
-			return p.ListField(kids)
-		}(), true
-	case "DeclarationList":
-		if v.DeclarationList == nil {
-			return nil, false
-		}
-		return rt.TPtr(v.DeclarationList), true
-	}
-	return nil, false
-}
-
 func (v *VariableStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	switch name {
 	case "Modifiers":
@@ -8904,21 +6462,15 @@ func (v *VariableStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *VoidExpression) TName() string         { return "VoidExpression" }
-func (v *VoidExpression) TText() (string, bool) { return "", false }
-func (v *VoidExpression) TKids() []any          { return nil }
-func (v *VoidExpression) TStruct() bool         { return true }
-func (v *VoidExpression) TFresh() bool          { return false }
-func (v *VoidExpression) TSetFresh(bool)        {}
+func (v *VoidExpression) TName() string           { return "VoidExpression" }
+func (v *VoidExpression) TText() (string, bool)   { return "", false }
+func (v *VoidExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *VoidExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *VoidExpression) TKids() []any            { return nil }
+func (v *VoidExpression) TStruct() bool           { return true }
+func (v *VoidExpression) TFresh() bool            { return false }
+func (v *VoidExpression) TSetFresh(bool)          {}
 func (v *VoidExpression) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *VoidExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -8932,23 +6484,15 @@ func (v *VoidExpression) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *WhileStatement) TName() string         { return "WhileStatement" }
-func (v *WhileStatement) TText() (string, bool) { return "", false }
-func (v *WhileStatement) TKids() []any          { return nil }
-func (v *WhileStatement) TStruct() bool         { return true }
-func (v *WhileStatement) TFresh() bool          { return false }
-func (v *WhileStatement) TSetFresh(bool)        {}
+func (v *WhileStatement) TName() string           { return "WhileStatement" }
+func (v *WhileStatement) TText() (string, bool)   { return "", false }
+func (v *WhileStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *WhileStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *WhileStatement) TKids() []any            { return nil }
+func (v *WhileStatement) TStruct() bool           { return true }
+func (v *WhileStatement) TFresh() bool            { return false }
+func (v *WhileStatement) TSetFresh(bool)          {}
 func (v *WhileStatement) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "Statement":
-		return rt.TBack(SXIRHooks, v.Statement), true
-	}
-	return nil, false
-}
-
-func (v *WhileStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -8964,23 +6508,15 @@ func (v *WhileStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *WithStatement) TName() string         { return "WithStatement" }
-func (v *WithStatement) TText() (string, bool) { return "", false }
-func (v *WithStatement) TKids() []any          { return nil }
-func (v *WithStatement) TStruct() bool         { return true }
-func (v *WithStatement) TFresh() bool          { return false }
-func (v *WithStatement) TSetFresh(bool)        {}
+func (v *WithStatement) TName() string           { return "WithStatement" }
+func (v *WithStatement) TText() (string, bool)   { return "", false }
+func (v *WithStatement) TSpan() (int, int)       { return v.Start, v.End }
+func (v *WithStatement) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *WithStatement) TKids() []any            { return nil }
+func (v *WithStatement) TStruct() bool           { return true }
+func (v *WithStatement) TFresh() bool            { return false }
+func (v *WithStatement) TSetFresh(bool)          {}
 func (v *WithStatement) TField(name string) (any, bool) {
-	switch name {
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	case "Statement":
-		return rt.TBack(SXIRHooks, v.Statement), true
-	}
-	return nil, false
-}
-
-func (v *WithStatement) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "Expression":
 		return rt.TBack(SXIRHooks, v.Expression), true
@@ -8996,23 +6532,15 @@ func (v *WithStatement) TZeroField(c *rt.TActCtx, name string) (any, bool) {
 	return nil, false
 }
 
-func (v *YieldExpression) TName() string         { return "YieldExpression" }
-func (v *YieldExpression) TText() (string, bool) { return "", false }
-func (v *YieldExpression) TKids() []any          { return nil }
-func (v *YieldExpression) TStruct() bool         { return true }
-func (v *YieldExpression) TFresh() bool          { return false }
-func (v *YieldExpression) TSetFresh(bool)        {}
+func (v *YieldExpression) TName() string           { return "YieldExpression" }
+func (v *YieldExpression) TText() (string, bool)   { return "", false }
+func (v *YieldExpression) TSpan() (int, int)       { return v.Start, v.End }
+func (v *YieldExpression) TSetSpan(start, end int) { v.Start, v.End = start, end }
+func (v *YieldExpression) TKids() []any            { return nil }
+func (v *YieldExpression) TStruct() bool           { return true }
+func (v *YieldExpression) TFresh() bool            { return false }
+func (v *YieldExpression) TSetFresh(bool)          {}
 func (v *YieldExpression) TField(name string) (any, bool) {
-	switch name {
-	case "AsteriskToken":
-		return tb0(v.AsteriskToken), true
-	case "Expression":
-		return rt.TBack(SXIRHooks, v.Expression), true
-	}
-	return nil, false
-}
-
-func (v *YieldExpression) TFieldSpend(p *rt.TParser, name string) (any, bool) {
 	switch name {
 	case "AsteriskToken":
 		return tb0(v.AsteriskToken), true
@@ -9090,6 +6618,8 @@ func init() {
 			return tb28(x)
 		case *Token:
 			return tb0(x)
+		case *TNode[Tuple1[*TNode[string]]]:
+			return tb29(x)
 		}
 		return back(v)
 	}
@@ -9298,11 +6828,23 @@ func tb28(v *ThisTypeNode) any {
 	return rt.TSetNodeType(rt.TBack(SXIRHooks, &v.TNode), SXIRNodeTypes[28])
 }
 
+func tb29(v *TNode[Tuple1[*TNode[string]]]) any {
+	if v == nil {
+		return nil
+	}
+	return &rt.TSeq{Span: v.Span, Typ: "tuple", Kids: []any{rt.TBack(SXIRHooks, v.Value.E0)}}
+}
+
 // SXIRNodeTypes holds the registered indexes of the named node types by their generated index; index 0
 // is no named node type. It is for generated parsers.
 var SXIRNodeTypes [30]uint16
 
-// SXIRSchema_b93e02d2faedd99f ties the parser package to this package: the parser refers to it once, so a
+// Tuple1 is a tuple of 1 elements.
+type Tuple1[E0 any] struct {
+	E0 E0
+}
+
+// SXIRSchema_79069de9ec36dc3f ties the parser package to this package: the parser refers to it once, so a
 // parser and a types package generated from different schemas do not compile together.
 // It is for generated parsers; not a stable API.
-const SXIRSchema_b93e02d2faedd99f = 0
+const SXIRSchema_79069de9ec36dc3f = 0

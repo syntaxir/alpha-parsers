@@ -50,9 +50,12 @@ package typescript
 import (
 	"errors"
 	"path"
+	"reflect"
 	"strings"
+	"sync"
 
 	"syntaxir.dev/alpha-parsers/typescript/types"
+	"syntaxir.dev/sxir/pkg/runtime/input"
 )
 
 // ParseTSX parses a .tsx file: TypeScript with JSX, where <T>x is not a type assertion. Like ParseValue, it
@@ -183,17 +186,30 @@ func parseWith(markers, input string, unit []PositionUnit) (*types.SourceFile, e
 	return f, shiftError(err, len(markers))
 }
 
-type spanSetter interface{ TSetSpan(start, end int) }
-
-// shiftSpans moves the range of every node of f d positions back.
+// shiftSpans moves the range of every node of f d positions back. Every node is a pointer to a struct that
+// embeds input.Span, directly or through TNode, as its field Span.
 func shiftSpans(f *types.SourceFile, d int) {
 	Inspect(f, func(n ASTNode) bool {
 		if n != nil {
-			s, e := n.Range()
-			n.(spanSetter).TSetSpan(max(s-d, 0), max(e-d, 0))
+			span := spanOf(n)
+			span.Start, span.End = max(span.Start-d, 0), max(span.End-d, 0)
 		}
 		return true
 	})
+}
+
+// spanIndex caches the index of the field Span of each node type, for spanOf.
+var spanIndex sync.Map // reflect.Type (of the struct) -> []int
+
+// spanOf returns the Span of the node n, which shiftSpans moves.
+func spanOf(n ASTNode) *input.Span {
+	v := reflect.ValueOf(n).Elem()
+	i, ok := spanIndex.Load(v.Type())
+	if !ok {
+		f, _ := v.Type().FieldByName("Span")
+		i, _ = spanIndex.LoadOrStore(v.Type(), f.Index)
+	}
+	return v.FieldByIndex(i.([]int)).Addr().Interface().(*input.Span)
 }
 
 // shiftError moves the positions of syntax errors d positions back.

@@ -10,13 +10,13 @@
 // all of them with ./test.sh.
 package parsers
 
-//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g cel/cel.sxir -module syntaxir.dev/alpha-parsers/cel -types -typed-only -nodoc -lib import -o cel
-//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g csv/csv.sxir -module syntaxir.dev/alpha-parsers/csv -types -recognize -limits -nodoc -lib import -o csv
-//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g cue/cue.sxir -module syntaxir.dev/alpha-parsers/cue -types -typed-only -nodoc -lib import -o cue
-//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g duckdb/duckdb.sxir -module syntaxir.dev/alpha-parsers/duckdb -types -typed-only -nodoc -lib import -o duckdb
-//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g golang/golang.sxir -expectations -module syntaxir.dev/alpha-parsers/golang -types -typed-only -nodoc -lib import -o golang
-//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g json/json.sxir -module syntaxir.dev/alpha-parsers/json -types -recognize -limits -nodoc -lib import -o json
-//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g python/python.sxir -expectations -module syntaxir.dev/alpha-parsers/python -types -typed-only -nodoc -lib import -o python
-//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g typescript/typescript.sxir -expectations -module syntaxir.dev/alpha-parsers/typescript -types -typed-only -nodoc -lib import -o typescript
-//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g xml/xml.sxir -expectations -module syntaxir.dev/alpha-parsers/xml -types -recognize -limits -nodoc -lib import -o xml
-//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g yaml/yaml.sxir -module syntaxir.dev/alpha-parsers/yaml -types -recognize -limits -nodoc -lib import -o yaml
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g cel/cel.sxir -module syntaxir.dev/alpha-parsers/cel -types -typed-only -no-limits -nodoc -lib import -o cel
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g csv/csv.sxir -module syntaxir.dev/alpha-parsers/csv -types -recognize -nodoc -lib import -o csv
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g cue/cue.sxir -module syntaxir.dev/alpha-parsers/cue -types -typed-only -no-limits -nodoc -lib import -o cue
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g duckdb/duckdb.sxir -module syntaxir.dev/alpha-parsers/duckdb -types -typed-only -no-limits -nodoc -lib import -o duckdb
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g golang/golang.sxir -expectations -module syntaxir.dev/alpha-parsers/golang -types -typed-only -no-limits -nodoc -lib import -o golang
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g json/json.sxir -module syntaxir.dev/alpha-parsers/json -types -recognize -nodoc -lib import -o json
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g python/python.sxir -expectations -module syntaxir.dev/alpha-parsers/python -types -typed-only -no-limits -nodoc -lib import -o python
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g typescript/typescript.sxir -expectations -module syntaxir.dev/alpha-parsers/typescript -types -typed-only -no-limits -nodoc -lib import -o typescript
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g xml/xml.sxir -expectations -module syntaxir.dev/alpha-parsers/xml -types -recognize -nodoc -lib import -o xml
+//go:generate go run syntaxir.dev/sxir/cmd/sxir gen -g yaml/yaml.sxir -module syntaxir.dev/alpha-parsers/yaml -types -recognize -nodoc -lib import -o yaml

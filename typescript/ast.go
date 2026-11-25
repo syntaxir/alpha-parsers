@@ -14,16 +14,26 @@ import (
 // The fields of the nodes have the union types of the grammar (Statement, Expression, TypeNode, BindingName, ...),
 // which are not ASTNodes themselves, although the values in them are; AsNode converts them, and Kind,
 // ForEachChild and Inspect take them as they are.
+//
+// Only pointers to the types of package types are nodes; isNode checks this, since Range alone is shared with
+// the runtime's types.
 type ASTNode interface {
 	Range() (start, end int)
-	TSpan() (int, int) // the generated method of *Span: only the types of this package are nodes
+}
+
+// typesPackage is the import path of the node types.
+var typesPackage = reflect.TypeFor[types.Token]().PkgPath()
+
+// isNode reports whether t is a pointer to one of the node types of package types.
+func isNode(t reflect.Type) bool {
+	return t.Kind() == reflect.Pointer && t.Implements(astNodeType) && t.Elem().PkgPath() == typesPackage
 }
 
 // AsNode returns v, a node or the value of a field of a union type such as Expression, as an ASTNode, or nil if it
 // is nil or not a node.
 func AsNode(v any) ASTNode {
 	n, _ := v.(ASTNode)
-	if n == nil || reflect.ValueOf(n).IsNil() {
+	if n == nil || !isNode(reflect.TypeOf(n)) || reflect.ValueOf(n).IsNil() {
 		return nil
 	}
 	return n
@@ -153,7 +163,10 @@ func asASTNode(v reflect.Value) (ASTNode, bool) {
 		return nil, false
 	}
 	n, ok := v.Interface().(ASTNode)
-	return n, ok
+	if !ok || !isNode(reflect.TypeOf(n)) {
+		return nil, false
+	}
+	return n, true
 }
 
 var astNodeType = reflect.TypeFor[ASTNode]()
@@ -173,7 +186,7 @@ func childFields(t reflect.Type) []int {
 		if ft.Kind() == reflect.Slice {
 			ft = ft.Elem()
 		}
-		if ft.Kind() == reflect.Interface || ft.Kind() == reflect.Pointer && ft.Implements(astNodeType) {
+		if ft.Kind() == reflect.Interface || isNode(ft) {
 			fields = append(fields, i)
 		}
 	}
