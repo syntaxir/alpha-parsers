@@ -422,30 +422,31 @@ var scope90 = []string{"e"}
 var sh91 = rt.Shaper{Elems: true, K: 0, Mode: 0, Tuple: true, Shared: false}
 var scope92 = []string{"e"}
 var sh93 = rt.Shaper{Elems: true, K: 6, Mode: 2, Tuple: true, Shared: false}
-var sh96 = rt.Shaper{Elems: true, K: 2, Mode: 2, Tuple: true, Shared: false}
-var sh97 = rt.Shaper{Elems: false, K: 0, Mode: 0, Tuple: true, Shared: false}
-var sh98 = rt.Shaper{Elems: true, K: 3, Mode: 2, Tuple: true, Shared: false}
-var lit109 = []rune("[")
-var lit110 = []rune("]")
-var lit113 = []rune(",")
-var scope112 = []string{"e"}
-var lit116 = []rune("{")
-var lit117 = []rune("}")
-var scope119 = []string{"e"}
-var lit147 = []rune("\r\n")
-var lit148 = []rune("\r")
-var lit149 = []rune("\n")
-var lit153 = []rune("\ufeff")
-var lit157 = []rune("!!")
-var lit170 = []rune("\"")
-var lit173 = []rune("'")
-var lit175 = []rune("''")
-var lit181 = []rune("\\")
-var lit182 = []rune("x")
-var lit183 = []rune("u")
-var lit184 = []rune("U")
-var sh190 = rt.Shaper{Elems: true, K: 4, Mode: 2, Tuple: true, Shared: false}
-var sh191 = rt.Shaper{Elems: true, K: 5, Mode: 2, Tuple: true, Shared: false}
+var scope94 = []string{"f", "c1", "s", "c2"}
+var sh97 = rt.Shaper{Elems: true, K: 2, Mode: 2, Tuple: true, Shared: false}
+var sh98 = rt.Shaper{Elems: false, K: 0, Mode: 0, Tuple: true, Shared: false}
+var sh99 = rt.Shaper{Elems: true, K: 3, Mode: 2, Tuple: true, Shared: false}
+var lit110 = []rune("[")
+var lit111 = []rune("]")
+var lit114 = []rune(",")
+var scope113 = []string{"e"}
+var lit117 = []rune("{")
+var lit118 = []rune("}")
+var scope120 = []string{"e"}
+var lit148 = []rune("\r\n")
+var lit149 = []rune("\r")
+var lit150 = []rune("\n")
+var lit154 = []rune("\ufeff")
+var lit158 = []rune("!!")
+var lit171 = []rune("\"")
+var lit174 = []rune("'")
+var lit176 = []rune("''")
+var lit182 = []rune("\\")
+var lit183 = []rune("x")
+var lit184 = []rune("u")
+var lit185 = []rune("U")
+var sh191 = rt.Shaper{Elems: true, K: 4, Mode: 2, Tuple: true, Shared: false}
+var sh192 = rt.Shaper{Elems: true, K: 5, Mode: 2, Tuple: true, Shared: false}
 
 type ruleSpec struct {
 	Name  string
@@ -466,28 +467,28 @@ type ruleExtra struct {
 
 var rulesSpec = [...]ruleSpec{
 	{"main", &sh2, 0, 0, 0, 1},
-	{"l_yaml_stream", &sh96, 0, 0, 2, 1},
+	{"l_yaml_stream", &sh97, 0, 0, 2, 1},
 	{"l_document_prefix", &sh2, rt.RuleMemo, 1, 0, 0},
-	{"l_document_suffix", &sh96, rt.RuleMemo, 2, 0, 0},
+	{"l_document_suffix", &sh97, rt.RuleMemo, 2, 0, 0},
 	{"c_directives_end", &sh2, 0, 0, 0, 0},
 	{"c_document_end", &sh2, 0, 0, 0, 0},
-	{"c_forbidden", &sh96, 0, 0, 0, 0},
+	{"c_forbidden", &sh97, 0, 0, 0, 0},
 	{"l_any_document", &sh2, rt.RuleMemo, 3, 0, 1},
-	{"l_directive_document", &sh190, 0, 0, 3, 1},
-	{"l_explicit_document", &sh98, rt.RuleMemo, 4, 4, 1},
+	{"l_directive_document", &sh191, 0, 0, 3, 1},
+	{"l_explicit_document", &sh99, rt.RuleMemo, 4, 4, 1},
 	{"explicit_root", &sh2, rt.RuleMemo, 5, 0, 1},
-	{"l_bare_document", &sh96, 0, 0, 5, 1},
+	{"l_bare_document", &sh97, 0, 0, 5, 1},
 	{"bare_root", &sh4, rt.RuleMemo, 6, 6, 1},
-	{"document_end", &sh97, rt.RuleMemo, 7, 7, 0},
-	{"l_directive", &sh98, 0, 0, 8, 0},
-	{"ns_yaml_directive", &sh98, 0, 0, 9, 0},
+	{"document_end", &sh98, rt.RuleMemo, 7, 7, 0},
+	{"l_directive", &sh99, 0, 0, 8, 0},
+	{"ns_yaml_directive", &sh99, 0, 0, 9, 0},
 	{"yaml_name", &sh2, 0, 0, 0, 0},
 	{"ns_yaml_version", &sh2, 0, 0, 0, 0},
-	{"ns_tag_directive", &sh191, 0, 0, 10, 0},
+	{"ns_tag_directive", &sh192, 0, 0, 10, 0},
 	{"tag_name", &sh2, 0, 0, 0, 0},
 	{"tag_handle", &sh2, 0, 0, 0, 0},
 	{"ns_tag_prefix", &sh2, 0, 0, 0, 0},
-	{"ns_reserved_directive", &sh96, 0, 0, 11, 0},
+	{"ns_reserved_directive", &sh97, 0, 0, 11, 0},
 	{"ns_directive_name", &sh2, 0, 0, 0, 0},
 	{"ns_directive_parameter", &sh2, 0, 0, 0, 0},
 	{"c_ns_properties", &sh5, rt.RuleMemo, 8, 12, 1},
@@ -500,113 +501,113 @@ var rulesSpec = [...]ruleSpec{
 	{"ns_tag_char", &sh2, rt.RuleMemo, 12, 0, 0},
 	{"ns_hex_digit", &sh2, 0, 0, 0, 0},
 	{"s_l_block_node", &sh5, rt.RuleMemo | rt.RuleRec, 13, 13, 1},
-	{"s_l_flow_in_block", &sh98, rt.RuleMemo, 14, 13, 1},
+	{"s_l_flow_in_block", &sh99, rt.RuleMemo, 14, 13, 1},
 	{"flow_out_node", &sh4, 0, 0, 13, 1},
 	{"plain_out_node", &sh5, 0, 0, 14, 15},
 	{"s_l_block_collection", &sh2, rt.RuleMemo | rt.RuleRec, 15, 0, 1},
-	{"block_sequence_node", &sh96, rt.RuleRec, 0, 16, 1},
-	{"block_mapping_node", &sh96, rt.RuleRec, 0, 17, 1},
+	{"block_sequence_node", &sh97, rt.RuleRec, 0, 16, 1},
+	{"block_mapping_node", &sh97, rt.RuleRec, 0, 17, 1},
 	{"block_collection_start", &sh5, 0, 0, 18, 1},
 	{"block_sequence_start", &sh5, 0, 0, 18, 1},
-	{"block_collection_properties", &sh96, rt.RuleMemo, 16, 18, 1},
-	{"block_collection_property", &sh96, rt.RuleMemo, 17, 12, 15},
+	{"block_collection_properties", &sh97, rt.RuleMemo, 16, 18, 1},
+	{"block_collection_property", &sh97, rt.RuleMemo, 17, 12, 15},
 	{"seq_space", &sh4, rt.RuleRec, 0, 19, 1},
 	{"l_block_sequence", &sh4, rt.RuleRec, 0, 20, 1},
-	{"c_l_block_seq_entry", &sh96, rt.RuleMemo | rt.RuleRec, 18, 13, 1},
+	{"c_l_block_seq_entry", &sh97, rt.RuleMemo | rt.RuleRec, 18, 13, 1},
 	{"s_l_block_indented", &sh2, rt.RuleMemo | rt.RuleRec, 19, 0, 1},
-	{"compact_collection", &sh96, rt.RuleRec, 0, 21, 1},
-	{"ns_l_compact_sequence", &sh96, rt.RuleRec, 0, 2, 1},
+	{"compact_collection", &sh97, rt.RuleRec, 0, 21, 1},
+	{"ns_l_compact_sequence", &sh97, rt.RuleRec, 0, 2, 1},
 	{"l_block_mapping", &sh4, rt.RuleRec, 0, 20, 1},
-	{"ns_l_compact_mapping", &sh96, rt.RuleRec, 0, 2, 1},
+	{"ns_l_compact_mapping", &sh97, rt.RuleRec, 0, 2, 1},
 	{"ns_l_block_map_entry", &sh2, rt.RuleMemo | rt.RuleRec, 20, 0, 1},
-	{"c_l_block_map_explicit_entry", &sh96, rt.RuleRec, 0, 22, 1},
-	{"c_l_block_map_explicit_key", &sh96, rt.RuleRec, 0, 13, 1},
-	{"l_block_map_explicit_value", &sh98, rt.RuleRec, 0, 13, 1},
-	{"ns_l_block_map_implicit_entry", &sh96, rt.RuleRec, 0, 22, 1},
-	{"ns_s_block_map_implicit_key", &sh96, 0, 0, 23, 1},
+	{"c_l_block_map_explicit_entry", &sh97, rt.RuleRec, 0, 22, 1},
+	{"c_l_block_map_explicit_key", &sh97, rt.RuleRec, 0, 13, 1},
+	{"l_block_map_explicit_value", &sh99, rt.RuleRec, 0, 13, 1},
+	{"ns_l_block_map_implicit_entry", &sh97, rt.RuleRec, 0, 22, 1},
+	{"ns_s_block_map_implicit_key", &sh97, 0, 0, 23, 1},
 	{"plain_key_node", &sh5, 0, 0, 14, 0},
-	{"c_l_block_map_implicit_value", &sh96, rt.RuleRec, 0, 13, 1},
+	{"c_l_block_map_implicit_value", &sh97, rt.RuleRec, 0, 13, 1},
 	{"block_out_node", &sh5, rt.RuleRec, 0, 13, 1},
-	{"s_l_block_scalar", &sh190, rt.RuleMemo, 21, 24, 1},
+	{"s_l_block_scalar", &sh191, rt.RuleMemo, 21, 24, 1},
 	{"s_separate_n1", &sh4, 0, 0, 0, 15},
-	{"block_scalar_properties", &sh96, 0, 0, 18, 1},
-	{"l_block_content", &sh96, 0, 0, 0, 15},
-	{"l_nb_literal_text", &sh190, rt.RuleMemo, 22, 25, 15},
-	{"l_empty_block", &sh96, rt.RuleMemo, 23, 25, 15},
-	{"l_trail_comments", &sh190, 0, 0, 25, 15},
+	{"block_scalar_properties", &sh97, 0, 0, 18, 1},
+	{"l_block_content", &sh97, 0, 0, 0, 15},
+	{"l_nb_literal_text", &sh191, rt.RuleMemo, 22, 25, 15},
+	{"l_empty_block", &sh97, rt.RuleMemo, 23, 25, 15},
+	{"l_trail_comments", &sh191, 0, 0, 25, 15},
 	{"ns_flow_node", &sh5, rt.RuleMemo | rt.RuleRec, 24, 13, 1},
 	{"ns_flow_yaml_node", &sh2, rt.RuleMemo, 25, 0, 1},
 	{"c_flow_json_node", &sh2, rt.RuleMemo | rt.RuleRec, 26, 0, 1},
 	{"properties_node", &sh4, 0, 0, 18, 1},
-	{"properties_separate", &sh96, rt.RuleMemo, 27, 18, 1},
-	{"e_node", &sh97, 0, 0, 0, 0},
-	{"e_node_comments", &sh96, rt.RuleMemo, 28, 13, 0},
-	{"c_flow_sequence", &sh191, rt.RuleRec, 0, 26, 1},
-	{"ns_s_flow_seq_entries", &sh96, rt.RuleRec, 0, 2, 1},
+	{"properties_separate", &sh97, rt.RuleMemo, 27, 18, 1},
+	{"e_node", &sh98, 0, 0, 0, 0},
+	{"e_node_comments", &sh97, rt.RuleMemo, 28, 13, 0},
+	{"c_flow_sequence", &sh192, rt.RuleRec, 0, 26, 1},
+	{"ns_s_flow_seq_entries", &sh97, rt.RuleRec, 0, 2, 1},
 	{"ns_flow_seq_entry", &sh2, rt.RuleMemo | rt.RuleRec, 29, 0, 1},
-	{"c_flow_mapping", &sh191, rt.RuleRec, 0, 26, 1},
-	{"ns_s_flow_map_entries", &sh96, rt.RuleRec, 0, 2, 1},
+	{"c_flow_mapping", &sh192, rt.RuleRec, 0, 26, 1},
+	{"ns_s_flow_map_entries", &sh97, rt.RuleRec, 0, 2, 1},
 	{"ns_flow_map_entry", &sh2, rt.RuleMemo | rt.RuleRec, 30, 0, 1},
-	{"flow_map_explicit", &sh98, rt.RuleMemo | rt.RuleRec, 31, 27, 1},
+	{"flow_map_explicit", &sh99, rt.RuleMemo | rt.RuleRec, 31, 27, 1},
 	{"ns_flow_map_explicit_entry", &sh2, rt.RuleRec, 0, 0, 1},
-	{"empty_pair", &sh96, 0, 0, 22, 0},
+	{"empty_pair", &sh97, 0, 0, 22, 0},
 	{"ns_flow_map_implicit_entry", &sh2, rt.RuleMemo | rt.RuleRec, 32, 0, 1},
-	{"ns_flow_map_yaml_key_entry", &sh96, rt.RuleRec, 0, 22, 1},
-	{"separate_value", &sh96, rt.RuleRec, 0, 13, 1},
-	{"c_ns_flow_map_empty_key_entry", &sh96, rt.RuleMemo | rt.RuleRec, 33, 22, 1},
-	{"c_ns_flow_map_separate_value", &sh96, rt.RuleMemo | rt.RuleRec, 34, 13, 1},
-	{"separated_flow_node", &sh96, rt.RuleRec, 0, 13, 1},
-	{"c_ns_flow_map_json_key_entry", &sh96, rt.RuleRec, 0, 22, 1},
-	{"adjacent_value", &sh96, rt.RuleRec, 0, 13, 1},
-	{"c_ns_flow_map_adjacent_value", &sh96, rt.RuleMemo | rt.RuleRec, 35, 13, 1},
-	{"optionally_separated_flow_node", &sh96, rt.RuleRec, 0, 13, 1},
+	{"ns_flow_map_yaml_key_entry", &sh97, rt.RuleRec, 0, 22, 1},
+	{"separate_value", &sh97, rt.RuleRec, 0, 13, 1},
+	{"c_ns_flow_map_empty_key_entry", &sh97, rt.RuleMemo | rt.RuleRec, 33, 22, 1},
+	{"c_ns_flow_map_separate_value", &sh97, rt.RuleMemo | rt.RuleRec, 34, 13, 1},
+	{"separated_flow_node", &sh97, rt.RuleRec, 0, 13, 1},
+	{"c_ns_flow_map_json_key_entry", &sh97, rt.RuleRec, 0, 22, 1},
+	{"adjacent_value", &sh97, rt.RuleRec, 0, 13, 1},
+	{"c_ns_flow_map_adjacent_value", &sh97, rt.RuleMemo | rt.RuleRec, 35, 13, 1},
+	{"optionally_separated_flow_node", &sh97, rt.RuleRec, 0, 13, 1},
 	{"ns_flow_pair", &sh5, rt.RuleRec, 0, 27, 1},
 	{"ns_flow_pair_entry", &sh2, rt.RuleRec, 0, 0, 1},
-	{"ns_flow_pair_yaml_key_entry", &sh96, rt.RuleRec, 0, 22, 1},
-	{"flow_pair_yaml_key", &sh96, 0, 0, 23, 1},
-	{"c_ns_flow_pair_json_key_entry", &sh96, rt.RuleRec, 0, 22, 1},
-	{"flow_pair_json_key", &sh96, rt.RuleRec, 0, 23, 1},
-	{"plain_node", &sh96, 0, 0, 28, 1},
+	{"ns_flow_pair_yaml_key_entry", &sh97, rt.RuleRec, 0, 22, 1},
+	{"flow_pair_yaml_key", &sh97, 0, 0, 23, 1},
+	{"c_ns_flow_pair_json_key_entry", &sh97, rt.RuleRec, 0, 22, 1},
+	{"flow_pair_json_key", &sh97, rt.RuleRec, 0, 23, 1},
+	{"plain_node", &sh97, 0, 0, 28, 1},
 	{"ns_plain", &sh2, 0, 0, 0, 1},
 	{"ns_plain_safe", &sh2, 0, 0, 0, 29},
 	{"ns_plain_safe_in", &sh2, 0, 0, 0, 0},
-	{"ns_plain_one_out", &sh96, rt.RuleMemo, 36, 0, 0},
+	{"ns_plain_one_out", &sh97, rt.RuleMemo, 36, 0, 0},
 	{"nb_ns_plain_in_line_out", &sh2, rt.RuleMemo, 37, 0, 0},
-	{"ns_plain_multi_out", &sh96, rt.RuleMemo, 38, 0, 15},
-	{"ns_plain_one_in", &sh96, rt.RuleMemo, 39, 0, 0},
+	{"ns_plain_multi_out", &sh97, rt.RuleMemo, 38, 0, 15},
+	{"ns_plain_one_in", &sh97, rt.RuleMemo, 39, 0, 0},
 	{"nb_ns_plain_in_line_in", &sh2, rt.RuleMemo, 40, 0, 0},
-	{"ns_plain_multi_in", &sh96, 0, 0, 0, 15},
-	{"c_double_quoted", &sh96, 0, 0, 28, 1},
-	{"double_quoted", &sh98, 0, 0, 0, 1},
+	{"ns_plain_multi_in", &sh97, 0, 0, 0, 15},
+	{"c_double_quoted", &sh97, 0, 0, 28, 1},
+	{"double_quoted", &sh99, 0, 0, 0, 1},
 	{"nb_double_one_line", &sh2, 0, 0, 0, 0},
-	{"c_ns_esc_char", &sh96, rt.RuleMemo, 41, 0, 0},
-	{"nb_double_multi_line", &sh98, 0, 0, 0, 15},
+	{"c_ns_esc_char", &sh97, rt.RuleMemo, 41, 0, 0},
+	{"nb_double_multi_line", &sh99, 0, 0, 0, 15},
 	{"nb_ns_double_in_line", &sh2, rt.RuleMemo, 42, 0, 0},
 	{"ns_double_char", &sh2, rt.RuleMemo, 43, 0, 0},
 	{"s_double_break", &sh2, 0, 0, 0, 15},
-	{"c_single_quoted", &sh96, 0, 0, 28, 1},
-	{"single_quoted", &sh98, 0, 0, 0, 1},
+	{"c_single_quoted", &sh97, 0, 0, 28, 1},
+	{"single_quoted", &sh99, 0, 0, 0, 1},
 	{"nb_single_one_line", &sh2, 0, 0, 0, 0},
-	{"nb_single_multi_line", &sh98, 0, 0, 0, 15},
+	{"nb_single_multi_line", &sh99, 0, 0, 0, 15},
 	{"nb_ns_single_in_line", &sh2, rt.RuleMemo, 44, 0, 0},
 	{"ns_single_char", &sh2, 0, 0, 0, 0},
-	{"s_flow_folded", &sh190, rt.RuleMemo, 45, 0, 15},
-	{"l_empty_flow", &sh98, rt.RuleMemo, 46, 25, 15},
-	{"s_flow_line_prefix", &sh96, 0, 0, 25, 15},
+	{"s_flow_folded", &sh191, rt.RuleMemo, 45, 0, 15},
+	{"l_empty_flow", &sh99, rt.RuleMemo, 46, 25, 15},
+	{"s_flow_line_prefix", &sh97, 0, 0, 25, 15},
 	{"s_separate", &sh2, rt.RuleMemo, 47, 0, 1},
 	{"s_separate_lines", &sh2, rt.RuleMemo, 48, 0, 15},
 	{"s_separate_in_line", &sh2, 0, 0, 0, 0},
 	{"s_l_comments", &sh2, rt.RuleMemo, 49, 0, 0},
-	{"s_b_comment", &sh96, rt.RuleMemo, 50, 0, 0},
-	{"l_comment", &sh98, rt.RuleMemo, 51, 0, 0},
-	{"c_nb_comment_text", &sh96, 0, 0, 0, 0},
+	{"s_b_comment", &sh97, rt.RuleMemo, 50, 0, 0},
+	{"l_comment", &sh99, rt.RuleMemo, 51, 0, 0},
+	{"c_nb_comment_text", &sh97, 0, 0, 0, 0},
 	{"b_comment", &sh2, 0, 0, 0, 0},
 	{"s_indent", &sh4, 0, 0, 19, 15},
 	{"b_break", &sh2, 0, 0, 0, 0},
 	{"ns_char", &sh2, 0, 0, 0, 0},
 	{"nb_char", &sh2, 0, 0, 0, 0},
 	{"l_document_prefix", &sh2, rt.RuleMemo | rt.RuleNovalue, 52, 0, 0},
-	{"l_document_suffix", &sh96, rt.RuleMemo | rt.RuleNovalue, 53, 0, 0},
+	{"l_document_suffix", &sh97, rt.RuleMemo | rt.RuleNovalue, 53, 0, 0},
 	{"s_l_comments", &sh2, rt.RuleMemo | rt.RuleNovalue, 54, 0, 0},
 	{"s_separate_in_line", &sh2, rt.RuleNovalue, 0, 0, 0},
 	{"c_tag_handle", &sh2, rt.RuleNovalue, 0, 0, 0},
@@ -617,36 +618,36 @@ var rulesSpec = [...]ruleSpec{
 	{"ns_anchor_char", &sh2, rt.RuleNovalue, 0, 0, 0},
 	{"s_separate_lines", &sh2, rt.RuleMemo | rt.RuleNovalue, 58, 0, 15},
 	{"b_break", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"ns_plain_multi_out", &sh96, rt.RuleMemo | rt.RuleNovalue, 59, 0, 15},
+	{"ns_plain_multi_out", &sh97, rt.RuleMemo | rt.RuleNovalue, 59, 0, 15},
 	{"s_indent", &sh4, rt.RuleNovalue, 0, 19, 15},
-	{"ns_plain_one_out", &sh96, rt.RuleMemo | rt.RuleNovalue, 60, 0, 0},
+	{"ns_plain_one_out", &sh97, rt.RuleMemo | rt.RuleNovalue, 60, 0, 0},
 	{"s_separate_n1", &sh4, rt.RuleNovalue, 0, 0, 15},
-	{"s_b_comment", &sh96, rt.RuleMemo | rt.RuleNovalue, 61, 0, 0},
-	{"l_trail_comments", &sh190, rt.RuleNovalue, 0, 25, 15},
-	{"c_forbidden", &sh96, rt.RuleNovalue, 0, 0, 0},
+	{"s_b_comment", &sh97, rt.RuleMemo | rt.RuleNovalue, 61, 0, 0},
+	{"l_trail_comments", &sh191, rt.RuleNovalue, 0, 25, 15},
+	{"c_forbidden", &sh97, rt.RuleNovalue, 0, 0, 0},
 	{"ns_plain_safe", &sh2, rt.RuleNovalue, 0, 0, 29},
 	{"ns_plain", &sh2, rt.RuleNovalue, 0, 0, 1},
 	{"ns_plain_safe_in", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"double_quoted", &sh98, rt.RuleNovalue, 0, 0, 1},
+	{"double_quoted", &sh99, rt.RuleNovalue, 0, 0, 1},
 	{"ns_double_char", &sh2, rt.RuleMemo | rt.RuleNovalue, 62, 0, 0},
-	{"single_quoted", &sh98, rt.RuleNovalue, 0, 0, 1},
+	{"single_quoted", &sh99, rt.RuleNovalue, 0, 0, 1},
 	{"ns_single_char", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"l_comment", &sh98, rt.RuleMemo | rt.RuleNovalue, 63, 0, 0},
+	{"l_comment", &sh99, rt.RuleMemo | rt.RuleNovalue, 63, 0, 0},
 	{"c_document_end", &sh2, rt.RuleNovalue, 0, 0, 0},
 	{"ns_hex_digit", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"s_flow_line_prefix", &sh96, rt.RuleNovalue, 0, 25, 15},
-	{"s_flow_folded", &sh190, rt.RuleMemo | rt.RuleNovalue, 64, 0, 15},
+	{"s_flow_line_prefix", &sh97, rt.RuleNovalue, 0, 25, 15},
+	{"s_flow_folded", &sh191, rt.RuleMemo | rt.RuleNovalue, 64, 0, 15},
 	{"nb_ns_plain_in_line_out", &sh2, rt.RuleMemo | rt.RuleNovalue, 65, 0, 0},
-	{"c_nb_comment_text", &sh96, rt.RuleNovalue, 0, 0, 0},
+	{"c_nb_comment_text", &sh97, rt.RuleNovalue, 0, 0, 0},
 	{"b_comment", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"ns_plain_multi_in", &sh96, rt.RuleNovalue, 0, 0, 15},
-	{"ns_plain_one_in", &sh96, rt.RuleMemo | rt.RuleNovalue, 66, 0, 0},
-	{"nb_double_multi_line", &sh98, rt.RuleNovalue, 0, 0, 15},
+	{"ns_plain_multi_in", &sh97, rt.RuleNovalue, 0, 0, 15},
+	{"ns_plain_one_in", &sh97, rt.RuleMemo | rt.RuleNovalue, 66, 0, 0},
+	{"nb_double_multi_line", &sh99, rt.RuleNovalue, 0, 0, 15},
 	{"nb_double_one_line", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"c_ns_esc_char", &sh96, rt.RuleMemo | rt.RuleNovalue, 67, 0, 0},
-	{"nb_single_multi_line", &sh98, rt.RuleNovalue, 0, 0, 15},
+	{"c_ns_esc_char", &sh97, rt.RuleMemo | rt.RuleNovalue, 67, 0, 0},
+	{"nb_single_multi_line", &sh99, rt.RuleNovalue, 0, 0, 15},
 	{"nb_single_one_line", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"l_empty_flow", &sh98, rt.RuleMemo | rt.RuleNovalue, 68, 25, 15},
+	{"l_empty_flow", &sh99, rt.RuleMemo | rt.RuleNovalue, 68, 25, 15},
 	{"nb_ns_plain_in_line_in", &sh2, rt.RuleMemo | rt.RuleNovalue, 69, 0, 0},
 	{"nb_ns_double_in_line", &sh2, rt.RuleMemo | rt.RuleNovalue, 70, 0, 0},
 	{"s_double_break", &sh2, rt.RuleNovalue, 0, 0, 15},
@@ -702,35 +703,35 @@ var rulesExtras = [...]ruleExtra{
 	{29, "", "Alias", "", 0},
 }
 
-var scope212 = []string{}
-var scope217 = []string{}
-var scope224 = []string{"e"}
+var scope213 = []string{}
+var scope218 = []string{}
 var scope225 = []string{"e"}
+var scope226 = []string{"e"}
 
 var recRulesSpec = [...]ruleSpec{
 	{"main", &sh2, rt.RuleNovalue, 0, 0, 1},
-	{"l_yaml_stream", &sh96, rt.RuleNovalue, 0, 0, 1},
+	{"l_yaml_stream", &sh97, rt.RuleNovalue, 0, 0, 1},
 	{"l_document_prefix", &sh2, rt.RuleMemo | rt.RuleNovalue, 1, 0, 0},
-	{"l_document_suffix", &sh96, rt.RuleMemo | rt.RuleNovalue, 2, 0, 0},
+	{"l_document_suffix", &sh97, rt.RuleMemo | rt.RuleNovalue, 2, 0, 0},
 	{"c_directives_end", &sh2, rt.RuleNovalue, 0, 0, 0},
 	{"c_document_end", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"c_forbidden", &sh96, rt.RuleNovalue, 0, 0, 0},
+	{"c_forbidden", &sh97, rt.RuleNovalue, 0, 0, 0},
 	{"l_any_document", &sh2, rt.RuleMemo | rt.RuleNovalue, 3, 0, 1},
-	{"l_directive_document", &sh190, rt.RuleNovalue, 0, 0, 1},
-	{"l_explicit_document", &sh98, rt.RuleMemo | rt.RuleNovalue, 4, 0, 1},
+	{"l_directive_document", &sh191, rt.RuleNovalue, 0, 0, 1},
+	{"l_explicit_document", &sh99, rt.RuleMemo | rt.RuleNovalue, 4, 0, 1},
 	{"explicit_root", &sh2, rt.RuleMemo | rt.RuleNovalue, 5, 0, 1},
-	{"l_bare_document", &sh96, rt.RuleNovalue, 0, 0, 1},
+	{"l_bare_document", &sh97, rt.RuleNovalue, 0, 0, 1},
 	{"bare_root", &sh4, rt.RuleMemo | rt.RuleNovalue, 6, 0, 1},
-	{"document_end", &sh97, rt.RuleMemo | rt.RuleNovalue, 7, 0, 0},
-	{"l_directive", &sh98, rt.RuleNovalue, 0, 0, 0},
-	{"ns_yaml_directive", &sh98, rt.RuleNovalue, 0, 0, 0},
+	{"document_end", &sh98, rt.RuleMemo | rt.RuleNovalue, 7, 0, 0},
+	{"l_directive", &sh99, rt.RuleNovalue, 0, 0, 0},
+	{"ns_yaml_directive", &sh99, rt.RuleNovalue, 0, 0, 0},
 	{"yaml_name", &sh2, rt.RuleNovalue, 0, 0, 0},
 	{"ns_yaml_version", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"ns_tag_directive", &sh191, rt.RuleNovalue, 0, 0, 0},
+	{"ns_tag_directive", &sh192, rt.RuleNovalue, 0, 0, 0},
 	{"tag_name", &sh2, rt.RuleNovalue, 0, 0, 0},
 	{"tag_handle", &sh2, rt.RuleNovalue, 0, 0, 0},
 	{"ns_tag_prefix", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"ns_reserved_directive", &sh96, rt.RuleNovalue, 0, 0, 0},
+	{"ns_reserved_directive", &sh97, rt.RuleNovalue, 0, 0, 0},
 	{"ns_directive_name", &sh2, rt.RuleNovalue, 0, 0, 0},
 	{"ns_directive_parameter", &sh2, rt.RuleNovalue, 0, 0, 0},
 	{"c_ns_properties", &sh5, rt.RuleMemo | rt.RuleNovalue, 8, 0, 1},
@@ -743,106 +744,106 @@ var recRulesSpec = [...]ruleSpec{
 	{"ns_tag_char", &sh2, rt.RuleMemo | rt.RuleNovalue, 12, 0, 0},
 	{"ns_hex_digit", &sh2, rt.RuleNovalue, 0, 0, 0},
 	{"s_l_block_node", &sh5, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 13, 0, 1},
-	{"s_l_flow_in_block", &sh98, rt.RuleMemo | rt.RuleNovalue, 14, 0, 1},
+	{"s_l_flow_in_block", &sh99, rt.RuleMemo | rt.RuleNovalue, 14, 0, 1},
 	{"flow_out_node", &sh4, rt.RuleNovalue, 0, 0, 1},
 	{"plain_out_node", &sh5, rt.RuleNovalue, 0, 0, 2},
 	{"s_l_block_collection", &sh2, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 15, 0, 1},
-	{"block_sequence_node", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"block_mapping_node", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"block_sequence_node", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"block_mapping_node", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
 	{"block_collection_start", &sh5, rt.RuleNovalue, 0, 0, 1},
 	{"block_sequence_start", &sh5, rt.RuleNovalue, 0, 0, 1},
-	{"block_collection_properties", &sh96, rt.RuleMemo | rt.RuleNovalue, 16, 0, 1},
-	{"block_collection_property", &sh96, rt.RuleMemo | rt.RuleNovalue, 17, 0, 2},
+	{"block_collection_properties", &sh97, rt.RuleMemo | rt.RuleNovalue, 16, 0, 1},
+	{"block_collection_property", &sh97, rt.RuleMemo | rt.RuleNovalue, 17, 0, 2},
 	{"seq_space", &sh4, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
 	{"l_block_sequence", &sh4, rt.RuleNovalue | rt.RuleRec, 0, 3, 1},
-	{"c_l_block_seq_entry", &sh96, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 18, 0, 1},
+	{"c_l_block_seq_entry", &sh97, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 18, 0, 1},
 	{"s_l_block_indented", &sh2, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 19, 0, 1},
-	{"compact_collection", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 3, 1},
-	{"ns_l_compact_sequence", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"compact_collection", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 3, 1},
+	{"ns_l_compact_sequence", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
 	{"l_block_mapping", &sh4, rt.RuleNovalue | rt.RuleRec, 0, 3, 1},
-	{"ns_l_compact_mapping", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"ns_l_compact_mapping", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
 	{"ns_l_block_map_entry", &sh2, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 20, 0, 1},
-	{"c_l_block_map_explicit_entry", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"c_l_block_map_explicit_key", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"l_block_map_explicit_value", &sh98, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"ns_l_block_map_implicit_entry", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"ns_s_block_map_implicit_key", &sh96, rt.RuleNovalue, 0, 0, 1},
+	{"c_l_block_map_explicit_entry", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"c_l_block_map_explicit_key", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"l_block_map_explicit_value", &sh99, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"ns_l_block_map_implicit_entry", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"ns_s_block_map_implicit_key", &sh97, rt.RuleNovalue, 0, 0, 1},
 	{"plain_key_node", &sh5, rt.RuleNovalue, 0, 0, 0},
-	{"c_l_block_map_implicit_value", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"c_l_block_map_implicit_value", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
 	{"block_out_node", &sh5, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"s_l_block_scalar", &sh190, rt.RuleMemo | rt.RuleNovalue, 21, 4, 1},
+	{"s_l_block_scalar", &sh191, rt.RuleMemo | rt.RuleNovalue, 21, 4, 1},
 	{"s_separate_n1", &sh4, rt.RuleNovalue, 0, 0, 2},
-	{"block_scalar_properties", &sh96, rt.RuleNovalue, 0, 0, 1},
-	{"l_block_content", &sh96, rt.RuleNovalue, 0, 0, 2},
-	{"l_nb_literal_text", &sh190, rt.RuleMemo | rt.RuleNovalue, 22, 5, 2},
-	{"l_empty_block", &sh96, rt.RuleMemo | rt.RuleNovalue, 23, 5, 2},
-	{"l_trail_comments", &sh190, rt.RuleNovalue, 0, 5, 2},
+	{"block_scalar_properties", &sh97, rt.RuleNovalue, 0, 0, 1},
+	{"l_block_content", &sh97, rt.RuleNovalue, 0, 0, 2},
+	{"l_nb_literal_text", &sh191, rt.RuleMemo | rt.RuleNovalue, 22, 5, 2},
+	{"l_empty_block", &sh97, rt.RuleMemo | rt.RuleNovalue, 23, 5, 2},
+	{"l_trail_comments", &sh191, rt.RuleNovalue, 0, 5, 2},
 	{"ns_flow_node", &sh5, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 24, 0, 1},
 	{"ns_flow_yaml_node", &sh2, rt.RuleMemo | rt.RuleNovalue, 25, 0, 1},
 	{"c_flow_json_node", &sh2, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 26, 0, 1},
 	{"properties_node", &sh4, rt.RuleNovalue, 0, 0, 1},
-	{"properties_separate", &sh96, rt.RuleMemo | rt.RuleNovalue, 27, 0, 1},
-	{"e_node", &sh97, rt.RuleNovalue, 0, 0, 0},
-	{"e_node_comments", &sh96, rt.RuleMemo | rt.RuleNovalue, 28, 0, 0},
-	{"c_flow_sequence", &sh191, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"ns_s_flow_seq_entries", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"properties_separate", &sh97, rt.RuleMemo | rt.RuleNovalue, 27, 0, 1},
+	{"e_node", &sh98, rt.RuleNovalue, 0, 0, 0},
+	{"e_node_comments", &sh97, rt.RuleMemo | rt.RuleNovalue, 28, 0, 0},
+	{"c_flow_sequence", &sh192, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"ns_s_flow_seq_entries", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
 	{"ns_flow_seq_entry", &sh2, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 29, 0, 1},
-	{"c_flow_mapping", &sh191, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"ns_s_flow_map_entries", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"c_flow_mapping", &sh192, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"ns_s_flow_map_entries", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
 	{"ns_flow_map_entry", &sh2, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 30, 0, 1},
-	{"flow_map_explicit", &sh98, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 31, 0, 1},
+	{"flow_map_explicit", &sh99, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 31, 0, 1},
 	{"ns_flow_map_explicit_entry", &sh2, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"empty_pair", &sh96, rt.RuleNovalue, 0, 0, 0},
+	{"empty_pair", &sh97, rt.RuleNovalue, 0, 0, 0},
 	{"ns_flow_map_implicit_entry", &sh2, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 32, 0, 1},
-	{"ns_flow_map_yaml_key_entry", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"separate_value", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"c_ns_flow_map_empty_key_entry", &sh96, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 33, 0, 1},
-	{"c_ns_flow_map_separate_value", &sh96, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 34, 0, 1},
-	{"separated_flow_node", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"c_ns_flow_map_json_key_entry", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"adjacent_value", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"c_ns_flow_map_adjacent_value", &sh96, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 35, 0, 1},
-	{"optionally_separated_flow_node", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"ns_flow_map_yaml_key_entry", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"separate_value", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"c_ns_flow_map_empty_key_entry", &sh97, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 33, 0, 1},
+	{"c_ns_flow_map_separate_value", &sh97, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 34, 0, 1},
+	{"separated_flow_node", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"c_ns_flow_map_json_key_entry", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"adjacent_value", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"c_ns_flow_map_adjacent_value", &sh97, rt.RuleMemo | rt.RuleNovalue | rt.RuleRec, 35, 0, 1},
+	{"optionally_separated_flow_node", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
 	{"ns_flow_pair", &sh5, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
 	{"ns_flow_pair_entry", &sh2, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"ns_flow_pair_yaml_key_entry", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"flow_pair_yaml_key", &sh96, rt.RuleNovalue, 0, 0, 1},
-	{"c_ns_flow_pair_json_key_entry", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"flow_pair_json_key", &sh96, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
-	{"plain_node", &sh96, rt.RuleNovalue, 0, 0, 1},
+	{"ns_flow_pair_yaml_key_entry", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"flow_pair_yaml_key", &sh97, rt.RuleNovalue, 0, 0, 1},
+	{"c_ns_flow_pair_json_key_entry", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"flow_pair_json_key", &sh97, rt.RuleNovalue | rt.RuleRec, 0, 0, 1},
+	{"plain_node", &sh97, rt.RuleNovalue, 0, 0, 1},
 	{"ns_plain", &sh2, rt.RuleNovalue, 0, 0, 1},
 	{"ns_plain_safe", &sh2, rt.RuleNovalue, 0, 0, 6},
 	{"ns_plain_safe_in", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"ns_plain_one_out", &sh96, rt.RuleMemo | rt.RuleNovalue, 36, 0, 0},
+	{"ns_plain_one_out", &sh97, rt.RuleMemo | rt.RuleNovalue, 36, 0, 0},
 	{"nb_ns_plain_in_line_out", &sh2, rt.RuleMemo | rt.RuleNovalue, 37, 0, 0},
-	{"ns_plain_multi_out", &sh96, rt.RuleMemo | rt.RuleNovalue, 38, 0, 2},
-	{"ns_plain_one_in", &sh96, rt.RuleMemo | rt.RuleNovalue, 39, 0, 0},
+	{"ns_plain_multi_out", &sh97, rt.RuleMemo | rt.RuleNovalue, 38, 0, 2},
+	{"ns_plain_one_in", &sh97, rt.RuleMemo | rt.RuleNovalue, 39, 0, 0},
 	{"nb_ns_plain_in_line_in", &sh2, rt.RuleMemo | rt.RuleNovalue, 40, 0, 0},
-	{"ns_plain_multi_in", &sh96, rt.RuleNovalue, 0, 0, 2},
-	{"c_double_quoted", &sh96, rt.RuleNovalue, 0, 0, 1},
-	{"double_quoted", &sh98, rt.RuleNovalue, 0, 0, 1},
+	{"ns_plain_multi_in", &sh97, rt.RuleNovalue, 0, 0, 2},
+	{"c_double_quoted", &sh97, rt.RuleNovalue, 0, 0, 1},
+	{"double_quoted", &sh99, rt.RuleNovalue, 0, 0, 1},
 	{"nb_double_one_line", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"c_ns_esc_char", &sh96, rt.RuleMemo | rt.RuleNovalue, 41, 0, 0},
-	{"nb_double_multi_line", &sh98, rt.RuleNovalue, 0, 0, 2},
+	{"c_ns_esc_char", &sh97, rt.RuleMemo | rt.RuleNovalue, 41, 0, 0},
+	{"nb_double_multi_line", &sh99, rt.RuleNovalue, 0, 0, 2},
 	{"nb_ns_double_in_line", &sh2, rt.RuleMemo | rt.RuleNovalue, 42, 0, 0},
 	{"ns_double_char", &sh2, rt.RuleMemo | rt.RuleNovalue, 43, 0, 0},
 	{"s_double_break", &sh2, rt.RuleNovalue, 0, 0, 2},
-	{"c_single_quoted", &sh96, rt.RuleNovalue, 0, 0, 1},
-	{"single_quoted", &sh98, rt.RuleNovalue, 0, 0, 1},
+	{"c_single_quoted", &sh97, rt.RuleNovalue, 0, 0, 1},
+	{"single_quoted", &sh99, rt.RuleNovalue, 0, 0, 1},
 	{"nb_single_one_line", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"nb_single_multi_line", &sh98, rt.RuleNovalue, 0, 0, 2},
+	{"nb_single_multi_line", &sh99, rt.RuleNovalue, 0, 0, 2},
 	{"nb_ns_single_in_line", &sh2, rt.RuleMemo | rt.RuleNovalue, 44, 0, 0},
 	{"ns_single_char", &sh2, rt.RuleNovalue, 0, 0, 0},
-	{"s_flow_folded", &sh190, rt.RuleMemo | rt.RuleNovalue, 45, 0, 2},
-	{"l_empty_flow", &sh98, rt.RuleMemo | rt.RuleNovalue, 46, 5, 2},
-	{"s_flow_line_prefix", &sh96, rt.RuleNovalue, 0, 5, 2},
+	{"s_flow_folded", &sh191, rt.RuleMemo | rt.RuleNovalue, 45, 0, 2},
+	{"l_empty_flow", &sh99, rt.RuleMemo | rt.RuleNovalue, 46, 5, 2},
+	{"s_flow_line_prefix", &sh97, rt.RuleNovalue, 0, 5, 2},
 	{"s_separate", &sh2, rt.RuleMemo | rt.RuleNovalue, 47, 0, 1},
 	{"s_separate_lines", &sh2, rt.RuleMemo | rt.RuleNovalue, 48, 0, 2},
 	{"s_separate_in_line", &sh2, rt.RuleNovalue, 0, 0, 0},
 	{"s_l_comments", &sh2, rt.RuleMemo | rt.RuleNovalue, 49, 0, 0},
-	{"s_b_comment", &sh96, rt.RuleMemo | rt.RuleNovalue, 50, 0, 0},
-	{"l_comment", &sh98, rt.RuleMemo | rt.RuleNovalue, 51, 0, 0},
-	{"c_nb_comment_text", &sh96, rt.RuleNovalue, 0, 0, 0},
+	{"s_b_comment", &sh97, rt.RuleMemo | rt.RuleNovalue, 50, 0, 0},
+	{"l_comment", &sh99, rt.RuleMemo | rt.RuleNovalue, 51, 0, 0},
+	{"c_nb_comment_text", &sh97, rt.RuleNovalue, 0, 0, 0},
 	{"b_comment", &sh2, rt.RuleNovalue, 0, 0, 0},
 	{"s_indent", &sh4, rt.RuleNovalue, 0, 3, 2},
 	{"b_break", &sh2, rt.RuleNovalue, 0, 0, 0},
@@ -862,12 +863,13 @@ var recRulesStrs = [...][]string{
 
 var recRulesExtras = [...]ruleExtra{}
 
-var scope268 = []string{"d"}
-var scope269 = []string{"e"}
+var scope269 = []string{"d"}
 var scope270 = []string{"e"}
-var scope271 = []string{"sp"}
-var scope272 = []string{"sp"}
-var scope273 = []string{"e"}
+var scope271 = []string{"e"}
+var scope272 = []string{"f", "c1", "s", "c2"}
+var scope273 = []string{"sp"}
+var scope274 = []string{"sp"}
+var scope275 = []string{"e"}
 
 func init() {
 	rules = rt.NewRules(rulesSpec[:], rulesStrs[:], rulesExtras[:])
@@ -1318,7 +1320,7 @@ func init() {
 	rules[61].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
-	rules[62].Body = e94
+	rules[62].Body = e95
 	rules[62].Action = func(c *rt.ActCtx) (any, any) {
 		tf1 := c.Cap(0)
 		tv2, tf2 := c.P.ActionLength(c.Cap(2))
@@ -1348,19 +1350,19 @@ func init() {
 		c.P.ActionMade(c, tn7, tfirst8)
 		return any(tn7), nil
 	}
-	rules[64].Body = e95
+	rules[64].Body = e96
 	rules[64].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
-	rules[66].Body = e100
-	rules[67].Body = e101
-	rules[69].Body = e102
+	rules[66].Body = e101
+	rules[67].Body = e102
+	rules[69].Body = e103
 	rules[69].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
-	rules[70].Body = e103
-	rules[71].Body = e104
-	rules[72].Body = e105
+	rules[70].Body = e104
+	rules[71].Body = e105
+	rules[72].Body = e106
 	rules[72].Action = func(c *rt.ActCtx) (any, any) {
 		tf1 := c.Cap(0)
 		tn2 := c.ActionStruct("Scalar", 1)
@@ -1370,7 +1372,7 @@ func init() {
 		c.P.ActionMade(c, tn2, tfirst3)
 		return any(tn2), nil
 	}
-	rules[73].Body = e106
+	rules[73].Body = e107
 	rules[73].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
@@ -1380,11 +1382,11 @@ func init() {
 		c.P.ActionMade(c, tn1, tfirst2)
 		return any(tn1), nil
 	}
-	rules[75].Body = e108
+	rules[75].Body = e109
 	rules[75].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
-	rules[76].Body = e111
+	rules[76].Body = e112
 	rules[76].Action = func(c *rt.ActCtx) (any, any) {
 		tf1 := c.Cap(0)
 		tm2 := len(c.P.KidStack)
@@ -1406,7 +1408,7 @@ func init() {
 		c.P.ActionMade(c, tn7, tfirst8)
 		return any(tn7), nil
 	}
-	rules[77].Body = e114
+	rules[77].Body = e115
 	rules[77].Action = func(c *rt.ActCtx) (any, any) {
 		tm1 := len(c.P.KidStack)
 		c.P.UnitsSized(1)
@@ -1437,8 +1439,8 @@ func init() {
 		tn11 := c.P.ActionHullLogical(c, false, tk10)
 		return any(tn11), nil
 	}
-	rules[78].Body = e115
-	rules[79].Body = e118
+	rules[78].Body = e116
+	rules[79].Body = e119
 	rules[79].Action = func(c *rt.ActCtx) (any, any) {
 		tf1 := c.Cap(0)
 		tm2 := len(c.P.KidStack)
@@ -1460,7 +1462,7 @@ func init() {
 		c.P.ActionMade(c, tn7, tfirst8)
 		return any(tn7), nil
 	}
-	rules[80].Body = e120
+	rules[80].Body = e121
 	rules[80].Action = func(c *rt.ActCtx) (any, any) {
 		tm1 := len(c.P.KidStack)
 		c.P.UnitsSized(1)
@@ -1477,12 +1479,12 @@ func init() {
 		tn5 := c.P.ActionHullLogical(c, false, tk4)
 		return any(tn5), nil
 	}
-	rules[81].Body = e121
-	rules[82].Body = e122
+	rules[81].Body = e122
+	rules[82].Body = e123
 	rules[82].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
-	rules[84].Body = e124
+	rules[84].Body = e125
 	rules[84].Action = func(c *rt.ActCtx) (any, any) {
 		tf1 := c.Cap(0)
 		tf2 := c.Cap(1)
@@ -1495,8 +1497,8 @@ func init() {
 		c.P.ActionMade(c, tn3, tfirst4)
 		return any(tn3), nil
 	}
-	rules[85].Body = e125
-	rules[86].Body = e126
+	rules[85].Body = e126
+	rules[86].Body = e127
 	rules[86].Action = func(c *rt.ActCtx) (any, any) {
 		tf1 := c.Cap(0)
 		tf2 := c.Cap(1)
@@ -1509,11 +1511,11 @@ func init() {
 		c.P.ActionMade(c, tn3, tfirst4)
 		return any(tn3), nil
 	}
-	rules[87].Body = e127
+	rules[87].Body = e128
 	rules[87].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
-	rules[88].Body = e128
+	rules[88].Body = e129
 	rules[88].Action = func(c *rt.ActCtx) (any, any) {
 		tf1 := c.Cap(0)
 		tf2 := c.Cap(1)
@@ -1526,15 +1528,15 @@ func init() {
 		c.P.ActionMade(c, tn3, tfirst4)
 		return any(tn3), nil
 	}
-	rules[89].Body = e129
+	rules[89].Body = e130
 	rules[89].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
-	rules[90].Body = e130
+	rules[90].Body = e131
 	rules[90].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
-	rules[91].Body = e131
+	rules[91].Body = e132
 	rules[91].Action = func(c *rt.ActCtx) (any, any) {
 		tf1 := c.Cap(0)
 		tf2 := c.Cap(1)
@@ -1547,19 +1549,19 @@ func init() {
 		c.P.ActionMade(c, tn3, tfirst4)
 		return any(tn3), nil
 	}
-	rules[92].Body = e132
+	rules[92].Body = e133
 	rules[92].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
-	rules[93].Body = e133
+	rules[93].Body = e134
 	rules[93].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
-	rules[94].Body = e134
+	rules[94].Body = e135
 	rules[94].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
-	rules[95].Body = e135
+	rules[95].Body = e136
 	rules[95].Action = func(c *rt.ActCtx) (any, any) {
 		tm1 := len(c.P.KidStack)
 		tf2 := c.P.ActionPush(c, "list", c.Cap(0))
@@ -1578,7 +1580,7 @@ func init() {
 		c.P.ActionMade(c, tn6, tfirst7)
 		return any(tn6), nil
 	}
-	rules[97].Body = e137
+	rules[97].Body = e138
 	rules[97].Action = func(c *rt.ActCtx) (any, any) {
 		tf1 := c.Cap(0)
 		tf2 := c.Cap(1)
@@ -1591,11 +1593,11 @@ func init() {
 		c.P.ActionMade(c, tn3, tfirst4)
 		return any(tn3), nil
 	}
-	rules[98].Body = e138
+	rules[98].Body = e139
 	rules[98].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
-	rules[99].Body = e139
+	rules[99].Body = e140
 	rules[99].Action = func(c *rt.ActCtx) (any, any) {
 		tf1 := c.Cap(0)
 		tf2 := c.Cap(1)
@@ -1608,11 +1610,11 @@ func init() {
 		c.P.ActionMade(c, tn3, tfirst4)
 		return any(tn3), nil
 	}
-	rules[100].Body = e140
+	rules[100].Body = e141
 	rules[100].Action = func(c *rt.ActCtx) (any, any) {
 		return c.Cap(0), nil
 	}
-	rules[101].Body = e141
+	rules[101].Body = e142
 	rules[101].Action = func(c *rt.ActCtx) (any, any) {
 		tf1 := c.Cap(0)
 		ts2, tf2 := c.P.ActionText(c.Cap(1))
@@ -1629,7 +1631,7 @@ func init() {
 		c.P.ActionMade(c, tn4, tfirst5)
 		return any(tn4), nil
 	}
-	rules[111].Body = e142
+	rules[111].Body = e143
 	rules[111].Action = func(c *rt.ActCtx) (any, any) {
 		tf1 := c.Cap(0)
 		ts2, tf2 := c.P.ActionText(c.Cap(1))
@@ -1648,7 +1650,7 @@ func init() {
 		c.P.ActionMade(c, tn4, tfirst5)
 		return any(tn4), nil
 	}
-	rules[119].Body = e143
+	rules[119].Body = e144
 	rules[119].Action = func(c *rt.ActCtx) (any, any) {
 		tf1 := c.Cap(0)
 		ts2, tf2 := c.P.ActionText(c.Cap(1))
@@ -1667,30 +1669,30 @@ func init() {
 		c.P.ActionMade(c, tn4, tfirst5)
 		return any(tn4), nil
 	}
-	rules[132].Body = e145
-	rules[140].Body = e154
-	rules[141].Body = e155
-	rules[142].Body = e156
-	rules[145].Body = e158
-	rules[146].Body = e159
-	rules[148].Body = e160
-	rules[150].Body = e161
-	rules[152].Body = e162
-	rules[153].Body = e163
-	rules[154].Body = e164
-	rules[156].Body = e166
-	rules[157].Body = e167
-	rules[163].Body = e172
-	rules[166].Body = e176
-	rules[169].Body = e177
-	rules[170].Body = e178
-	rules[171].Body = e179
-	rules[175].Body = e180
-	rules[178].Body = e185
-	rules[181].Body = e186
-	rules[182].Body = e187
-	rules[183].Body = e188
-	rules[185].Body = e189
+	rules[132].Body = e146
+	rules[140].Body = e155
+	rules[141].Body = e156
+	rules[142].Body = e157
+	rules[145].Body = e159
+	rules[146].Body = e160
+	rules[148].Body = e161
+	rules[150].Body = e162
+	rules[152].Body = e163
+	rules[153].Body = e164
+	rules[154].Body = e165
+	rules[156].Body = e167
+	rules[157].Body = e168
+	rules[163].Body = e173
+	rules[166].Body = e177
+	rules[169].Body = e178
+	rules[170].Body = e179
+	rules[171].Body = e180
+	rules[175].Body = e181
+	rules[178].Body = e186
+	rules[181].Body = e187
+	rules[182].Body = e188
+	rules[183].Body = e189
+	rules[185].Body = e190
 	sxirGrammar.DeclareStruct("Directive", "Name", "-", "Params", "l")
 	sxirGrammar.TypeKinds["Directive"] = rt.KindOf("Directive", "")
 	sxirGrammar.DeclareStruct("Document", "Directives", "l", "Start", "n", "Root", "-", "End", "n")
@@ -1714,64 +1716,64 @@ func init() {
 	sxirGrammar.NodeTypes["Word"] = rt.NewNodeTypeKinds("Word")
 	recRules = rt.NewRules(recRulesSpec[:], recRulesStrs[:], recRulesExtras[:])
 	sxirRecGrammar.SetRules(recRules, 51)
-	recRules[0].Body = e192
-	recRules[2].Body = e193
-	recRules[3].Body = e194
-	recRules[7].Body = e195
-	recRules[9].Body = e196
-	recRules[10].Body = e197
-	recRules[12].Body = e198
-	recRules[13].Body = e199
-	recRules[25].Body = e200
-	recRules[26].Body = e201
-	recRules[28].Body = e202
-	recRules[31].Body = e203
-	recRules[32].Body = e204
-	recRules[34].Body = e205
-	recRules[35].Body = e206
-	recRules[38].Body = e208
-	recRules[43].Body = e209
-	recRules[44].Body = e210
-	recRules[46].Body = e213
-	recRules[47].Body = e214
-	recRules[48].Body = e215
-	recRules[49].Body = e216
-	recRules[51].Body = e218
-	recRules[53].Body = e219
-	recRules[62].Body = e226
-	recRules[66].Body = e229
-	recRules[67].Body = e230
-	recRules[68].Body = e231
-	recRules[69].Body = e232
-	recRules[70].Body = e233
-	recRules[71].Body = e234
-	recRules[73].Body = e235
-	recRules[75].Body = e236
-	recRules[78].Body = e238
-	recRules[81].Body = e240
-	recRules[82].Body = e241
-	recRules[85].Body = e242
-	recRules[88].Body = e243
-	recRules[89].Body = e244
-	recRules[93].Body = e245
-	recRules[105].Body = e250
-	recRules[106].Body = e251
-	recRules[107].Body = e252
-	recRules[108].Body = e253
-	recRules[109].Body = e254
-	recRules[114].Body = e256
-	recRules[116].Body = e257
-	recRules[117].Body = e258
-	recRules[123].Body = e260
-	recRules[125].Body = e261
-	recRules[126].Body = e262
-	recRules[127].Body = e177
-	recRules[128].Body = e263
-	recRules[129].Body = e264
-	recRules[131].Body = e265
-	recRules[132].Body = e266
-	recRules[133].Body = e267
-	recRules[136].Body = e163
+	recRules[0].Body = e193
+	recRules[2].Body = e194
+	recRules[3].Body = e195
+	recRules[7].Body = e196
+	recRules[9].Body = e197
+	recRules[10].Body = e198
+	recRules[12].Body = e199
+	recRules[13].Body = e200
+	recRules[25].Body = e201
+	recRules[26].Body = e202
+	recRules[28].Body = e203
+	recRules[31].Body = e204
+	recRules[32].Body = e205
+	recRules[34].Body = e206
+	recRules[35].Body = e207
+	recRules[38].Body = e209
+	recRules[43].Body = e210
+	recRules[44].Body = e211
+	recRules[46].Body = e214
+	recRules[47].Body = e215
+	recRules[48].Body = e216
+	recRules[49].Body = e217
+	recRules[51].Body = e219
+	recRules[53].Body = e220
+	recRules[62].Body = e227
+	recRules[66].Body = e230
+	recRules[67].Body = e231
+	recRules[68].Body = e232
+	recRules[69].Body = e233
+	recRules[70].Body = e234
+	recRules[71].Body = e235
+	recRules[73].Body = e236
+	recRules[75].Body = e237
+	recRules[78].Body = e239
+	recRules[81].Body = e241
+	recRules[82].Body = e242
+	recRules[85].Body = e243
+	recRules[88].Body = e244
+	recRules[89].Body = e245
+	recRules[93].Body = e246
+	recRules[105].Body = e251
+	recRules[106].Body = e252
+	recRules[107].Body = e253
+	recRules[108].Body = e254
+	recRules[109].Body = e255
+	recRules[114].Body = e257
+	recRules[116].Body = e258
+	recRules[117].Body = e259
+	recRules[123].Body = e261
+	recRules[125].Body = e262
+	recRules[126].Body = e263
+	recRules[127].Body = e178
+	recRules[128].Body = e264
+	recRules[129].Body = e265
+	recRules[131].Body = e266
+	recRules[132].Body = e267
+	recRules[133].Body = e268
+	recRules[136].Body = e164
 	sxirGrammar.Starts = []string{"main"}
 	sxirGrammar.DefaultStart = "main"
 	sxirGrammar.SetVars([]string{"n", "c"}, []any{0, ""})
@@ -4957,14 +4959,14 @@ fail:
 	return nil, false
 }
 
-func e94(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
-	var ok, x113, x118, x125, x143, x150, x156, x173, x182 bool
-	var x7, x8, x15, x20, size, x27, x34, x36, x42, x44, x50, x52, x58, x60, x66, x68, x74, x76, x82, x84, x90, x92, x98, x100, x105, x107, x110, x114, x119, x124, x126, x136, x138, x144, x149, x151, x157, x166, x168, x174, x181, x183, x204 int
-	var x2, x10, x23, x29, x116, x121, x128, x132, x146, x153, x159, x161, x176, x178, x185, x188, x192, x200, x210 rt.Mark
-	var v3, v6, v11, v16, v21, v24, v28, v30, v37, v38, v39, v45, v46, v47, v53, v54, v55, v61, v62, v63, v69, v70, v71, v77, v78, v79, v85, v86, v87, v93, v94, v95, v101, v102, v103, v112, v130, v155, v163, v187, v195, v197, v198, v201, v205, v206, v207, v208, v209 *sxirvalue.Node
-	var x9, x35, x43, x51, x59, x67, x75, x83, x91, x99, x106, x111, x137, x167 []*sxirvalue.Node
+func e95(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+	var ok, x119, x124, x131, x149, x156, x162, x179, x188 bool
+	var x7, x12, x20, x25, size, x32, x40, x42, x48, x50, x56, x58, x64, x66, x72, x74, x80, x82, x88, x90, x96, x98, x104, x106, x111, x113, x116, x120, x125, x130, x132, x142, x144, x150, x155, x157, x163, x172, x174, x180, x187, x189, x210 int
+	var x2, x14, x28, x34, x122, x127, x134, x138, x152, x159, x165, x167, x182, x184, x191, x194, x198, x206, x219 rt.Mark
+	var v3, v6, k8, k9, k10, k11, x15, v16, v21, v26, v29, v33, x35, v36, v43, v44, v45, v51, v52, v53, v59, v60, v61, v67, v68, v69, v75, v76, v77, v83, v84, v85, v91, v92, v93, v99, v100, v101, v107, v108, v109, v118, v136, v161, v169, v193, v201, v203, v204, v207, v211, v212, v213, v214, v215, v216 *sxirvalue.Node
+	var x13, x41, x49, x57, x65, x73, x81, x89, x97, x105, x112, x117, x143, x173 []*sxirvalue.Node
 	var ch rune
-	var x141, x142, x171, x172 *rt.CaptureFrame
+	var x147, x148, x177, x178, x217, x218 *rt.CaptureFrame
 	if _, ok = r155(p); !ok {
 		goto fail
 	}
@@ -4980,81 +4982,91 @@ L4:
 L5:
 	p.SetCapture(0, v3)
 	x7 = p.Pos
-	x8 = p.Pos
-	x9 = p.Nodes(6)[:0]
-	x10 = p.Mark()
+	k8 = nil
+	k9 = nil
+	k10 = nil
+	k11 = nil
+	x12 = p.Pos
+	x13 = p.Nodes(6)[:0]
+	x14 = p.Mark()
+	x15 = k8
 	if !p.HasCharOrdinary(124, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 37)
-		goto L13
+		goto L18
 	}
-	x15 = p.Pos
+	x20 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 124 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.MatchLiteralLogical(lit80, "|", 37, false); !ok {
-		goto L14
+		goto L19
 	}
-	v16 = p.NewTerminalOrdinary(x15, "|")
-	v11 = v16
-	goto L12
-L14:
-	p.Reset(x10)
-L13:
+	v21 = p.NewTerminalOrdinary(x20, "|")
+	v16 = v21
+	goto L17
+L19:
+	p.Reset(x14)
+	k8 = x15
+L18:
 	if !p.HasCharOrdinary(62, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 18)
-		goto L17
+		goto L22
 	}
-	x20 = p.Pos
+	x25 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 62 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.MatchLiteralLogical(lit38, ">", 18, false); !ok {
-		goto L18
+		goto L23
 	}
-	v21 = p.NewTerminalOrdinary(x20, ">")
-	p.SetCapture(2, v21)
-	v11 = v21
-	goto L12
-L18:
-	p.Reset(x10)
-L17:
+	v26 = p.NewTerminalOrdinary(x25, ">")
+	p.SetCapture(2, v26)
+	k8 = v26
+	v16 = v26
+	goto L17
+L23:
+	p.Reset(x14)
+	k8 = x15
+L22:
 	goto fail
-L12:
-	x9 = append(x9, v11)
-	x23 = p.Mark()
+L17:
+	x13 = append(x13, v16)
+	x28 = p.Mark()
 	ch, size, ok = p.NextOrdinary()
 	if !ok || !(ch == 43 || ch == 45) {
 		p.Expect(p.Pos, 38)
-		goto L25
+		goto L30
 	}
-	x27 = p.Pos
+	x32 = p.Pos
 	p.Pos += size
 	p.Units += uint64(size)
-	v28 = p.NewTerminalOrdinary(x27, p.Text(x27, p.Pos))
-	v24 = v28
-	goto L26
-L25:
-	p.Reset(x23)
-	v24 = nil
-L26:
-	p.SetCapture(3, v24)
-	x9 = append(x9, v24)
-	x29 = p.Mark()
+	v33 = p.NewTerminalOrdinary(x32, p.Text(x32, p.Pos))
+	v29 = v33
+	goto L31
+L30:
+	p.Reset(x28)
+	v29 = nil
+L31:
+	p.SetCapture(3, v29)
+	k9 = v29
+	x13 = append(x13, v29)
+	x34 = p.Mark()
+	x35 = k10
 	if !p.HasCharOrdinary(49, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 39)
-		goto L32
+		goto L38
 	}
-	x34 = p.Pos
-	x35 = p.Nodes(1)[:0]
-	x36 = p.Pos
+	x40 = p.Pos
+	x41 = p.Nodes(1)[:0]
+	x42 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 49 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.MatchLiteralLogical(lit81, "1", 39, false); !ok {
-		goto L33
+		goto L39
 	}
-	v37 = p.NewTerminalOrdinary(x36, "1")
-	x35 = append(x35, v37)
+	v43 = p.NewTerminalOrdinary(x42, "1")
+	x41 = append(x41, v43)
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(1))
@@ -5063,30 +5075,31 @@ L26:
 		}
 		return tv2, nil
 	}) {
-		goto L33
+		goto L39
 	}
-	v38 = p.NewBranchOrdinary(rt.SeqKind, x34, x35)
-	v39, _ = p.ShapeSingle(sh4, v38, x29.Pos)
-	v30 = v39
-	goto L31
-L33:
-	p.Reset(x29)
-L32:
+	v44 = p.NewBranchOrdinary(rt.SeqKind, x40, x41)
+	v45, _ = p.ShapeSingle(sh4, v44, x34.Pos)
+	v36 = v45
+	goto L37
+L39:
+	p.Reset(x34)
+	k10 = x35
+L38:
 	if !p.HasCharOrdinary(50, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 40)
-		goto L40
+		goto L46
 	}
-	x42 = p.Pos
-	x43 = p.Nodes(1)[:0]
-	x44 = p.Pos
+	x48 = p.Pos
+	x49 = p.Nodes(1)[:0]
+	x50 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 50 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.MatchLiteralLogical(lit82, "2", 40, false); !ok {
-		goto L41
+		goto L47
 	}
-	v45 = p.NewTerminalOrdinary(x44, "2")
-	x43 = append(x43, v45)
+	v51 = p.NewTerminalOrdinary(x50, "2")
+	x49 = append(x49, v51)
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(2))
@@ -5095,30 +5108,31 @@ L32:
 		}
 		return tv2, nil
 	}) {
-		goto L41
+		goto L47
 	}
-	v46 = p.NewBranchOrdinary(rt.SeqKind, x42, x43)
-	v47, _ = p.ShapeSingle(sh4, v46, x29.Pos)
-	v30 = v47
-	goto L31
-L41:
-	p.Reset(x29)
-L40:
+	v52 = p.NewBranchOrdinary(rt.SeqKind, x48, x49)
+	v53, _ = p.ShapeSingle(sh4, v52, x34.Pos)
+	v36 = v53
+	goto L37
+L47:
+	p.Reset(x34)
+	k10 = x35
+L46:
 	if !p.HasCharOrdinary(51, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 41)
-		goto L48
+		goto L54
 	}
-	x50 = p.Pos
-	x51 = p.Nodes(1)[:0]
-	x52 = p.Pos
+	x56 = p.Pos
+	x57 = p.Nodes(1)[:0]
+	x58 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 51 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.MatchLiteralLogical(lit83, "3", 41, false); !ok {
-		goto L49
+		goto L55
 	}
-	v53 = p.NewTerminalOrdinary(x52, "3")
-	x51 = append(x51, v53)
+	v59 = p.NewTerminalOrdinary(x58, "3")
+	x57 = append(x57, v59)
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(3))
@@ -5127,30 +5141,31 @@ L40:
 		}
 		return tv2, nil
 	}) {
-		goto L49
+		goto L55
 	}
-	v54 = p.NewBranchOrdinary(rt.SeqKind, x50, x51)
-	v55, _ = p.ShapeSingle(sh4, v54, x29.Pos)
-	v30 = v55
-	goto L31
-L49:
-	p.Reset(x29)
-L48:
+	v60 = p.NewBranchOrdinary(rt.SeqKind, x56, x57)
+	v61, _ = p.ShapeSingle(sh4, v60, x34.Pos)
+	v36 = v61
+	goto L37
+L55:
+	p.Reset(x34)
+	k10 = x35
+L54:
 	if !p.HasCharOrdinary(52, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 42)
-		goto L56
+		goto L62
 	}
-	x58 = p.Pos
-	x59 = p.Nodes(1)[:0]
-	x60 = p.Pos
+	x64 = p.Pos
+	x65 = p.Nodes(1)[:0]
+	x66 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 52 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.MatchLiteralLogical(lit84, "4", 42, false); !ok {
-		goto L57
+		goto L63
 	}
-	v61 = p.NewTerminalOrdinary(x60, "4")
-	x59 = append(x59, v61)
+	v67 = p.NewTerminalOrdinary(x66, "4")
+	x65 = append(x65, v67)
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(4))
@@ -5159,30 +5174,31 @@ L48:
 		}
 		return tv2, nil
 	}) {
-		goto L57
+		goto L63
 	}
-	v62 = p.NewBranchOrdinary(rt.SeqKind, x58, x59)
-	v63, _ = p.ShapeSingle(sh4, v62, x29.Pos)
-	v30 = v63
-	goto L31
-L57:
-	p.Reset(x29)
-L56:
+	v68 = p.NewBranchOrdinary(rt.SeqKind, x64, x65)
+	v69, _ = p.ShapeSingle(sh4, v68, x34.Pos)
+	v36 = v69
+	goto L37
+L63:
+	p.Reset(x34)
+	k10 = x35
+L62:
 	if !p.HasCharOrdinary(53, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 43)
-		goto L64
+		goto L70
 	}
-	x66 = p.Pos
-	x67 = p.Nodes(1)[:0]
-	x68 = p.Pos
+	x72 = p.Pos
+	x73 = p.Nodes(1)[:0]
+	x74 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 53 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.MatchLiteralLogical(lit85, "5", 43, false); !ok {
-		goto L65
+		goto L71
 	}
-	v69 = p.NewTerminalOrdinary(x68, "5")
-	x67 = append(x67, v69)
+	v75 = p.NewTerminalOrdinary(x74, "5")
+	x73 = append(x73, v75)
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(5))
@@ -5191,30 +5207,31 @@ L56:
 		}
 		return tv2, nil
 	}) {
-		goto L65
+		goto L71
 	}
-	v70 = p.NewBranchOrdinary(rt.SeqKind, x66, x67)
-	v71, _ = p.ShapeSingle(sh4, v70, x29.Pos)
-	v30 = v71
-	goto L31
-L65:
-	p.Reset(x29)
-L64:
+	v76 = p.NewBranchOrdinary(rt.SeqKind, x72, x73)
+	v77, _ = p.ShapeSingle(sh4, v76, x34.Pos)
+	v36 = v77
+	goto L37
+L71:
+	p.Reset(x34)
+	k10 = x35
+L70:
 	if !p.HasCharOrdinary(54, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 44)
-		goto L72
+		goto L78
 	}
-	x74 = p.Pos
-	x75 = p.Nodes(1)[:0]
-	x76 = p.Pos
+	x80 = p.Pos
+	x81 = p.Nodes(1)[:0]
+	x82 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 54 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.MatchLiteralLogical(lit86, "6", 44, false); !ok {
-		goto L73
+		goto L79
 	}
-	v77 = p.NewTerminalOrdinary(x76, "6")
-	x75 = append(x75, v77)
+	v83 = p.NewTerminalOrdinary(x82, "6")
+	x81 = append(x81, v83)
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(6))
@@ -5223,30 +5240,31 @@ L64:
 		}
 		return tv2, nil
 	}) {
-		goto L73
+		goto L79
 	}
-	v78 = p.NewBranchOrdinary(rt.SeqKind, x74, x75)
-	v79, _ = p.ShapeSingle(sh4, v78, x29.Pos)
-	v30 = v79
-	goto L31
-L73:
-	p.Reset(x29)
-L72:
+	v84 = p.NewBranchOrdinary(rt.SeqKind, x80, x81)
+	v85, _ = p.ShapeSingle(sh4, v84, x34.Pos)
+	v36 = v85
+	goto L37
+L79:
+	p.Reset(x34)
+	k10 = x35
+L78:
 	if !p.HasCharOrdinary(55, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 45)
-		goto L80
+		goto L86
 	}
-	x82 = p.Pos
-	x83 = p.Nodes(1)[:0]
-	x84 = p.Pos
+	x88 = p.Pos
+	x89 = p.Nodes(1)[:0]
+	x90 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 55 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.MatchLiteralLogical(lit87, "7", 45, false); !ok {
-		goto L81
+		goto L87
 	}
-	v85 = p.NewTerminalOrdinary(x84, "7")
-	x83 = append(x83, v85)
+	v91 = p.NewTerminalOrdinary(x90, "7")
+	x89 = append(x89, v91)
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(7))
@@ -5255,30 +5273,31 @@ L72:
 		}
 		return tv2, nil
 	}) {
-		goto L81
+		goto L87
 	}
-	v86 = p.NewBranchOrdinary(rt.SeqKind, x82, x83)
-	v87, _ = p.ShapeSingle(sh4, v86, x29.Pos)
-	v30 = v87
-	goto L31
-L81:
-	p.Reset(x29)
-L80:
+	v92 = p.NewBranchOrdinary(rt.SeqKind, x88, x89)
+	v93, _ = p.ShapeSingle(sh4, v92, x34.Pos)
+	v36 = v93
+	goto L37
+L87:
+	p.Reset(x34)
+	k10 = x35
+L86:
 	if !p.HasCharOrdinary(56, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 46)
-		goto L88
+		goto L94
 	}
-	x90 = p.Pos
-	x91 = p.Nodes(1)[:0]
-	x92 = p.Pos
+	x96 = p.Pos
+	x97 = p.Nodes(1)[:0]
+	x98 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 56 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.MatchLiteralLogical(lit88, "8", 46, false); !ok {
-		goto L89
+		goto L95
 	}
-	v93 = p.NewTerminalOrdinary(x92, "8")
-	x91 = append(x91, v93)
+	v99 = p.NewTerminalOrdinary(x98, "8")
+	x97 = append(x97, v99)
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(8))
@@ -5287,30 +5306,31 @@ L80:
 		}
 		return tv2, nil
 	}) {
-		goto L89
+		goto L95
 	}
-	v94 = p.NewBranchOrdinary(rt.SeqKind, x90, x91)
-	v95, _ = p.ShapeSingle(sh4, v94, x29.Pos)
-	v30 = v95
-	goto L31
-L89:
-	p.Reset(x29)
-L88:
+	v100 = p.NewBranchOrdinary(rt.SeqKind, x96, x97)
+	v101, _ = p.ShapeSingle(sh4, v100, x34.Pos)
+	v36 = v101
+	goto L37
+L95:
+	p.Reset(x34)
+	k10 = x35
+L94:
 	if !p.HasCharOrdinary(57, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 47)
-		goto L96
+		goto L102
 	}
-	x98 = p.Pos
-	x99 = p.Nodes(1)[:0]
-	x100 = p.Pos
+	x104 = p.Pos
+	x105 = p.Nodes(1)[:0]
+	x106 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 57 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.MatchLiteralLogical(lit89, "9", 47, false); !ok {
-		goto L97
+		goto L103
 	}
-	v101 = p.NewTerminalOrdinary(x100, "9")
-	x99 = append(x99, v101)
+	v107 = p.NewTerminalOrdinary(x106, "9")
+	x105 = append(x105, v107)
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(9))
@@ -5319,32 +5339,33 @@ L88:
 		}
 		return tv2, nil
 	}) {
-		goto L97
+		goto L103
 	}
-	v102 = p.NewBranchOrdinary(rt.SeqKind, x98, x99)
-	v103, _ = p.ShapeSingle(sh4, v102, x29.Pos)
-	v30 = v103
-	goto L31
-L97:
-	p.Reset(x29)
-L96:
-	x105 = p.Pos
-	x106 = p.Nodes(0)[:0]
-	x107 = p.Pos
+	v108 = p.NewBranchOrdinary(rt.SeqKind, x104, x105)
+	v109, _ = p.ShapeSingle(sh4, v108, x34.Pos)
+	v36 = v109
+	goto L37
+L103:
+	p.Reset(x34)
+	k10 = x35
+L102:
+	x111 = p.Pos
+	x112 = p.Nodes(0)[:0]
+	x113 = p.Pos
 	p.Silent++
-	x110 = p.Pos
-	x111 = p.Nodes(2)[:0]
-	if v112, ok = p.Call(rules[132], 0); !ok {
-		goto L108
+	x116 = p.Pos
+	x117 = p.Nodes(2)[:0]
+	if v118, ok = p.Call(rules[132], 0); !ok {
+		goto L114
 	}
-	x111 = append(x111, v112)
-	x114 = p.Pos
-	x113 = p.RunHot(25)
-	if x113 {
+	x117 = append(x117, v118)
+	x120 = p.Pos
+	x119 = p.RunHot(25)
+	if x119 {
 		p.RunBegin(25, false, false)
 	}
 	for {
-		if x113 {
+		if x119 {
 			if p.SkipHit() {
 				break
 			}
@@ -5353,14 +5374,14 @@ L96:
 		if p.Units > p.UnitsCheck {
 			p.PollUnits()
 		}
-		x116 = p.Mark()
-		x119 = p.Pos
-		x118 = p.RunHot(26)
-		if x118 {
+		x122 = p.Mark()
+		x125 = p.Pos
+		x124 = p.RunHot(26)
+		if x124 {
 			p.RunBegin(26, false, false)
 		}
 		for {
-			if x118 {
+			if x124 {
 				if p.SkipHit() {
 					break
 				}
@@ -5369,54 +5390,54 @@ L96:
 			if p.Units > p.UnitsCheck {
 				p.PollUnits()
 			}
-			x121 = p.Mark()
+			x127 = p.Mark()
 			if p.Pos < len(p.In) && p.In[p.Pos] == 32 {
 				p.Pos++
 				p.Units += 1
 			} else if _, ok = p.MatchLiteralLogical(lit55, " ", 31, false); !ok {
-				goto L122
+				goto L128
 			}
-			if p.Pos == x121.Pos {
+			if p.Pos == x127.Pos {
 				break
 			}
 			continue
-		L122:
-			p.Reset(x121)
+		L128:
+			p.Reset(x127)
 			break
 		}
-		if x118 {
+		if x124 {
 			p.SkipEnd()
 		} else {
-			if p.Pos-x119 >= rt.RunHotSpan {
-				p.RunWalked(26, x119)
+			if p.Pos-x125 >= rt.RunHotSpan {
+				p.RunWalked(26, x125)
 			}
 		}
 		if _, ok = r151(p); !ok {
-			goto L117
+			goto L123
 		}
-		if p.Pos == x116.Pos {
+		if p.Pos == x122.Pos {
 			break
 		}
 		continue
-	L117:
-		p.Reset(x116)
+	L123:
+		p.Reset(x122)
 		break
 	}
-	if x113 {
+	if x119 {
 		p.SkipEnd()
 	} else {
-		if p.Pos-x114 >= rt.RunHotSpan {
-			p.RunWalked(25, x114)
+		if p.Pos-x120 >= rt.RunHotSpan {
+			p.RunWalked(25, x120)
 		}
 	}
-	x124 = p.Pos
-	x126 = p.Pos
-	x125 = p.RunHot(27)
-	if x125 {
+	x130 = p.Pos
+	x132 = p.Pos
+	x131 = p.RunHot(27)
+	if x131 {
 		p.RunBegin(27, false, false)
 	}
 	for {
-		if x125 {
+		if x131 {
 			if p.SkipHit() {
 				break
 			}
@@ -5425,43 +5446,44 @@ L96:
 		if p.Units > p.UnitsCheck {
 			p.PollUnits()
 		}
-		x128 = p.Mark()
+		x134 = p.Mark()
 		if p.Pos < len(p.In) && p.In[p.Pos] == 32 {
 			p.Pos++
 			p.Units += 1
 		} else if _, ok = p.MatchLiteralLogical(lit55, " ", 31, false); !ok {
-			goto L129
+			goto L135
 		}
-		if p.Pos == x128.Pos {
+		if p.Pos == x134.Pos {
 			break
 		}
 		continue
-	L129:
-		p.Reset(x128)
+	L135:
+		p.Reset(x134)
 		break
 	}
-	if x125 {
+	if x131 {
 		p.SkipEnd()
 	} else {
-		if p.Pos-x126 >= rt.RunHotSpan {
-			p.RunWalked(27, x126)
+		if p.Pos-x132 >= rt.RunHotSpan {
+			p.RunWalked(27, x132)
 		}
 	}
-	v130 = p.NewTerminalOrdinary(x124, p.Text(x124, p.Pos))
-	p.SetCapture(4, v130)
-	x111 = append(x111, v130)
-	_ = p.NewBranchOrdinary(rt.SeqKind, x110, x111)
+	v136 = p.NewTerminalOrdinary(x130, p.Text(x130, p.Pos))
+	p.SetCapture(4, v136)
+	k10 = v136
+	x117 = append(x117, v136)
+	_ = p.NewBranchOrdinary(rt.SeqKind, x116, x117)
 	p.Silent--
-	p.Pos = x107
-	goto L109
-L108:
+	p.Pos = x113
+	goto L115
+L114:
 	p.Silent--
-	p.Pos = x107
-	goto L104
-L109:
-	x132 = p.Mark()
-	x136 = p.Pos
-	x137 = p.Nodes(0)[:0]
+	p.Pos = x113
+	goto L110
+L115:
+	x138 = p.Mark()
+	x142 = p.Pos
+	x143 = p.Nodes(0)[:0]
 	if !p.Predicate(func(c *rt.ActCtx) (any, any) {
 		tv1, tf1 := c.P.ActionLength(c.Cap(4))
 		if tf1 != nil {
@@ -5474,7 +5496,7 @@ L109:
 		}
 		return tv3, nil
 	}) {
-		goto L135
+		goto L141
 	}
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1, tf1 := c.P.ActionLength(c.Cap(4))
@@ -5483,20 +5505,20 @@ L109:
 		}
 		return tv1, nil
 	}) {
-		goto L135
-	}
-	x138 = p.Pos
-	p.Silent++
-	if _, ok = p.Call(rules[156], 0); !ok {
-		goto L139
+		goto L141
 	}
 	x144 = p.Pos
-	x143 = p.RunHot(28)
-	if x143 {
+	p.Silent++
+	if _, ok = p.Call(rules[156], 0); !ok {
+		goto L145
+	}
+	x150 = p.Pos
+	x149 = p.RunHot(28)
+	if x149 {
 		p.RunBegin(28, false, true)
 	}
 	for {
-		if x143 {
+		if x149 {
 			if p.SkipHit() {
 				break
 			}
@@ -5505,18 +5527,18 @@ L109:
 		if p.Units > p.UnitsCheck {
 			p.PollUnits()
 		}
-		x146 = p.Mark()
-		x142 = p.Frame
-		x141 = p.NewFrame(len(scope90))
-		p.Frame = x141
-		x149 = p.Pos
-		x151 = p.Pos
-		x150 = p.RunHot(29)
-		if x150 {
+		x152 = p.Mark()
+		x148 = p.Frame
+		x147 = p.NewFrame(len(scope90))
+		p.Frame = x147
+		x155 = p.Pos
+		x157 = p.Pos
+		x156 = p.RunHot(29)
+		if x156 {
 			p.RunBegin(29, false, false)
 		}
 		for {
-			if x150 {
+			if x156 {
 				if p.SkipHit() {
 					break
 				}
@@ -5525,30 +5547,30 @@ L109:
 			if p.Units > p.UnitsCheck {
 				p.PollUnits()
 			}
-			x153 = p.Mark()
+			x159 = p.Mark()
 			if p.Pos < len(p.In) && p.In[p.Pos] == 32 {
 				p.Pos++
 				p.Units += 1
 			} else if _, ok = p.MatchLiteralLogical(lit55, " ", 31, false); !ok {
-				goto L154
+				goto L160
 			}
-			if p.Pos == x153.Pos {
+			if p.Pos == x159.Pos {
 				break
 			}
 			continue
-		L154:
-			p.Reset(x153)
+		L160:
+			p.Reset(x159)
 			break
 		}
-		if x150 {
+		if x156 {
 			p.SkipEnd()
 		} else {
-			if p.Pos-x151 >= rt.RunHotSpan {
-				p.RunWalked(29, x151)
+			if p.Pos-x157 >= rt.RunHotSpan {
+				p.RunWalked(29, x157)
 			}
 		}
-		v155 = p.NewTerminalOrdinary(x149, p.Text(x149, p.Pos))
-		p.SetCapture(0, v155)
+		v161 = p.NewTerminalOrdinary(x155, p.Text(x155, p.Pos))
+		p.SetCapture(0, v161)
 		if !p.Predicate(func(c *rt.ActCtx) (any, any) {
 			tv1, tf1 := c.P.ActionLength(c.Cap(0))
 			if tf1 != nil {
@@ -5561,35 +5583,35 @@ L109:
 			}
 			return tv3, nil
 		}) {
-			goto L147
+			goto L153
 		}
 		if _, ok = r151(p); !ok {
-			goto L147
+			goto L153
 		}
-		p.Frame = x142
-		if p.Pos == x146.Pos {
+		p.Frame = x148
+		if p.Pos == x152.Pos {
 			break
 		}
 		continue
-	L147:
-		p.Frame = x142
-		p.Reset(x146)
+	L153:
+		p.Frame = x148
+		p.Reset(x152)
 		break
 	}
-	if x143 {
+	if x149 {
 		p.SkipEnd()
 	} else {
-		if p.Pos-x144 >= rt.RunHotSpan {
-			p.RunWalked(28, x144)
+		if p.Pos-x150 >= rt.RunHotSpan {
+			p.RunWalked(28, x150)
 		}
 	}
-	x157 = p.Pos
-	x156 = p.RunHot(30)
-	if x156 {
+	x163 = p.Pos
+	x162 = p.RunHot(30)
+	if x162 {
 		p.RunBegin(30, false, false)
 	}
 	for {
-		if x156 {
+		if x162 {
 			if p.SkipHit() {
 				break
 			}
@@ -5598,57 +5620,57 @@ L109:
 		if p.Units > p.UnitsCheck {
 			p.PollUnits()
 		}
-		x159 = p.Mark()
+		x165 = p.Mark()
 		if p.Pos < len(p.In) && p.In[p.Pos] == 32 {
 			p.Pos++
 			p.Units += 1
 		} else if _, ok = p.MatchLiteralLogical(lit55, " ", 31, false); !ok {
-			goto L160
+			goto L166
 		}
-		if p.Pos == x159.Pos {
+		if p.Pos == x165.Pos {
 			break
 		}
 		continue
-	L160:
-		p.Reset(x159)
+	L166:
+		p.Reset(x165)
 		break
 	}
-	if x156 {
+	if x162 {
 		p.SkipEnd()
 	} else {
-		if p.Pos-x157 >= rt.RunHotSpan {
-			p.RunWalked(30, x157)
+		if p.Pos-x163 >= rt.RunHotSpan {
+			p.RunWalked(30, x163)
 		}
 	}
-	x161 = p.Mark()
+	x167 = p.Mark()
 	p.Silent++
 	p.LookBegin(19)
 	if _, ok = r151(p); !ok {
-		goto L162
+		goto L168
 	}
 	p.LookEnd(true)
 	p.Silent--
-	p.Reset(x161)
-	goto L139
-L162:
+	p.Reset(x167)
+	goto L145
+L168:
 	p.LookEnd(false)
 	p.Silent--
-	p.Reset(x161)
+	p.Reset(x167)
 	p.Silent--
-	p.Pos = x138
+	p.Pos = x144
+	goto L146
+L145:
+	p.Silent--
+	p.Pos = x144
+	goto L141
+L146:
+	v169 = p.NewBranchOrdinary(rt.SeqKind, x142, x143)
+	_, _ = p.ShapeSingle(sh91, v169, x138.Pos)
 	goto L140
-L139:
-	p.Silent--
-	p.Pos = x138
-	goto L135
-L140:
-	v163 = p.NewBranchOrdinary(rt.SeqKind, x136, x137)
-	_, _ = p.ShapeSingle(sh91, v163, x132.Pos)
-	goto L134
-L135:
-	p.Reset(x132)
-	x166 = p.Pos
-	x167 = p.Nodes(0)[:0]
+L141:
+	p.Reset(x138)
+	x172 = p.Pos
+	x173 = p.Nodes(0)[:0]
 	if !p.Predicate(func(c *rt.ActCtx) (any, any) {
 		tv1, tf1 := c.P.ActionLength(c.Cap(4))
 		if tf1 != nil {
@@ -5661,7 +5683,7 @@ L135:
 		}
 		return tv3, nil
 	}) {
-		goto L165
+		goto L171
 	}
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
@@ -5671,20 +5693,20 @@ L135:
 		}
 		return tv2, nil
 	}) {
-		goto L165
-	}
-	x168 = p.Pos
-	p.Silent++
-	if _, ok = p.Call(rules[156], 0); !ok {
-		goto L169
+		goto L171
 	}
 	x174 = p.Pos
-	x173 = p.RunHot(31)
-	if x173 {
+	p.Silent++
+	if _, ok = p.Call(rules[156], 0); !ok {
+		goto L175
+	}
+	x180 = p.Pos
+	x179 = p.RunHot(31)
+	if x179 {
 		p.RunBegin(31, false, true)
 	}
 	for {
-		if x173 {
+		if x179 {
 			if p.SkipHit() {
 				break
 			}
@@ -5693,33 +5715,33 @@ L135:
 		if p.Units > p.UnitsCheck {
 			p.PollUnits()
 		}
-		x176 = p.Mark()
-		x172 = p.Frame
-		x171 = p.NewFrame(len(scope92))
-		p.Frame = x171
-		x178 = p.Mark()
+		x182 = p.Mark()
+		x178 = p.Frame
+		x177 = p.NewFrame(len(scope92))
+		p.Frame = x177
+		x184 = p.Mark()
 		p.Silent++
 		p.LookBegin(20)
 		if !p.AtEndBatchOrdinary() {
 			p.Expect(p.Pos, rt.IdEndInput)
-			goto L179
+			goto L185
 		}
 		p.LookEnd(true)
 		p.Silent--
-		p.Reset(x178)
-		goto L177
-	L179:
+		p.Reset(x184)
+		goto L183
+	L185:
 		p.LookEnd(false)
 		p.Silent--
-		p.Reset(x178)
-		x181 = p.Pos
-		x183 = p.Pos
-		x182 = p.RunHot(32)
-		if x182 {
+		p.Reset(x184)
+		x187 = p.Pos
+		x189 = p.Pos
+		x188 = p.RunHot(32)
+		if x188 {
 			p.RunBegin(32, false, false)
 		}
 		for {
-			if x182 {
+			if x188 {
 				if p.SkipHit() {
 					break
 				}
@@ -5728,47 +5750,47 @@ L135:
 			if p.Units > p.UnitsCheck {
 				p.PollUnits()
 			}
-			x185 = p.Mark()
+			x191 = p.Mark()
 			if p.Pos < len(p.In) && p.In[p.Pos] == 32 {
 				p.Pos++
 				p.Units += 1
 			} else if _, ok = p.MatchLiteralLogical(lit55, " ", 31, false); !ok {
-				goto L186
+				goto L192
 			}
-			if p.Pos == x185.Pos {
+			if p.Pos == x191.Pos {
 				break
 			}
 			continue
-		L186:
-			p.Reset(x185)
+		L192:
+			p.Reset(x191)
 			break
 		}
-		if x182 {
+		if x188 {
 			p.SkipEnd()
 		} else {
-			if p.Pos-x183 >= rt.RunHotSpan {
-				p.RunWalked(32, x183)
+			if p.Pos-x189 >= rt.RunHotSpan {
+				p.RunWalked(32, x189)
 			}
 		}
-		v187 = p.NewTerminalOrdinary(x181, p.Text(x181, p.Pos))
-		p.SetCapture(0, v187)
-		x188 = p.Mark()
+		v193 = p.NewTerminalOrdinary(x187, p.Text(x187, p.Pos))
+		p.SetCapture(0, v193)
+		x194 = p.Mark()
 		if _, ok = r151(p); !ok {
-			goto L190
+			goto L196
 		}
-		goto L189
-	L190:
-		p.Reset(x188)
+		goto L195
+	L196:
+		p.Reset(x194)
 		if !p.AtEndBatchOrdinary() {
 			p.Expect(p.Pos, rt.IdEndInput)
-			goto L191
+			goto L197
 		}
-		goto L189
-	L191:
-		p.Reset(x188)
-		goto L177
-	L189:
-		x192 = p.Mark()
+		goto L195
+	L197:
+		p.Reset(x194)
+		goto L183
+	L195:
+		x198 = p.Mark()
 		if !p.Predicate(func(c *rt.ActCtx) (any, any) {
 			tv1, tf1 := c.P.ActionLength(c.Cap(0))
 			if tf1 != nil {
@@ -5781,7 +5803,7 @@ L135:
 			}
 			return tv3, nil
 		}) {
-			goto L193
+			goto L199
 		}
 		if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 			tv1, tf1 := c.P.ActionLength(c.Cap(0))
@@ -5790,71 +5812,73 @@ L135:
 			}
 			return tv1, nil
 		}) {
-			goto L193
+			goto L199
 		}
-		goto L194
-	L193:
-		p.Reset(x192)
-	L194:
-		p.Frame = x172
-		if p.Pos == x176.Pos {
+		goto L200
+	L199:
+		p.Reset(x198)
+	L200:
+		p.Frame = x178
+		if p.Pos == x182.Pos {
 			break
 		}
 		continue
-	L177:
-		p.Frame = x172
-		p.Reset(x176)
+	L183:
+		p.Frame = x178
+		p.Reset(x182)
 		break
 	}
-	if x173 {
+	if x179 {
 		p.SkipEnd()
 	} else {
-		if p.Pos-x174 >= rt.RunHotSpan {
-			p.RunWalked(31, x174)
+		if p.Pos-x180 >= rt.RunHotSpan {
+			p.RunWalked(31, x180)
 		}
 	}
 	p.Silent--
-	p.Pos = x168
-	goto L170
-L169:
+	p.Pos = x174
+	goto L176
+L175:
 	p.Silent--
-	p.Pos = x168
-	goto L165
-L170:
-	v195 = p.NewBranchOrdinary(rt.SeqKind, x166, x167)
-	_, _ = p.ShapeSingle(sh91, v195, x132.Pos)
-	goto L134
-L165:
-	p.Reset(x132)
-	goto L104
-L134:
-	v197 = p.NewBranchOrdinary(rt.SeqKind, x105, x106)
-	v198, _ = p.ShapeSingle(sh91, v197, x29.Pos)
-	v30 = v198
-	goto L31
-L104:
-	p.Reset(x29)
+	p.Pos = x174
+	goto L171
+L176:
+	v201 = p.NewBranchOrdinary(rt.SeqKind, x172, x173)
+	_, _ = p.ShapeSingle(sh91, v201, x138.Pos)
+	goto L140
+L171:
+	p.Reset(x138)
+	goto L110
+L140:
+	v203 = p.NewBranchOrdinary(rt.SeqKind, x111, x112)
+	v204, _ = p.ShapeSingle(sh91, v203, x34.Pos)
+	v36 = v204
+	goto L37
+L110:
+	p.Reset(x34)
+	k10 = x35
 	goto fail
-L31:
-	x9 = append(x9, v30)
-	x200 = p.Mark()
+L37:
+	x13 = append(x13, v36)
+	x206 = p.Mark()
 	ch, size, ok = p.NextOrdinary()
 	if !ok || !(ch == 43 || ch == 45) {
 		p.Expect(p.Pos, 38)
-		goto L202
+		goto L208
 	}
-	x204 = p.Pos
+	x210 = p.Pos
 	p.Pos += size
 	p.Units += uint64(size)
-	v205 = p.NewTerminalOrdinary(x204, p.Text(x204, p.Pos))
-	v201 = v205
-	goto L203
-L202:
-	p.Reset(x200)
-	v201 = nil
-L203:
-	p.SetCapture(5, v201)
-	x9 = append(x9, v201)
+	v211 = p.NewTerminalOrdinary(x210, p.Text(x210, p.Pos))
+	v207 = v211
+	goto L209
+L208:
+	p.Reset(x206)
+	v207 = nil
+L209:
+	p.SetCapture(5, v207)
+	k11 = v207
+	x13 = append(x13, v207)
 	if !p.Predicate(func(c *rt.ActCtx) (any, any) {
 		tv1, tf1 := c.P.ActionLength(c.Cap(3))
 		if tf1 != nil {
@@ -5876,31 +5900,40 @@ L203:
 	}) {
 		goto fail
 	}
-	if v206, ok = p.Call(rules[132], 0); !ok {
+	if v212, ok = p.Call(rules[132], 0); !ok {
 		goto fail
 	}
-	x9 = append(x9, v206)
-	if v207, ok = r65(p); !ok {
+	x13 = append(x13, v212)
+	if v213, ok = r65(p); !ok {
 		goto fail
 	}
-	x9 = append(x9, v207)
-	v208 = p.NewBranchOrdinary(rt.SeqKind, x8, x9)
-	v209 = p.ShapeCapture(sh93, v208, x7)
-	p.SetCapture(1, v209)
-	x210 = p.Mark()
+	x13 = append(x13, v213)
+	v214 = p.NewBranchOrdinary(rt.SeqKind, x12, x13)
+	v215 = p.ShapeCapture(sh93, v214, x7)
+	x218 = p.Frame
+	x217 = p.NewFrame(len(scope94))
+	p.Frame = x217
+	p.SetCapture(0, k8)
+	p.SetCapture(1, k9)
+	p.SetCapture(2, k10)
+	p.SetCapture(3, k11)
+	p.Frame = x218
+	v216 = p.AttachCaptures(v215, scope94, x217, x7, p.Pos)
+	p.SetCapture(1, v216)
+	x219 = p.Mark()
 	if _, ok = p.Call(rules[157], 0); !ok {
-		goto L211
+		goto L220
 	}
-	goto L212
-L211:
-	p.Reset(x210)
-L212:
+	goto L221
+L220:
+	p.Reset(x219)
+L221:
 	return nil, true
 fail:
 	return nil, false
 }
 
-func e95(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e96(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var v2 *sxirvalue.Node
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
@@ -5925,7 +5958,7 @@ fail:
 	return nil, false
 }
 
-func e99(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e100(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x7, x10, x11, x16, x32, x33 int
 	var x2, x8, x17 []*sxirvalue.Node
 	var x3, x14, x23, x36 rt.Mark
@@ -5967,7 +6000,7 @@ func e99(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		}
 		x17 = append(x17, v19)
 		v20 = p.NewBranchOrdinary(rt.SeqKind, x16, x17)
-		v21 = p.ScopeValue(sh96, v20, x14.Pos)
+		v21 = p.ScopeValue(sh97, v20, x14.Pos)
 		if x12 {
 			p.SkipValue(v21)
 		} else {
@@ -6002,7 +6035,7 @@ L26:
 		p.Expect(p.Pos, rt.IdEndInput)
 		goto L28
 	}
-	v29, _ = p.ShapeSingle(sh97, nil, x23.Pos)
+	v29, _ = p.ShapeSingle(sh98, nil, x23.Pos)
 	v24 = v29
 	goto L25
 L28:
@@ -6011,7 +6044,7 @@ L28:
 L25:
 	x8 = append(x8, v24)
 	v30 = p.NewBranchOrdinary(rt.SeqKind, x7, x8)
-	v31, _ = p.ShapeSingle(sh98, v30, x3.Pos)
+	v31, _ = p.ShapeSingle(sh99, v30, x3.Pos)
 	v4 = v31
 	goto L6
 L5:
@@ -6065,7 +6098,7 @@ L6:
 	return v41, true
 }
 
-func e100(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e101(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x3, x4, x15, x17, x28, x33, x34 int
 	var x2, x29 []*sxirvalue.Node
 	var x5, ok, x16, x35 bool
@@ -6185,7 +6218,7 @@ L13:
 	}) {
 		goto L25
 	}
-	v26, _ = p.ShapeSingle(sh97, nil, x22.Pos)
+	v26, _ = p.ShapeSingle(sh98, nil, x22.Pos)
 	v23 = v26
 	goto L24
 L25:
@@ -6267,7 +6300,7 @@ fail:
 	return nil, false
 }
 
-func e101(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e102(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x6, x8 int
 	var x2 []*sxirvalue.Node
 	var x3, x10, x13 rt.Mark
@@ -6357,7 +6390,7 @@ L16:
 		p.Expect(p.Pos, rt.IdEndInput)
 		goto L18
 	}
-	v19, _ = p.ShapeSingle(sh97, nil, x13.Pos)
+	v19, _ = p.ShapeSingle(sh98, nil, x13.Pos)
 	v14 = v19
 	goto L15
 L18:
@@ -6371,7 +6404,7 @@ fail:
 	return nil, false
 }
 
-func e102(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e103(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var x4, size int
 	var ch rune
@@ -6419,7 +6452,7 @@ fail:
 	return nil, false
 }
 
-func e103(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e104(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var v2, v6, v8, v10 *sxirvalue.Node
 	var ok bool
@@ -6458,7 +6491,7 @@ fail:
 	return nil, false
 }
 
-func e104(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e105(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var v2, v5, v7, v9, v11 *sxirvalue.Node
 	var ok bool
@@ -6498,7 +6531,7 @@ fail:
 	return nil, false
 }
 
-func e105(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e106(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, size int
 	var ch rune
 	var ok bool
@@ -6532,7 +6565,7 @@ fail:
 	return nil, false
 }
 
-func e106(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e107(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var v2 *sxirvalue.Node
 	if v2, ok = p.Call(rules[25], 0); !ok {
@@ -6547,11 +6580,11 @@ fail:
 	return nil, false
 }
 
-func e107(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e108(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	return nil, true
 }
 
-func e108(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e109(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var v2 *sxirvalue.Node
 	if v2, ok = r74(p); !ok {
@@ -6566,7 +6599,7 @@ fail:
 	return nil, false
 }
 
-func e111(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e112(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x9, x12, x18 rt.Mark
 	var x4, size int
 	var ch rune
@@ -6604,7 +6637,7 @@ L3:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 91 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit109, "[", 49, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit110, "[", 49, false); !ok {
 		goto fail
 	}
 	x9 = p.Mark()
@@ -6688,7 +6721,7 @@ L21:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 93 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit110, "]", 50, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit111, "]", 50, false); !ok {
 		goto fail
 	}
 	return nil, true
@@ -6696,7 +6729,7 @@ fail:
 	return nil, false
 }
 
-func e114(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e115(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x7, x8, x15 int
 	var ok, x11 bool
 	var v2, v21, v25, v26, v27, v28 *sxirvalue.Node
@@ -6732,14 +6765,14 @@ L5:
 		}
 		x13 = p.Mark()
 		x10 = p.Frame
-		x9 = p.NewFrame(len(scope112))
+		x9 = p.NewFrame(len(scope113))
 		p.Frame = x9
 		x15 = p.Pos
 		x16 = p.Nodes(1)[:0]
 		if p.Pos < len(p.In) && p.In[p.Pos] == 44 {
 			p.Pos++
 			p.Units += 1
-		} else if _, ok = p.MatchLiteralLogical(lit113, ",", 51, false); !ok {
+		} else if _, ok = p.MatchLiteralLogical(lit114, ",", 51, false); !ok {
 			goto L14
 		}
 		x17 = p.Mark()
@@ -6766,7 +6799,7 @@ L5:
 		v25 = p.NewBranchOrdinary(rt.SeqKind, x15, x16)
 		v26 = p.ScopeValue(sh4, v25, x13.Pos)
 		p.Frame = x10
-		v27 = p.AttachCaptures(v26, scope112, x9, x13.Pos, p.Pos)
+		v27 = p.AttachCaptures(v26, scope113, x9, x13.Pos, p.Pos)
 		if x11 {
 			p.SkipValue(v27)
 		} else {
@@ -6794,7 +6827,7 @@ L5:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 44 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit113, ",", 51, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit114, ",", 51, false); !ok {
 		goto L30
 	}
 	x32 = p.Mark()
@@ -6814,7 +6847,7 @@ fail:
 	return nil, false
 }
 
-func e115(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e116(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var v2, v5, v7 *sxirvalue.Node
 	var ok bool
@@ -6840,7 +6873,7 @@ fail:
 	return nil, false
 }
 
-func e118(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e119(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x9, x12, x18 rt.Mark
 	var x4, size int
 	var ch rune
@@ -6878,7 +6911,7 @@ L3:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 123 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit116, "{", 52, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit117, "{", 52, false); !ok {
 		goto fail
 	}
 	x9 = p.Mark()
@@ -6962,7 +6995,7 @@ L21:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 125 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit117, "}", 53, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit118, "}", 53, false); !ok {
 		goto fail
 	}
 	return nil, true
@@ -6970,7 +7003,7 @@ fail:
 	return nil, false
 }
 
-func e120(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e121(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x6, x7 int
 	var ok bool
 	var v2, v17, v21 *sxirvalue.Node
@@ -6989,7 +7022,7 @@ L4:
 	p.Reset(x3)
 L5:
 	x6, x7 = p.Pos, len(p.KidStack)
-	x8 = p.NewFrame(len(scope119))
+	x8 = p.NewFrame(len(scope120))
 	for {
 		if p.Units > p.UnitsCheck {
 			p.PollUnits()
@@ -7001,7 +7034,7 @@ L5:
 		if p.Pos < len(p.In) && p.In[p.Pos] == 44 {
 			p.Pos++
 			p.Units += 1
-		} else if _, ok = p.MatchLiteralLogical(lit113, ",", 51, false); !ok {
+		} else if _, ok = p.MatchLiteralLogical(lit114, ",", 51, false); !ok {
 			goto L12
 		}
 		x13 = p.Mark()
@@ -7041,7 +7074,7 @@ L5:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 44 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit113, ",", 51, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit114, ",", 51, false); !ok {
 		goto L23
 	}
 	x25 = p.Mark()
@@ -7061,7 +7094,7 @@ fail:
 	return nil, false
 }
 
-func e121(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e122(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var v2, v6, v8 *sxirvalue.Node
 	var ok bool
@@ -7093,7 +7126,7 @@ fail:
 	return nil, false
 }
 
-func e122(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e123(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var v2 *sxirvalue.Node
 	if p.Pos < len(p.In) && p.In[p.Pos] == 63 {
@@ -7114,7 +7147,7 @@ fail:
 	return nil, false
 }
 
-func e123(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e124(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var v2, v5, v7 *sxirvalue.Node
 	var ok bool
@@ -7140,7 +7173,7 @@ fail:
 	return nil, false
 }
 
-func e124(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e125(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var v2, v4 *sxirvalue.Node
 	if v2, ok = r74(p); !ok {
@@ -7156,7 +7189,7 @@ fail:
 	return nil, false
 }
 
-func e125(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e126(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var v2, v5, v7, v9 *sxirvalue.Node
 	var ok bool
@@ -7189,7 +7222,7 @@ fail:
 	return nil, false
 }
 
-func e126(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e127(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var v2, v5, v8, v10 *sxirvalue.Node
 	var x4 rt.Mark
@@ -7220,7 +7253,7 @@ fail:
 	return nil, false
 }
 
-func e127(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e128(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	var v5 *sxirvalue.Node
@@ -7241,7 +7274,7 @@ fail:
 	return nil, false
 }
 
-func e128(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e129(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var v2, v4 *sxirvalue.Node
 	if v2, ok = r74(p); !ok {
@@ -7257,7 +7290,7 @@ fail:
 	return nil, false
 }
 
-func e129(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e130(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var x1, x4 rt.Mark
 	var v5, v8, v10 *sxirvalue.Node
@@ -7304,7 +7337,7 @@ fail:
 	return nil, false
 }
 
-func e130(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e131(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var v2 *sxirvalue.Node
 	if _, ok = p.Call(rules[148], 0); !ok {
@@ -7319,7 +7352,7 @@ fail:
 	return nil, false
 }
 
-func e131(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e132(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, size int
 	var ch rune
 	var ok bool
@@ -7372,7 +7405,7 @@ fail:
 	return nil, false
 }
 
-func e132(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e133(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	var v5 *sxirvalue.Node
@@ -7393,7 +7426,7 @@ fail:
 	return nil, false
 }
 
-func e133(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e134(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var x2 rt.Mark
 	var v3, v6, v8 *sxirvalue.Node
@@ -7426,7 +7459,7 @@ fail:
 	return nil, false
 }
 
-func e134(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e135(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	var v5 *sxirvalue.Node
@@ -7447,7 +7480,7 @@ fail:
 	return nil, false
 }
 
-func e135(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e136(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x2 rt.Mark
 	var v3, v7, v9 *sxirvalue.Node
 	var ok bool
@@ -7480,7 +7513,7 @@ fail:
 	return nil, false
 }
 
-func e136(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e137(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var v2, v5, v7, v9 *sxirvalue.Node
 	var ok bool
@@ -7513,7 +7546,7 @@ fail:
 	return nil, false
 }
 
-func e137(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e138(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var v2, v4 *sxirvalue.Node
 	if v2, ok = p.Call(rules[98], 0); !ok {
@@ -7529,7 +7562,7 @@ fail:
 	return nil, false
 }
 
-func e138(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e139(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x7 rt.Mark
 	var ok bool
 	var v6 *sxirvalue.Node
@@ -7574,7 +7607,7 @@ fail:
 	return nil, false
 }
 
-func e139(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e140(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var v2, v4 *sxirvalue.Node
 	if v2, ok = p.Call(rules[100], 0); !ok {
@@ -7590,7 +7623,7 @@ fail:
 	return nil, false
 }
 
-func e140(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e141(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, size int
 	var ch rune
 	var ok bool
@@ -7657,7 +7690,7 @@ fail:
 	return nil, false
 }
 
-func e141(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e142(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var x4, size, x10 int
 	var ch rune
@@ -7703,7 +7736,7 @@ fail:
 	return nil, false
 }
 
-func e142(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e143(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var x4, size, x10 int
 	var ch rune
@@ -7749,7 +7782,7 @@ fail:
 	return nil, false
 }
 
-func e143(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e144(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var x4, size, x10 int
 	var ch rune
@@ -7795,7 +7828,7 @@ fail:
 	return nil, false
 }
 
-func e144(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e145(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x8 rt.Mark
 	var v2, v11, v12, v13, v15 *sxirvalue.Node
 	var x5, x6, x7, size, x10 int
@@ -7841,7 +7874,7 @@ L4:
 		p.Expect(p.Pos, rt.IdBeginLine)
 		goto L14
 	}
-	v15, _ = p.ShapeSingle(sh97, nil, x1.Pos)
+	v15, _ = p.ShapeSingle(sh98, nil, x1.Pos)
 	v2 = v15
 	goto L3
 L14:
@@ -7853,7 +7886,7 @@ fail:
 	return nil, false
 }
 
-func e145(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e146(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x7 int
 	var x2, x8 []*sxirvalue.Node
 	var x3, x10 rt.Mark
@@ -7880,7 +7913,7 @@ L12:
 L13:
 	x8 = append(x8, v11)
 	v15 = p.NewBranchOrdinary(rt.SeqKind, x7, x8)
-	v16, _ = p.ShapeSingle(sh96, v15, x3.Pos)
+	v16, _ = p.ShapeSingle(sh97, v15, x3.Pos)
 	v4 = v16
 	goto L6
 L5:
@@ -7898,7 +7931,7 @@ fail:
 	return nil, false
 }
 
-func e146(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e147(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x3, x5, x6, x7, size, x10 int
 	var x2 []*sxirvalue.Node
 	var ok bool
@@ -7950,7 +7983,7 @@ fail:
 	return nil, false
 }
 
-func e150(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e151(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var v2, v7, v11, v15, v17 *sxirvalue.Node
 	var x6, x10, x14 int
@@ -7964,7 +7997,7 @@ func e150(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 13 && p.In[p.Pos+1] == 10 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.MatchLiteralLogical(lit147, "\r\n", 73, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit148, "\r\n", 73, false); !ok {
 		goto L5
 	}
 	v7 = p.NewTerminalOrdinary(x6, "\r\n")
@@ -7981,7 +8014,7 @@ L4:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 13 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit148, "\r", 74, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit149, "\r", 74, false); !ok {
 		goto L9
 	}
 	v11 = p.NewTerminalOrdinary(x10, "\r")
@@ -7998,7 +8031,7 @@ L8:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 10 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit149, "\n", 75, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit150, "\n", 75, false); !ok {
 		goto L13
 	}
 	v15 = p.NewTerminalOrdinary(x14, "\n")
@@ -8011,7 +8044,7 @@ L12:
 		p.Expect(p.Pos, rt.IdEndInput)
 		goto L16
 	}
-	v17, _ = p.ShapeSingle(sh97, nil, x1.Pos)
+	v17, _ = p.ShapeSingle(sh98, nil, x1.Pos)
 	v2 = v17
 	goto L3
 L16:
@@ -8023,7 +8056,7 @@ fail:
 	return nil, false
 }
 
-func e151(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e152(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var v2, v7, v11, v15 *sxirvalue.Node
 	var x6, x10, x14 int
@@ -8037,7 +8070,7 @@ func e151(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 13 && p.In[p.Pos+1] == 10 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.MatchLiteralLogical(lit147, "\r\n", 73, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit148, "\r\n", 73, false); !ok {
 		goto L5
 	}
 	v7 = p.NewTerminalOrdinary(x6, "\r\n")
@@ -8054,7 +8087,7 @@ L4:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 13 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit148, "\r", 74, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit149, "\r", 74, false); !ok {
 		goto L9
 	}
 	v11 = p.NewTerminalOrdinary(x10, "\r")
@@ -8071,7 +8104,7 @@ L8:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 10 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit149, "\n", 75, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit150, "\n", 75, false); !ok {
 		goto L13
 	}
 	v15 = p.NewTerminalOrdinary(x14, "\n")
@@ -8087,7 +8120,7 @@ fail:
 	return nil, false
 }
 
-func e152(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e153(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ch rune
 	var size, x1 int
 	var ok bool
@@ -8106,7 +8139,7 @@ fail:
 	return nil, false
 }
 
-func e154(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e155(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x8, x14 rt.Mark
 	var ok, x5, x11 bool
 	var x6, x12, x13 int
@@ -8118,7 +8151,7 @@ func e154(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	if p.Pos < len(p.In) && p.In[p.Pos] == 65279 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit153, "\ufeff", 6, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit154, "\ufeff", 6, false); !ok {
 		goto L4
 	}
 	x6 = p.Pos
@@ -8213,7 +8246,7 @@ fail:
 	return nil, false
 }
 
-func e155(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e156(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	if _, ok = r167(p); !ok {
 		goto fail
@@ -8226,7 +8259,7 @@ fail:
 	return nil, false
 }
 
-func e156(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e157(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x8, x15 rt.Mark
 	var ch rune
 	var size, x4, x13 int
@@ -8342,7 +8375,7 @@ fail:
 	return nil, false
 }
 
-func e158(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e159(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var x9 int
 	var ok, x6 bool
@@ -8384,7 +8417,7 @@ fail:
 	return nil, false
 }
 
-func e159(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e160(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var x9 int
 	var ok, x6 bool
@@ -8426,7 +8459,7 @@ fail:
 	return nil, false
 }
 
-func e160(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e161(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -8503,7 +8536,7 @@ fail:
 	return nil, false
 }
 
-func e161(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e162(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x5, x7 rt.Mark
 	var ch rune
 	var size, x4 int
@@ -8584,7 +8617,7 @@ fail:
 	return nil, false
 }
 
-func e162(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e163(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok, x1, x11 bool
 	var x2, x19, x16 int
 	var x4, x6, x8 rt.Mark
@@ -8690,7 +8723,7 @@ fail:
 	return nil, false
 }
 
-func e163(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e164(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x2, x4 int
 	var x3, ok bool
 	var x6 rt.Mark
@@ -8754,7 +8787,7 @@ fail:
 	return nil, false
 }
 
-func e164(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e165(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x3 rt.Mark
 	var ok, x6 bool
 	var x14, x11 int
@@ -8819,7 +8852,7 @@ fail:
 	return nil, false
 }
 
-func e165(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e166(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
@@ -8839,7 +8872,7 @@ fail:
 	return nil, false
 }
 
-func e166(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e167(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x4 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -8866,7 +8899,7 @@ fail:
 	return nil, false
 }
 
-func e167(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e168(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x2, x4, x10 int
 	var x3, ok, x9 bool
 	var x6, x12 rt.Mark
@@ -8970,7 +9003,7 @@ fail:
 	return nil, false
 }
 
-func e168(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e169(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -9047,7 +9080,7 @@ fail:
 	return nil, false
 }
 
-func e169(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e170(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -9122,13 +9155,13 @@ fail:
 	return nil, false
 }
 
-func e171(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e172(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var x1 rt.Mark
 	if p.Pos < len(p.In) && p.In[p.Pos] == 34 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit170, "\"", 60, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit171, "\"", 60, false); !ok {
 		goto fail
 	}
 	x1 = p.Mark()
@@ -9203,7 +9236,7 @@ L2:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 34 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit170, "\"", 60, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit171, "\"", 60, false); !ok {
 		goto fail
 	}
 	return nil, true
@@ -9211,7 +9244,7 @@ fail:
 	return nil, false
 }
 
-func e172(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e173(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var x9 int
 	var x3 rune
@@ -9245,13 +9278,13 @@ fail:
 	return nil, false
 }
 
-func e174(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e175(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var x1 rt.Mark
 	if p.Pos < len(p.In) && p.In[p.Pos] == 39 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit173, "'", 68, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit174, "'", 68, false); !ok {
 		goto fail
 	}
 	x1 = p.Mark()
@@ -9326,7 +9359,7 @@ L2:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 39 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit173, "'", 68, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit174, "'", 68, false); !ok {
 		goto fail
 	}
 	return nil, true
@@ -9334,7 +9367,7 @@ fail:
 	return nil, false
 }
 
-func e176(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e177(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x3 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -9371,7 +9404,7 @@ fail:
 	return nil, false
 }
 
-func e177(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e178(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x2, x4, size, x9, x10 int
 	var x3, ok bool
 	var x6 rt.Mark
@@ -9457,7 +9490,7 @@ fail:
 	return nil, false
 }
 
-func e178(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e179(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ch rune
 	var size, x2 int
 	var ok, x1 bool
@@ -9519,7 +9552,7 @@ fail:
 	return nil, false
 }
 
-func e179(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e180(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, ok, x20 bool
 	var x2, size, x9, x12, x16, x28, x25 int
 	var x4, x6, x17 rt.Mark
@@ -9673,7 +9706,7 @@ func e179(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	return nil, true
 }
 
-func e180(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e181(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x3 rt.Mark
 	var ok, x6 bool
 	var x14, x11 int
@@ -9738,7 +9771,7 @@ fail:
 	return nil, false
 }
 
-func e185(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e186(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok, x4 bool
 	var x1, x11, x17, x23 rt.Mark
 	var x25, x9, x10, x15, x16, x21, x22 int
@@ -9746,7 +9779,7 @@ func e185(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	if p.Pos < len(p.In) && p.In[p.Pos] == 92 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit181, "\\", 62, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit182, "\\", 62, false); !ok {
 		goto fail
 	}
 	x1 = p.Mark()
@@ -9766,7 +9799,7 @@ L5:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 120 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit182, "x", 64, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit183, "x", 64, false); !ok {
 		goto L8
 	}
 	x9 = 0
@@ -9801,7 +9834,7 @@ L7:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 117 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit183, "u", 65, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit184, "u", 65, false); !ok {
 		goto L14
 	}
 	x15 = 0
@@ -9836,7 +9869,7 @@ L13:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 85 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit184, "U", 66, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit185, "U", 66, false); !ok {
 		goto L20
 	}
 	x21 = 0
@@ -9871,7 +9904,7 @@ fail:
 	return nil, false
 }
 
-func e186(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e187(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x2, x4, size int
 	var x3, ok bool
 	var x6, x9 rt.Mark
@@ -9974,7 +10007,7 @@ fail:
 	return nil, false
 }
 
-func e187(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e188(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, ok, x20 bool
 	var x2, size, x9, x12, x16, x28, x25 int
 	var x4, x6, x17 rt.Mark
@@ -10128,7 +10161,7 @@ func e187(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	return nil, true
 }
 
-func e188(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e189(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, ok bool
 	var x2, size, x9, x13, x14 int
 	var x4, x6 rt.Mark
@@ -10238,7 +10271,7 @@ func e188(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	return nil, true
 }
 
-func e189(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e190(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, ok bool
 	var x2, size, x9, x13, x14 int
 	var x4, x6 rt.Mark
@@ -10287,7 +10320,7 @@ func e189(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 39 && p.In[p.Pos+1] == 39 {
 			p.Pos += 2
 			p.Units += 2
-		} else if _, ok = p.MatchLiteralLogical(lit175, "''", 70, false); !ok {
+		} else if _, ok = p.MatchLiteralLogical(lit176, "''", 70, false); !ok {
 			goto L11
 		}
 		goto L7
@@ -10525,7 +10558,7 @@ func r65(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e99(p, 0)
+	v, ok := e100(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -10542,7 +10575,7 @@ func r74(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e107(p, 0)
+	v, ok := e108(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -10563,7 +10596,7 @@ func r83(p *rt.Parser) (*sxirvalue.Node, bool) {
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
 	p.Enter()
-	v, ok := e123(p, 0)
+	v, ok := e124(p, 0)
 	p.Depth--
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
@@ -10585,7 +10618,7 @@ func r96(p *rt.Parser) (*sxirvalue.Node, bool) {
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
 	p.Enter()
-	v, ok := e136(p, 0)
+	v, ok := e137(p, 0)
 	p.Depth--
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
@@ -10603,7 +10636,7 @@ func r130(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e144(p, 0)
+	v, ok := e145(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -10620,7 +10653,7 @@ func r134(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e146(p, 0)
+	v, ok := e147(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -10637,7 +10670,7 @@ func r135(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e150(p, 0)
+	v, ok := e151(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -10654,7 +10687,7 @@ func r137(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e151(p, 0)
+	v, ok := e152(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -10671,7 +10704,7 @@ func r139(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e152(p, 0)
+	v, ok := e153(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -10793,7 +10826,7 @@ L3:
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 33 && p.In[p.Pos+1] == 33 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.MatchLiteralLogical(lit157, "!!", 20, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit158, "!!", 20, false); !ok {
 		goto L8
 	}
 	goto L2
@@ -10879,7 +10912,7 @@ func r151(p *rt.Parser) (*sxirvalue.Node, bool) {
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 13 && p.In[p.Pos+1] == 10 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.MatchLiteralLogical(lit147, "\r\n", 73, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit148, "\r\n", 73, false); !ok {
 		goto L4
 	}
 	goto L2
@@ -10893,7 +10926,7 @@ L3:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 13 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit148, "\r", 74, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit149, "\r", 74, false); !ok {
 		goto L6
 	}
 	goto L2
@@ -10907,7 +10940,7 @@ L5:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 10 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit149, "\n", 75, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit150, "\n", 75, false); !ok {
 		goto L8
 	}
 	goto L2
@@ -10928,7 +10961,7 @@ func r155(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e165(p, 0)
+	v, ok := e166(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -11013,7 +11046,7 @@ func r159(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e168(p, 0)
+	v, ok := e169(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -11030,7 +11063,7 @@ func r160(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e169(p, 0)
+	v, ok := e170(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -11068,7 +11101,7 @@ func r162(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e171(p, 0)
+	v, ok := e172(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -11085,7 +11118,7 @@ func r164(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e174(p, 0)
+	v, ok := e175(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -11121,7 +11154,7 @@ L5:
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 39 && p.In[p.Pos+1] == 39 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.MatchLiteralLogical(lit175, "''", 70, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit176, "''", 70, false); !ok {
 		goto L8
 	}
 	goto L2
@@ -11232,7 +11265,7 @@ func r173(p *rt.Parser) (*sxirvalue.Node, bool) {
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 13 && p.In[p.Pos+1] == 10 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.MatchLiteralLogical(lit147, "\r\n", 73, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit148, "\r\n", 73, false); !ok {
 		goto L4
 	}
 	goto L2
@@ -11246,7 +11279,7 @@ L3:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 13 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit148, "\r", 74, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit149, "\r", 74, false); !ok {
 		goto L6
 	}
 	goto L2
@@ -11260,7 +11293,7 @@ L5:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 10 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit149, "\n", 75, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit150, "\n", 75, false); !ok {
 		goto L8
 	}
 	goto L2
@@ -11452,7 +11485,7 @@ func r176(p *rt.Parser) (*sxirvalue.Node, bool) {
 		if p.Pos < len(p.In) && p.In[p.Pos] == 34 {
 			p.Pos++
 			p.Units += 1
-		} else if _, ok = p.MatchLiteralLogical(lit170, "\"", 60, false); !ok {
+		} else if _, ok = p.MatchLiteralLogical(lit171, "\"", 60, false); !ok {
 			goto L13
 		}
 		p.LookEnd(true)
@@ -11639,7 +11672,7 @@ func r179(p *rt.Parser) (*sxirvalue.Node, bool) {
 		if p.Pos < len(p.In) && p.In[p.Pos] == 39 {
 			p.Pos++
 			p.Units += 1
-		} else if _, ok = p.MatchLiteralLogical(lit173, "'", 68, false); !ok {
+		} else if _, ok = p.MatchLiteralLogical(lit174, "'", 68, false); !ok {
 			goto L13
 		}
 		p.LookEnd(true)
@@ -11748,7 +11781,7 @@ func r180(p *rt.Parser) (*sxirvalue.Node, bool) {
 		if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 39 && p.In[p.Pos+1] == 39 {
 			p.Pos += 2
 			p.Units += 2
-		} else if _, ok = p.MatchLiteralLogical(lit175, "''", 70, false); !ok {
+		} else if _, ok = p.MatchLiteralLogical(lit176, "''", 70, false); !ok {
 			goto L12
 		}
 		goto L7
@@ -11799,7 +11832,7 @@ func r184(p *rt.Parser) (*sxirvalue.Node, bool) {
 	if p.Pos < len(p.In) && p.In[p.Pos] == 92 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit181, "\\", 62, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit182, "\\", 62, false); !ok {
 		goto L3
 	}
 	if _, ok = r151(p); !ok {
@@ -11860,7 +11893,7 @@ fail:
 	return nil, false
 }
 
-func e192(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e193(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var v *sxirvalue.Node
 	var ok bool
 	if _, ok = q1(p); !ok {
@@ -11872,7 +11905,7 @@ fail:
 	return nil, false
 }
 
-func e193(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e194(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x8, x14 rt.Mark
 	var ok, x5, x11 bool
 	var x6, x12, x13 int
@@ -11884,7 +11917,7 @@ func e193(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	if p.Pos < len(p.In) && p.In[p.Pos] == 65279 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit153, "\ufeff", 6, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit154, "\ufeff", 6, false); !ok {
 		goto L4
 	}
 	x6 = p.Pos
@@ -11979,7 +12012,7 @@ fail:
 	return nil, false
 }
 
-func e194(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e195(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	if _, ok = q5(p); !ok {
 		goto fail
@@ -11992,7 +12025,7 @@ fail:
 	return nil, false
 }
 
-func e195(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e196(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -12027,7 +12060,7 @@ fail:
 	return nil, false
 }
 
-func e196(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e197(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var x1 rt.Mark
 	if _, ok = q4(p); !ok {
@@ -12049,7 +12082,7 @@ fail:
 	return nil, false
 }
 
-func e197(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e198(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -12072,7 +12105,7 @@ fail:
 	return nil, false
 }
 
-func e198(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e199(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1, tf1 := c.P.ActionUnary(rt.OpNeg, any(1))
@@ -12096,7 +12129,7 @@ fail:
 	return nil, false
 }
 
-func e199(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e200(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 int
 	var ok bool
 	x1 = p.Pos
@@ -12117,7 +12150,7 @@ fail:
 	return nil, false
 }
 
-func e200(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e201(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x4, x9 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -12168,7 +12201,7 @@ fail:
 	return nil, false
 }
 
-func e201(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e202(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x8, x14 rt.Mark
 	var ok, x5, x11 bool
 	var x6, x7, x12, x13 int
@@ -12308,7 +12341,7 @@ fail:
 	return nil, false
 }
 
-func e202(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e203(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok, x1 bool
 	var x2, x3 int
 	var x4 rt.Mark
@@ -12367,7 +12400,7 @@ fail:
 	return nil, false
 }
 
-func e203(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e204(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var x9 int
 	var ok, x6 bool
@@ -12409,7 +12442,7 @@ fail:
 	return nil, false
 }
 
-func e204(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e205(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var x9 int
 	var ok, x6 bool
@@ -12451,7 +12484,7 @@ fail:
 	return nil, false
 }
 
-func e205(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e206(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x7, x16, x20, x27 rt.Mark
 	var x4, size, x13, x33 int
 	var ch, x22 rune
@@ -12607,7 +12640,7 @@ fail:
 	return nil, false
 }
 
-func e206(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e207(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x5, x7, x10, x14 rt.Mark
 	var ch rune
 	var size, x4, x17 int
@@ -12763,7 +12796,7 @@ fail:
 	return nil, false
 }
 
-func e207(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e208(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	if !p.Bind(1, func(c *rt.ActCtx) (any, any) {
 		return any("flow-out"), nil
@@ -12778,7 +12811,7 @@ fail:
 	return nil, false
 }
 
-func e208(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e209(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -12801,7 +12834,7 @@ fail:
 	return nil, false
 }
 
-func e209(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e210(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
@@ -12824,7 +12857,7 @@ fail:
 	return nil, false
 }
 
-func e210(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e211(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var x1 rt.Mark
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
@@ -12866,7 +12899,7 @@ fail:
 	return nil, false
 }
 
-func e211(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e212(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x5 int
 	var x4, ok bool
 	var x7, x9, x11 rt.Mark
@@ -12987,7 +13020,7 @@ fail:
 	return nil, false
 }
 
-func e213(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e214(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x5, x7, x15, x16 int
 	var x6, ok, x14 bool
 	var x9, x17 rt.Mark
@@ -13080,7 +13113,7 @@ func e213(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		}
 		x17 = p.Mark()
 		x13 = p.Frame
-		x12 = p.NewFrame(len(scope212))
+		x12 = p.NewFrame(len(scope213))
 		p.Frame = x12
 		if _, ok = p.Call(recRules[136], 0); !ok {
 			goto L18
@@ -13117,7 +13150,7 @@ fail:
 	return nil, false
 }
 
-func e214(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e215(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var x1 rt.Mark
 	if p.Pos < len(p.In) && p.In[p.Pos] == 45 {
@@ -13153,7 +13186,7 @@ fail:
 	return nil, false
 }
 
-func e215(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e216(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -13182,7 +13215,7 @@ fail:
 	return nil, false
 }
 
-func e216(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e217(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x2, x4 int
 	var x3, ok bool
 	var x6, x9 rt.Mark
@@ -13271,7 +13304,7 @@ fail:
 	return nil, false
 }
 
-func e218(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e219(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x5, x7, x15, x16 int
 	var x6, ok, x14 bool
 	var x9, x17 rt.Mark
@@ -13364,7 +13397,7 @@ func e218(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		}
 		x17 = p.Mark()
 		x13 = p.Frame
-		x12 = p.NewFrame(len(scope217))
+		x12 = p.NewFrame(len(scope218))
 		p.Frame = x12
 		if _, ok = p.Call(recRules[136], 0); !ok {
 			goto L18
@@ -13401,7 +13434,7 @@ fail:
 	return nil, false
 }
 
-func e219(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e220(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -13430,7 +13463,7 @@ fail:
 	return nil, false
 }
 
-func e220(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e221(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var x1 rt.Mark
 	if p.Pos < len(p.In) && p.In[p.Pos] == 63 {
@@ -13466,7 +13499,7 @@ fail:
 	return nil, false
 }
 
-func e221(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e222(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var x1 rt.Mark
 	if _, ok = p.Call(recRules[136], 0); !ok {
@@ -13505,7 +13538,7 @@ fail:
 	return nil, false
 }
 
-func e222(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e223(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x5, x12 rt.Mark
 	var ok bool
 	var x8, size int
@@ -13575,7 +13608,7 @@ fail:
 	return nil, false
 }
 
-func e223(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e224(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var x4, size, x7 int
 	var ch rune
@@ -13642,7 +13675,7 @@ fail:
 	return nil, false
 }
 
-func e226(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e227(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok, x41, x46, x53, x67, x74, x80, x93, x102 bool
 	var x1, x4, x11, x17, x44, x49, x56, x59, x70, x77, x83, x85, x96, x98, x105, x108, x112, x116, x122 rt.Mark
 	var size, x15, x38, x42, x47, x52, x54, x62, x68, x73, x75, x81, x88, x94, x101, x103, x120 int
@@ -14095,7 +14128,7 @@ L40:
 		}
 		x70 = p.Mark()
 		x66 = p.Frame
-		x65 = p.NewFrame(len(scope224))
+		x65 = p.NewFrame(len(scope225))
 		p.Frame = x65
 		x73 = p.Pos
 		x75 = p.Pos
@@ -14279,7 +14312,7 @@ L61:
 		}
 		x96 = p.Mark()
 		x92 = p.Frame
-		x91 = p.NewFrame(len(scope225))
+		x91 = p.NewFrame(len(scope226))
 		p.Frame = x91
 		x98 = p.Mark()
 		p.Silent++
@@ -14472,7 +14505,7 @@ fail:
 	return nil, false
 }
 
-func e227(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e228(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
@@ -14492,7 +14525,7 @@ fail:
 	return nil, false
 }
 
-func e228(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e229(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	if !p.Bind(0, func(c *rt.ActCtx) (any, any) {
 		tv1 := c.Var(0)
@@ -14515,7 +14548,7 @@ fail:
 	return nil, false
 }
 
-func e229(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e230(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, ok, x10, x20 bool
 	var x2, x9, x11, x21 int
 	var x4, x6, x13, x16, x23 rt.Mark
@@ -14687,7 +14720,7 @@ fail:
 	return nil, false
 }
 
-func e230(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e231(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x8, x11 rt.Mark
 	var x4, x6 int
 	var x5, ok bool
@@ -14782,7 +14815,7 @@ fail:
 	return nil, false
 }
 
-func e231(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e232(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x2, x4, x10 int
 	var x3, ok, x9 bool
 	var x6, x12 rt.Mark
@@ -14886,7 +14919,7 @@ fail:
 	return nil, false
 }
 
-func e232(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e233(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var x4, size int
 	var ch rune
@@ -14931,7 +14964,7 @@ fail:
 	return nil, false
 }
 
-func e233(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e234(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -14966,7 +14999,7 @@ fail:
 	return nil, false
 }
 
-func e234(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e235(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -15001,7 +15034,7 @@ fail:
 	return nil, false
 }
 
-func e235(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e236(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	if _, ok = p.Call(recRules[25], 0); !ok {
 		goto fail
@@ -15014,7 +15047,7 @@ fail:
 	return nil, false
 }
 
-func e236(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e237(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	if _, ok = q74(p); !ok {
 		goto fail
@@ -15027,7 +15060,7 @@ fail:
 	return nil, false
 }
 
-func e237(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e238(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x7, x10, x15 rt.Mark
 	var x4, size int
 	var ch rune
@@ -15063,7 +15096,7 @@ L3:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 91 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit109, "[", 49, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit110, "[", 49, false); !ok {
 		goto fail
 	}
 	x7 = p.Mark()
@@ -15144,7 +15177,7 @@ L17:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 93 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit110, "]", 50, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit111, "]", 50, false); !ok {
 		goto fail
 	}
 	return nil, true
@@ -15152,7 +15185,7 @@ fail:
 	return nil, false
 }
 
-func e238(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e239(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -15175,7 +15208,7 @@ fail:
 	return nil, false
 }
 
-func e239(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e240(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x7, x10, x15 rt.Mark
 	var x4, size int
 	var ch rune
@@ -15211,7 +15244,7 @@ L3:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 123 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit116, "{", 52, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit117, "{", 52, false); !ok {
 		goto fail
 	}
 	x7 = p.Mark()
@@ -15292,7 +15325,7 @@ L17:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 125 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit117, "}", 53, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit118, "}", 53, false); !ok {
 		goto fail
 	}
 	return nil, true
@@ -15300,7 +15333,7 @@ fail:
 	return nil, false
 }
 
-func e240(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e241(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -15329,7 +15362,7 @@ fail:
 	return nil, false
 }
 
-func e241(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e242(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	if p.Pos < len(p.In) && p.In[p.Pos] == 63 {
 		p.Pos++
@@ -15348,7 +15381,7 @@ fail:
 	return nil, false
 }
 
-func e242(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e243(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -15377,7 +15410,7 @@ fail:
 	return nil, false
 }
 
-func e243(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e244(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	if _, ok = q74(p); !ok {
 		goto fail
@@ -15390,7 +15423,7 @@ fail:
 	return nil, false
 }
 
-func e244(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e245(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var x1, x3 rt.Mark
 	if p.Pos < len(p.In) && p.In[p.Pos] == 58 {
@@ -15433,7 +15466,7 @@ fail:
 	return nil, false
 }
 
-func e245(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e246(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var x1 rt.Mark
 	if p.Pos < len(p.In) && p.In[p.Pos] == 58 {
@@ -15462,7 +15495,7 @@ fail:
 	return nil, false
 }
 
-func e246(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e247(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x5 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -15505,7 +15538,7 @@ fail:
 	return nil, false
 }
 
-func e247(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e248(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, size int
 	var ch rune
 	var ok bool
@@ -15570,7 +15603,7 @@ fail:
 	return nil, false
 }
 
-func e248(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e249(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -15645,7 +15678,7 @@ fail:
 	return nil, false
 }
 
-func e249(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e250(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -15722,7 +15755,7 @@ fail:
 	return nil, false
 }
 
-func e250(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e251(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x3 rt.Mark
 	var ok, x6 bool
 	var x14, x11 int
@@ -15787,7 +15820,7 @@ fail:
 	return nil, false
 }
 
-func e251(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e252(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, ok, x20 bool
 	var x2, size, x9, x12, x16, x28, x25 int
 	var x4, x6, x17 rt.Mark
@@ -15941,7 +15974,7 @@ func e251(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	return nil, true
 }
 
-func e252(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e253(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok, x1, x11 bool
 	var x2, x19, x16 int
 	var x4, x6, x8 rt.Mark
@@ -16047,7 +16080,7 @@ fail:
 	return nil, false
 }
 
-func e253(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e254(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x3 rt.Mark
 	var ok, x6 bool
 	var x14, x11 int
@@ -16112,7 +16145,7 @@ fail:
 	return nil, false
 }
 
-func e254(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e255(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, ok, x20 bool
 	var x2, size, x9, x12, x16, x28, x25 int
 	var x4, x6, x17 rt.Mark
@@ -16266,13 +16299,13 @@ func e254(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	return nil, true
 }
 
-func e255(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e256(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var x1 rt.Mark
 	if p.Pos < len(p.In) && p.In[p.Pos] == 34 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit170, "\"", 60, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit171, "\"", 60, false); !ok {
 		goto fail
 	}
 	x1 = p.Mark()
@@ -16347,7 +16380,7 @@ L2:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 34 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit170, "\"", 60, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit171, "\"", 60, false); !ok {
 		goto fail
 	}
 	return nil, true
@@ -16355,7 +16388,7 @@ fail:
 	return nil, false
 }
 
-func e256(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e257(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok, x4 bool
 	var x1, x11, x17, x23 rt.Mark
 	var x25, x9, x10, x15, x16, x21, x22 int
@@ -16363,7 +16396,7 @@ func e256(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	if p.Pos < len(p.In) && p.In[p.Pos] == 92 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit181, "\\", 62, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit182, "\\", 62, false); !ok {
 		goto fail
 	}
 	x1 = p.Mark()
@@ -16383,7 +16416,7 @@ L5:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 120 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit182, "x", 64, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit183, "x", 64, false); !ok {
 		goto L8
 	}
 	x9 = 0
@@ -16418,7 +16451,7 @@ L7:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 117 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit183, "u", 65, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit184, "u", 65, false); !ok {
 		goto L14
 	}
 	x15 = 0
@@ -16453,7 +16486,7 @@ L13:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 85 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit184, "U", 66, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit185, "U", 66, false); !ok {
 		goto L20
 	}
 	x21 = 0
@@ -16488,7 +16521,7 @@ fail:
 	return nil, false
 }
 
-func e257(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e258(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, ok bool
 	var x2, size, x9, x13, x14 int
 	var x4, x6 rt.Mark
@@ -16598,7 +16631,7 @@ func e257(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	return nil, true
 }
 
-func e258(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e259(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var x9 int
 	var x3 rune
@@ -16632,13 +16665,13 @@ fail:
 	return nil, false
 }
 
-func e259(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e260(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ok bool
 	var x1 rt.Mark
 	if p.Pos < len(p.In) && p.In[p.Pos] == 39 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit173, "'", 68, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit174, "'", 68, false); !ok {
 		goto fail
 	}
 	x1 = p.Mark()
@@ -16713,7 +16746,7 @@ L2:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 39 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit173, "'", 68, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit174, "'", 68, false); !ok {
 		goto fail
 	}
 	return nil, true
@@ -16721,7 +16754,7 @@ fail:
 	return nil, false
 }
 
-func e260(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e261(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, ok bool
 	var x2, size, x9, x13, x14 int
 	var x4, x6 rt.Mark
@@ -16770,7 +16803,7 @@ func e260(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 		if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 39 && p.In[p.Pos+1] == 39 {
 			p.Pos += 2
 			p.Units += 2
-		} else if _, ok = p.MatchLiteralLogical(lit175, "''", 70, false); !ok {
+		} else if _, ok = p.MatchLiteralLogical(lit176, "''", 70, false); !ok {
 			goto L11
 		}
 		goto L7
@@ -16833,7 +16866,7 @@ func e260(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	return nil, true
 }
 
-func e261(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e262(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var ch rune
 	var size, x2 int
 	var ok, x1 bool
@@ -16895,7 +16928,7 @@ fail:
 	return nil, false
 }
 
-func e262(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e263(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x2, x4, size int
 	var x3, ok bool
 	var x6, x9 rt.Mark
@@ -16998,7 +17031,7 @@ fail:
 	return nil, false
 }
 
-func e263(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e264(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -17075,7 +17108,7 @@ fail:
 	return nil, false
 }
 
-func e264(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e265(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x5, x7 rt.Mark
 	var ch rune
 	var size, x4 int
@@ -17156,7 +17189,7 @@ fail:
 	return nil, false
 }
 
-func e265(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e266(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x8, x15 rt.Mark
 	var ch rune
 	var size, x4, x13 int
@@ -17272,7 +17305,7 @@ fail:
 	return nil, false
 }
 
-func e266(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e267(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x4 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -17299,7 +17332,7 @@ fail:
 	return nil, false
 }
 
-func e267(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
+func e268(p *rt.Parser, _ int) (*sxirvalue.Node, bool) {
 	var x1, x3 rt.Mark
 	var ok bool
 	x1 = p.Mark()
@@ -18445,7 +18478,7 @@ L3:
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 33 && p.In[p.Pos+1] == 33 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.MatchLiteralLogical(lit157, "!!", 20, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit158, "!!", 20, false); !ok {
 		goto L8
 	}
 	goto L2
@@ -18585,7 +18618,7 @@ func q36(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e207(p, 0)
+	v, ok := e208(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -18830,7 +18863,7 @@ func q45(p *rt.Parser) (*sxirvalue.Node, bool) {
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
 	p.Enter()
-	v, ok := e211(p, 0)
+	v, ok := e212(p, 0)
 	p.Depth--
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
@@ -19007,7 +19040,7 @@ func q55(p *rt.Parser) (*sxirvalue.Node, bool) {
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
 	p.Enter()
-	v, ok := e220(p, 0)
+	v, ok := e221(p, 0)
 	p.Depth--
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
@@ -19029,7 +19062,7 @@ func q56(p *rt.Parser) (*sxirvalue.Node, bool) {
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
 	p.Enter()
-	v, ok := e221(p, 0)
+	v, ok := e222(p, 0)
 	p.Depth--
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
@@ -19084,7 +19117,7 @@ func q58(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e222(p, 0)
+	v, ok := e223(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -19161,7 +19194,7 @@ func q61(p *rt.Parser) (*sxirvalue.Node, bool) {
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
 	p.Enter()
-	v, ok := e223(p, 0)
+	v, ok := e224(p, 0)
 	p.Depth--
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
@@ -19179,7 +19212,7 @@ func q63(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e227(p, 0)
+	v, ok := e228(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -19196,7 +19229,7 @@ func q64(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e228(p, 0)
+	v, ok := e229(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -19365,7 +19398,7 @@ func q76(p *rt.Parser) (*sxirvalue.Node, bool) {
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
 	p.Enter()
-	v, ok := e237(p, 0)
+	v, ok := e238(p, 0)
 	p.Depth--
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
@@ -19418,7 +19451,7 @@ L3:
 		if p.Pos < len(p.In) && p.In[p.Pos] == 44 {
 			p.Pos++
 			p.Units += 1
-		} else if _, ok = p.MatchLiteralLogical(lit113, ",", 51, false); !ok {
+		} else if _, ok = p.MatchLiteralLogical(lit114, ",", 51, false); !ok {
 			goto L8
 		}
 		x9 = p.Pos
@@ -19459,7 +19492,7 @@ L3:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 44 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit113, ",", 51, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit114, ",", 51, false); !ok {
 		goto L16
 	}
 	x18 = p.Pos
@@ -19492,7 +19525,7 @@ func q79(p *rt.Parser) (*sxirvalue.Node, bool) {
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
 	p.Enter()
-	v, ok := e239(p, 0)
+	v, ok := e240(p, 0)
 	p.Depth--
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
@@ -19545,7 +19578,7 @@ L3:
 		if p.Pos < len(p.In) && p.In[p.Pos] == 44 {
 			p.Pos++
 			p.Units += 1
-		} else if _, ok = p.MatchLiteralLogical(lit113, ",", 51, false); !ok {
+		} else if _, ok = p.MatchLiteralLogical(lit114, ",", 51, false); !ok {
 			goto L8
 		}
 		x9 = p.Pos
@@ -19586,7 +19619,7 @@ L3:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 44 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit113, ",", 51, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit114, ",", 51, false); !ok {
 		goto L16
 	}
 	x18 = p.Pos
@@ -19983,7 +20016,7 @@ func q98(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e246(p, 0)
+	v, ok := e247(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -20029,7 +20062,7 @@ func q100(p *rt.Parser) (*sxirvalue.Node, bool) {
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
 	p.Enter()
-	v, ok := e247(p, 0)
+	v, ok := e248(p, 0)
 	p.Depth--
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
@@ -20092,7 +20125,7 @@ func q102(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e248(p, 0)
+	v, ok := e249(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -20109,7 +20142,7 @@ func q103(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e249(p, 0)
+	v, ok := e250(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -20302,7 +20335,7 @@ func q112(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e255(p, 0)
+	v, ok := e256(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -20449,7 +20482,7 @@ func q115(p *rt.Parser) (*sxirvalue.Node, bool) {
 		if p.Pos < len(p.In) && p.In[p.Pos] == 34 {
 			p.Pos++
 			p.Units += 1
-		} else if _, ok = p.MatchLiteralLogical(lit170, "\"", 60, false); !ok {
+		} else if _, ok = p.MatchLiteralLogical(lit171, "\"", 60, false); !ok {
 			goto L13
 		}
 		p.LookEnd(true)
@@ -20524,7 +20557,7 @@ func q118(p *rt.Parser) (*sxirvalue.Node, bool) {
 	if p.Pos < len(p.In) && p.In[p.Pos] == 92 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit181, "\\", 62, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit182, "\\", 62, false); !ok {
 		goto L3
 	}
 	if _, ok = q137(p); !ok {
@@ -20635,7 +20668,7 @@ func q120(p *rt.Parser) (*sxirvalue.Node, bool) {
 	start, trail := p.Pos, len(p.Trail)
 	prevEnv, prevCut := p.Env, p.Cut
 	p.Cut = false
-	v, ok := e259(p, 0)
+	v, ok := e260(p, 0)
 	p.Cut = prevCut
 	p.Trail = p.Trail[:trail]
 	if ok {
@@ -20704,7 +20737,7 @@ func q121(p *rt.Parser) (*sxirvalue.Node, bool) {
 		if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 39 && p.In[p.Pos+1] == 39 {
 			p.Pos += 2
 			p.Units += 2
-		} else if _, ok = p.MatchLiteralLogical(lit175, "''", 70, false); !ok {
+		} else if _, ok = p.MatchLiteralLogical(lit176, "''", 70, false); !ok {
 			goto L12
 		}
 		goto L7
@@ -20791,7 +20824,7 @@ func q122(p *rt.Parser) (*sxirvalue.Node, bool) {
 		if p.Pos < len(p.In) && p.In[p.Pos] == 39 {
 			p.Pos++
 			p.Units += 1
-		} else if _, ok = p.MatchLiteralLogical(lit173, "'", 68, false); !ok {
+		} else if _, ok = p.MatchLiteralLogical(lit174, "'", 68, false); !ok {
 			goto L13
 		}
 		p.LookEnd(true)
@@ -20867,7 +20900,7 @@ L5:
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 39 && p.In[p.Pos+1] == 39 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.MatchLiteralLogical(lit175, "''", 70, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit176, "''", 70, false); !ok {
 		goto L8
 	}
 	goto L2
@@ -20989,7 +21022,7 @@ func q135(p *rt.Parser) (*sxirvalue.Node, bool) {
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 13 && p.In[p.Pos+1] == 10 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.MatchLiteralLogical(lit147, "\r\n", 73, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit148, "\r\n", 73, false); !ok {
 		goto L4
 	}
 	goto L2
@@ -21003,7 +21036,7 @@ L3:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 13 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit148, "\r", 74, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit149, "\r", 74, false); !ok {
 		goto L6
 	}
 	goto L2
@@ -21017,7 +21050,7 @@ L5:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 10 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit149, "\n", 75, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit150, "\n", 75, false); !ok {
 		goto L8
 	}
 	goto L2
@@ -21054,7 +21087,7 @@ func q137(p *rt.Parser) (*sxirvalue.Node, bool) {
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 13 && p.In[p.Pos+1] == 10 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.MatchLiteralLogical(lit147, "\r\n", 73, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit148, "\r\n", 73, false); !ok {
 		goto L4
 	}
 	goto L2
@@ -21068,7 +21101,7 @@ L3:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 13 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit148, "\r", 74, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit149, "\r", 74, false); !ok {
 		goto L6
 	}
 	goto L2
@@ -21082,7 +21115,7 @@ L5:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 10 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.MatchLiteralLogical(lit149, "\n", 75, false); !ok {
+	} else if _, ok = p.MatchLiteralLogical(lit150, "\n", 75, false); !ok {
 		goto L8
 	}
 	goto L2
@@ -21409,7 +21442,7 @@ func i1(p *rt.TParser) (any, bool) {
 		goto L22
 	L26:
 		v61 = p.ScopeValue(sh5, v25, x20)
-		v62 = p.AttachCaptures(v61, scope268, []any{k21}, x20, p.Pos)
+		v62 = p.AttachCaptures(v61, scope269, []any{k21}, x20, p.Pos)
 		p.PushKid(v62)
 		if p.Pos == x20 {
 			break
@@ -24360,7 +24393,7 @@ func i46(p *rt.TParser) (any, bool) {
 		x23 = append(x23, v25)
 		v26 = p.NewNodeOrdinary("tuple", x22, p.Pos, x23)
 		v27 = p.ScopeValue(sh4, v26, x19)
-		v28 = p.AttachCaptures(v27, scope269, []any{k20}, x19, p.Pos)
+		v28 = p.AttachCaptures(v27, scope270, []any{k20}, x19, p.Pos)
 		x18++
 		if x17 {
 			p.SkipValue(v28)
@@ -24741,7 +24774,7 @@ func i50(p *rt.TParser) (any, bool) {
 		x14 = append(x14, v16)
 		v17 = p.NewNodeOrdinary("tuple", x13, p.Pos, x14)
 		v18 = p.ScopeValue(sh4, v17, x10)
-		v19 = p.AttachCaptures(v18, scope270, []any{k11}, x10, p.Pos)
+		v19 = p.AttachCaptures(v18, scope271, []any{k11}, x10, p.Pos)
 		if x8 {
 			p.SkipValue(v19)
 		} else {
@@ -25688,12 +25721,12 @@ func u62(p *rt.TParser) (any, bool) {
 }
 
 func i62(p *rt.TParser) (any, bool) {
-	var start, x3, x9, x10, x12, x19, x24, x28, size, x32, x34, x42, x44, x50, x52, x58, x60, x66, x68, x74, x76, x82, x84, x90, x92, x98, x100, x106, x108, x113, x115, x118, x122, x124, x127, x129, x132, x134, x136, x140, x145, x147, x151, x153, x157, x159, x161, x165, x167, x169, x174, x176, x180, x182, x186, x189, x191, x193, x196, x200, x210, x214, x220 int
-	var v, k1, v4, v7, k8, k13, x14, v15, v20, v25, k26, v29, v33, k36, x37, v38, v45, v46, v47, v53, v54, v55, v61, v62, v63, v69, v70, v71, v77, v78, v79, v85, v86, v87, v93, v94, v95, v101, v102, v103, v109, v110, v111, v120, v138, k154, v163, v171, k184, v195, v204, v206, v207, k208, v211, v215, v216, v217, v218, v219 any
+	var start, x3, x9, x14, x16, x24, x29, x33, size, x37, x39, x48, x50, x56, x58, x64, x66, x72, x74, x80, x82, x88, x90, x96, x98, x104, x106, x112, x114, x119, x121, x124, x128, x130, x133, x135, x138, x140, x142, x146, x151, x153, x157, x159, x163, x165, x167, x171, x173, x175, x180, x182, x186, x188, x192, x195, x197, x199, x202, x206, x216, x220, x227 int
+	var v, k1, v4, v7, k8, k10, k11, k12, k13, k17, x18, x19, v20, v25, v30, k31, v34, v38, k41, x42, x43, v44, v51, v52, v53, v59, v60, v61, v67, v68, v69, v75, v76, v77, v83, v84, v85, v91, v92, v93, v99, v100, v101, v107, v108, v109, v115, v116, v117, v126, v144, k160, v169, v177, k190, v201, v210, v212, v213, k214, v217, v221, v222, v223, v224, v225, v226 any
 	var c *rt.TActCtx
-	var prevEnv, x35, x141, x183, x201 *rt.Env
-	var ok, x121, x126, x133, x150, x158, x164, x179, x190 bool
-	var x11, x43, x51, x59, x67, x75, x83, x91, x99, x107, x114, x119, x146, x175 []any
+	var prevEnv, x40, x147, x189, x207 *rt.Env
+	var ok, x127, x132, x139, x156, x164, x170, x185, x196 bool
+	var x15, x49, x57, x65, x73, x81, x89, x97, x105, x113, x120, x125, x152, x181 []any
 	var ch rune
 	start = p.Pos
 	prevEnv = p.Env
@@ -25712,86 +25745,96 @@ L5:
 L6:
 	k1 = v4
 	x9 = p.Pos
-	x10 = p.Pos
-	x11 = p.NewVals(6)[:0]
-	x12 = p.Pos
-	x14 = k13
+	k10 = nil
+	k11 = nil
+	k12 = nil
+	k13 = nil
+	x14 = p.Pos
+	x15 = p.NewVals(6)[:0]
+	x16 = p.Pos
+	x18 = k17
+	x19 = k10
 	if !p.HasCharOrdinary(124, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 37)
-		goto L17
+		goto L22
 	}
-	x19 = p.Pos
+	x24 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 124 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.Parser.MatchLiteralLogical(lit80, "|", 37, false); !ok {
-		goto L18
+		goto L23
 	}
-	v20 = p.NewMatchOrdinary(x19, p.Pos, "|", true)
-	v15 = v20
-	goto L16
-L18:
-	p.Pos = x12
-	k13 = x14
-L17:
+	v25 = p.NewMatchOrdinary(x24, p.Pos, "|", true)
+	v20 = v25
+	goto L21
+L23:
+	p.Pos = x16
+	k17 = x18
+	k10 = x19
+L22:
 	if !p.HasCharOrdinary(62, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 18)
-		goto L21
+		goto L26
 	}
-	x24 = p.Pos
+	x29 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 62 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.Parser.MatchLiteralLogical(lit38, ">", 18, false); !ok {
-		goto L22
+		goto L27
 	}
-	v25 = p.NewMatchOrdinary(x24, p.Pos, ">", true)
-	k13 = v25
-	v15 = v25
-	goto L16
-L22:
-	p.Pos = x12
-	k13 = x14
-L21:
+	v30 = p.NewMatchOrdinary(x29, p.Pos, ">", true)
+	k17 = v30
+	k10 = v30
+	v20 = v30
+	goto L21
+L27:
+	p.Pos = x16
+	k17 = x18
+	k10 = x19
+L26:
 	goto fail
-L16:
-	x11 = append(x11, v15)
-	x28 = p.Pos
+L21:
+	x15 = append(x15, v20)
+	x33 = p.Pos
 	ch, size, ok = p.NextOrdinary()
 	if !ok || !(ch == 43 || ch == 45) {
 		p.Expect(p.Pos, 38)
-		goto L30
+		goto L35
 	}
-	x32 = p.Pos
+	x37 = p.Pos
 	p.Pos += size
 	p.Units += uint64(size)
-	v33 = p.NewMatchOrdinary(x32, p.Pos, p.Text(x32, p.Pos), true)
-	v29 = v33
-	goto L31
-L30:
-	p.Pos = x28
-	v29 = nil
-L31:
-	k26 = v29
-	x11 = append(x11, v29)
-	x34 = p.Pos
-	x35 = p.Env
-	x37 = k36
+	v38 = p.NewMatchOrdinary(x37, p.Pos, p.Text(x37, p.Pos), true)
+	v34 = v38
+	goto L36
+L35:
+	p.Pos = x33
+	v34 = nil
+L36:
+	k31 = v34
+	k11 = v34
+	x15 = append(x15, v34)
+	x39 = p.Pos
+	x40 = p.Env
+	x42 = k41
+	x43 = k12
 	if !p.HasCharOrdinary(49, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 39)
-		goto L40
+		goto L46
 	}
-	x42 = p.Pos
-	x43 = p.NewVals(1)[:0]
-	x44 = p.Pos
+	x48 = p.Pos
+	x49 = p.NewVals(1)[:0]
+	x50 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 49 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.Parser.MatchLiteralLogical(lit81, "1", 39, false); !ok {
-		goto L41
+		goto L47
 	}
-	v45 = p.NewMatchOrdinary(x44, p.Pos, "1", true)
-	x43 = append(x43, v45)
+	v51 = p.NewMatchOrdinary(x50, p.Pos, "1", true)
+	x49 = append(x49, v51)
 	if !p.Bind(0, func(c *rt.TActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(1))
@@ -25800,32 +25843,33 @@ L31:
 		}
 		return tv2, nil
 	}) {
-		goto L41
+		goto L47
 	}
-	v46 = p.NewNodeOrdinary("tuple", x42, p.Pos, x43)
-	v47, _ = p.ShapeSingle(sh4, v46, x34)
-	v38 = v47
-	goto L39
-L41:
-	p.Pos = x34
-	p.Env = x35
-	k36 = x37
-L40:
+	v52 = p.NewNodeOrdinary("tuple", x48, p.Pos, x49)
+	v53, _ = p.ShapeSingle(sh4, v52, x39)
+	v44 = v53
+	goto L45
+L47:
+	p.Pos = x39
+	p.Env = x40
+	k41 = x42
+	k12 = x43
+L46:
 	if !p.HasCharOrdinary(50, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 40)
-		goto L48
+		goto L54
 	}
-	x50 = p.Pos
-	x51 = p.NewVals(1)[:0]
-	x52 = p.Pos
+	x56 = p.Pos
+	x57 = p.NewVals(1)[:0]
+	x58 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 50 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.Parser.MatchLiteralLogical(lit82, "2", 40, false); !ok {
-		goto L49
+		goto L55
 	}
-	v53 = p.NewMatchOrdinary(x52, p.Pos, "2", true)
-	x51 = append(x51, v53)
+	v59 = p.NewMatchOrdinary(x58, p.Pos, "2", true)
+	x57 = append(x57, v59)
 	if !p.Bind(0, func(c *rt.TActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(2))
@@ -25834,32 +25878,33 @@ L40:
 		}
 		return tv2, nil
 	}) {
-		goto L49
+		goto L55
 	}
-	v54 = p.NewNodeOrdinary("tuple", x50, p.Pos, x51)
-	v55, _ = p.ShapeSingle(sh4, v54, x34)
-	v38 = v55
-	goto L39
-L49:
-	p.Pos = x34
-	p.Env = x35
-	k36 = x37
-L48:
+	v60 = p.NewNodeOrdinary("tuple", x56, p.Pos, x57)
+	v61, _ = p.ShapeSingle(sh4, v60, x39)
+	v44 = v61
+	goto L45
+L55:
+	p.Pos = x39
+	p.Env = x40
+	k41 = x42
+	k12 = x43
+L54:
 	if !p.HasCharOrdinary(51, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 41)
-		goto L56
+		goto L62
 	}
-	x58 = p.Pos
-	x59 = p.NewVals(1)[:0]
-	x60 = p.Pos
+	x64 = p.Pos
+	x65 = p.NewVals(1)[:0]
+	x66 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 51 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.Parser.MatchLiteralLogical(lit83, "3", 41, false); !ok {
-		goto L57
+		goto L63
 	}
-	v61 = p.NewMatchOrdinary(x60, p.Pos, "3", true)
-	x59 = append(x59, v61)
+	v67 = p.NewMatchOrdinary(x66, p.Pos, "3", true)
+	x65 = append(x65, v67)
 	if !p.Bind(0, func(c *rt.TActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(3))
@@ -25868,32 +25913,33 @@ L48:
 		}
 		return tv2, nil
 	}) {
-		goto L57
+		goto L63
 	}
-	v62 = p.NewNodeOrdinary("tuple", x58, p.Pos, x59)
-	v63, _ = p.ShapeSingle(sh4, v62, x34)
-	v38 = v63
-	goto L39
-L57:
-	p.Pos = x34
-	p.Env = x35
-	k36 = x37
-L56:
+	v68 = p.NewNodeOrdinary("tuple", x64, p.Pos, x65)
+	v69, _ = p.ShapeSingle(sh4, v68, x39)
+	v44 = v69
+	goto L45
+L63:
+	p.Pos = x39
+	p.Env = x40
+	k41 = x42
+	k12 = x43
+L62:
 	if !p.HasCharOrdinary(52, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 42)
-		goto L64
+		goto L70
 	}
-	x66 = p.Pos
-	x67 = p.NewVals(1)[:0]
-	x68 = p.Pos
+	x72 = p.Pos
+	x73 = p.NewVals(1)[:0]
+	x74 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 52 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.Parser.MatchLiteralLogical(lit84, "4", 42, false); !ok {
-		goto L65
+		goto L71
 	}
-	v69 = p.NewMatchOrdinary(x68, p.Pos, "4", true)
-	x67 = append(x67, v69)
+	v75 = p.NewMatchOrdinary(x74, p.Pos, "4", true)
+	x73 = append(x73, v75)
 	if !p.Bind(0, func(c *rt.TActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(4))
@@ -25902,32 +25948,33 @@ L56:
 		}
 		return tv2, nil
 	}) {
-		goto L65
+		goto L71
 	}
-	v70 = p.NewNodeOrdinary("tuple", x66, p.Pos, x67)
-	v71, _ = p.ShapeSingle(sh4, v70, x34)
-	v38 = v71
-	goto L39
-L65:
-	p.Pos = x34
-	p.Env = x35
-	k36 = x37
-L64:
+	v76 = p.NewNodeOrdinary("tuple", x72, p.Pos, x73)
+	v77, _ = p.ShapeSingle(sh4, v76, x39)
+	v44 = v77
+	goto L45
+L71:
+	p.Pos = x39
+	p.Env = x40
+	k41 = x42
+	k12 = x43
+L70:
 	if !p.HasCharOrdinary(53, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 43)
-		goto L72
+		goto L78
 	}
-	x74 = p.Pos
-	x75 = p.NewVals(1)[:0]
-	x76 = p.Pos
+	x80 = p.Pos
+	x81 = p.NewVals(1)[:0]
+	x82 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 53 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.Parser.MatchLiteralLogical(lit85, "5", 43, false); !ok {
-		goto L73
+		goto L79
 	}
-	v77 = p.NewMatchOrdinary(x76, p.Pos, "5", true)
-	x75 = append(x75, v77)
+	v83 = p.NewMatchOrdinary(x82, p.Pos, "5", true)
+	x81 = append(x81, v83)
 	if !p.Bind(0, func(c *rt.TActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(5))
@@ -25936,32 +25983,33 @@ L64:
 		}
 		return tv2, nil
 	}) {
-		goto L73
+		goto L79
 	}
-	v78 = p.NewNodeOrdinary("tuple", x74, p.Pos, x75)
-	v79, _ = p.ShapeSingle(sh4, v78, x34)
-	v38 = v79
-	goto L39
-L73:
-	p.Pos = x34
-	p.Env = x35
-	k36 = x37
-L72:
+	v84 = p.NewNodeOrdinary("tuple", x80, p.Pos, x81)
+	v85, _ = p.ShapeSingle(sh4, v84, x39)
+	v44 = v85
+	goto L45
+L79:
+	p.Pos = x39
+	p.Env = x40
+	k41 = x42
+	k12 = x43
+L78:
 	if !p.HasCharOrdinary(54, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 44)
-		goto L80
+		goto L86
 	}
-	x82 = p.Pos
-	x83 = p.NewVals(1)[:0]
-	x84 = p.Pos
+	x88 = p.Pos
+	x89 = p.NewVals(1)[:0]
+	x90 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 54 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.Parser.MatchLiteralLogical(lit86, "6", 44, false); !ok {
-		goto L81
+		goto L87
 	}
-	v85 = p.NewMatchOrdinary(x84, p.Pos, "6", true)
-	x83 = append(x83, v85)
+	v91 = p.NewMatchOrdinary(x90, p.Pos, "6", true)
+	x89 = append(x89, v91)
 	if !p.Bind(0, func(c *rt.TActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(6))
@@ -25970,32 +26018,33 @@ L72:
 		}
 		return tv2, nil
 	}) {
-		goto L81
+		goto L87
 	}
-	v86 = p.NewNodeOrdinary("tuple", x82, p.Pos, x83)
-	v87, _ = p.ShapeSingle(sh4, v86, x34)
-	v38 = v87
-	goto L39
-L81:
-	p.Pos = x34
-	p.Env = x35
-	k36 = x37
-L80:
+	v92 = p.NewNodeOrdinary("tuple", x88, p.Pos, x89)
+	v93, _ = p.ShapeSingle(sh4, v92, x39)
+	v44 = v93
+	goto L45
+L87:
+	p.Pos = x39
+	p.Env = x40
+	k41 = x42
+	k12 = x43
+L86:
 	if !p.HasCharOrdinary(55, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 45)
-		goto L88
+		goto L94
 	}
-	x90 = p.Pos
-	x91 = p.NewVals(1)[:0]
-	x92 = p.Pos
+	x96 = p.Pos
+	x97 = p.NewVals(1)[:0]
+	x98 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 55 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.Parser.MatchLiteralLogical(lit87, "7", 45, false); !ok {
-		goto L89
+		goto L95
 	}
-	v93 = p.NewMatchOrdinary(x92, p.Pos, "7", true)
-	x91 = append(x91, v93)
+	v99 = p.NewMatchOrdinary(x98, p.Pos, "7", true)
+	x97 = append(x97, v99)
 	if !p.Bind(0, func(c *rt.TActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(7))
@@ -26004,32 +26053,33 @@ L80:
 		}
 		return tv2, nil
 	}) {
-		goto L89
+		goto L95
 	}
-	v94 = p.NewNodeOrdinary("tuple", x90, p.Pos, x91)
-	v95, _ = p.ShapeSingle(sh4, v94, x34)
-	v38 = v95
-	goto L39
-L89:
-	p.Pos = x34
-	p.Env = x35
-	k36 = x37
-L88:
+	v100 = p.NewNodeOrdinary("tuple", x96, p.Pos, x97)
+	v101, _ = p.ShapeSingle(sh4, v100, x39)
+	v44 = v101
+	goto L45
+L95:
+	p.Pos = x39
+	p.Env = x40
+	k41 = x42
+	k12 = x43
+L94:
 	if !p.HasCharOrdinary(56, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 46)
-		goto L96
+		goto L102
 	}
-	x98 = p.Pos
-	x99 = p.NewVals(1)[:0]
-	x100 = p.Pos
+	x104 = p.Pos
+	x105 = p.NewVals(1)[:0]
+	x106 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 56 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.Parser.MatchLiteralLogical(lit88, "8", 46, false); !ok {
-		goto L97
+		goto L103
 	}
-	v101 = p.NewMatchOrdinary(x100, p.Pos, "8", true)
-	x99 = append(x99, v101)
+	v107 = p.NewMatchOrdinary(x106, p.Pos, "8", true)
+	x105 = append(x105, v107)
 	if !p.Bind(0, func(c *rt.TActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(8))
@@ -26038,32 +26088,33 @@ L88:
 		}
 		return tv2, nil
 	}) {
-		goto L97
+		goto L103
 	}
-	v102 = p.NewNodeOrdinary("tuple", x98, p.Pos, x99)
-	v103, _ = p.ShapeSingle(sh4, v102, x34)
-	v38 = v103
-	goto L39
-L97:
-	p.Pos = x34
-	p.Env = x35
-	k36 = x37
-L96:
+	v108 = p.NewNodeOrdinary("tuple", x104, p.Pos, x105)
+	v109, _ = p.ShapeSingle(sh4, v108, x39)
+	v44 = v109
+	goto L45
+L103:
+	p.Pos = x39
+	p.Env = x40
+	k41 = x42
+	k12 = x43
+L102:
 	if !p.HasCharOrdinary(57, false) && p.Depth <= p.MaxDepth {
 		p.Expect(p.Pos, 47)
-		goto L104
+		goto L110
 	}
-	x106 = p.Pos
-	x107 = p.NewVals(1)[:0]
-	x108 = p.Pos
+	x112 = p.Pos
+	x113 = p.NewVals(1)[:0]
+	x114 = p.Pos
 	if p.Pos < len(p.In) && p.In[p.Pos] == 57 {
 		p.Pos++
 		p.Units += 1
 	} else if _, ok = p.Parser.MatchLiteralLogical(lit89, "9", 47, false); !ok {
-		goto L105
+		goto L111
 	}
-	v109 = p.NewMatchOrdinary(x108, p.Pos, "9", true)
-	x107 = append(x107, v109)
+	v115 = p.NewMatchOrdinary(x114, p.Pos, "9", true)
+	x113 = append(x113, v115)
 	if !p.Bind(0, func(c *rt.TActCtx) (any, any) {
 		tv1 := c.Var(0)
 		tv2, tf2 := c.P.ActionBinary(rt.OpAdd, tv1, any(9))
@@ -26072,34 +26123,35 @@ L96:
 		}
 		return tv2, nil
 	}) {
-		goto L105
+		goto L111
 	}
-	v110 = p.NewNodeOrdinary("tuple", x106, p.Pos, x107)
-	v111, _ = p.ShapeSingle(sh4, v110, x34)
-	v38 = v111
-	goto L39
-L105:
-	p.Pos = x34
-	p.Env = x35
-	k36 = x37
-L104:
-	x113 = p.Pos
-	x114 = p.NewVals(0)[:0]
-	x115 = p.Pos
+	v116 = p.NewNodeOrdinary("tuple", x112, p.Pos, x113)
+	v117, _ = p.ShapeSingle(sh4, v116, x39)
+	v44 = v117
+	goto L45
+L111:
+	p.Pos = x39
+	p.Env = x40
+	k41 = x42
+	k12 = x43
+L110:
+	x119 = p.Pos
+	x120 = p.NewVals(0)[:0]
+	x121 = p.Pos
 	p.Silent++
-	x118 = p.Pos
-	x119 = p.NewVals(2)[:0]
-	if v120, ok = u132(p); !ok {
-		goto L116
+	x124 = p.Pos
+	x125 = p.NewVals(2)[:0]
+	if v126, ok = u132(p); !ok {
+		goto L122
 	}
-	x119 = append(x119, v120)
-	x122 = p.Pos
-	x121 = p.RunHot(25)
-	if x121 {
+	x125 = append(x125, v126)
+	x128 = p.Pos
+	x127 = p.RunHot(25)
+	if x127 {
 		p.RunBegin(25, false, false)
 	}
 	for {
-		if x121 {
+		if x127 {
 			if p.SkipHit() {
 				break
 			}
@@ -26108,14 +26160,14 @@ L104:
 		if p.Units > p.UnitsCheck {
 			p.PollUnits()
 		}
-		x124 = p.Pos
-		x127 = p.Pos
-		x126 = p.RunHot(26)
-		if x126 {
+		x130 = p.Pos
+		x133 = p.Pos
+		x132 = p.RunHot(26)
+		if x132 {
 			p.RunBegin(26, false, false)
 		}
 		for {
-			if x126 {
+			if x132 {
 				if p.SkipHit() {
 					break
 				}
@@ -26124,54 +26176,54 @@ L104:
 			if p.Units > p.UnitsCheck {
 				p.PollUnits()
 			}
-			x129 = p.Pos
+			x135 = p.Pos
 			if p.Pos < len(p.In) && p.In[p.Pos] == 32 {
 				p.Pos++
 				p.Units += 1
 			} else if _, ok = p.Parser.MatchLiteralLogical(lit55, " ", 31, false); !ok {
-				goto L130
+				goto L136
 			}
-			if p.Pos == x129 {
+			if p.Pos == x135 {
 				break
 			}
 			continue
-		L130:
-			p.Pos = x129
+		L136:
+			p.Pos = x135
 			break
 		}
-		if x126 {
+		if x132 {
 			p.SkipEnd()
 		} else {
-			if p.Pos-x127 >= rt.RunHotSpan {
-				p.RunWalked(26, x127)
+			if p.Pos-x133 >= rt.RunHotSpan {
+				p.RunWalked(26, x133)
 			}
 		}
 		if _, ok = s151(p); !ok {
-			goto L125
+			goto L131
 		}
-		if p.Pos == x124 {
+		if p.Pos == x130 {
 			break
 		}
 		continue
-	L125:
-		p.Pos = x124
+	L131:
+		p.Pos = x130
 		break
 	}
-	if x121 {
+	if x127 {
 		p.SkipEnd()
 	} else {
-		if p.Pos-x122 >= rt.RunHotSpan {
-			p.RunWalked(25, x122)
+		if p.Pos-x128 >= rt.RunHotSpan {
+			p.RunWalked(25, x128)
 		}
 	}
-	x132 = p.Pos
-	x134 = p.Pos
-	x133 = p.RunHot(27)
-	if x133 {
+	x138 = p.Pos
+	x140 = p.Pos
+	x139 = p.RunHot(27)
+	if x139 {
 		p.RunBegin(27, false, false)
 	}
 	for {
-		if x133 {
+		if x139 {
 			if p.SkipHit() {
 				break
 			}
@@ -26180,46 +26232,47 @@ L104:
 		if p.Units > p.UnitsCheck {
 			p.PollUnits()
 		}
-		x136 = p.Pos
+		x142 = p.Pos
 		if p.Pos < len(p.In) && p.In[p.Pos] == 32 {
 			p.Pos++
 			p.Units += 1
 		} else if _, ok = p.Parser.MatchLiteralLogical(lit55, " ", 31, false); !ok {
-			goto L137
+			goto L143
 		}
-		if p.Pos == x136 {
+		if p.Pos == x142 {
 			break
 		}
 		continue
-	L137:
-		p.Pos = x136
+	L143:
+		p.Pos = x142
 		break
 	}
-	if x133 {
+	if x139 {
 		p.SkipEnd()
 	} else {
-		if p.Pos-x134 >= rt.RunHotSpan {
-			p.RunWalked(27, x134)
+		if p.Pos-x140 >= rt.RunHotSpan {
+			p.RunWalked(27, x140)
 		}
 	}
-	v138 = p.NewMatchOrdinary(x132, p.Pos, p.Text(x132, p.Pos), true)
-	k36 = v138
-	x119 = append(x119, v138)
-	_ = p.NewNodeOrdinary("tuple", x118, p.Pos, x119)
+	v144 = p.NewMatchOrdinary(x138, p.Pos, p.Text(x138, p.Pos), true)
+	k41 = v144
+	k12 = v144
+	x125 = append(x125, v144)
+	_ = p.NewNodeOrdinary("tuple", x124, p.Pos, x125)
 	p.Silent--
-	p.Pos = x115
-	goto L117
-L116:
+	p.Pos = x121
+	goto L123
+L122:
 	p.Silent--
-	p.Pos = x115
-	goto L112
-L117:
-	x140 = p.Pos
-	x141 = p.Env
-	x145 = p.Pos
-	x146 = p.NewVals(0)[:0]
+	p.Pos = x121
+	goto L118
+L123:
+	x146 = p.Pos
+	x147 = p.Env
+	x151 = p.Pos
+	x152 = p.NewVals(0)[:0]
 	if !p.Predicate(func(c *rt.TActCtx) (any, any) {
-		tv1, tf1 := c.P.ActionLength(k36)
+		tv1, tf1 := c.P.ActionLength(k41)
 		if tf1 != nil {
 			return nil, tf1
 		}
@@ -26230,29 +26283,29 @@ L117:
 		}
 		return tv3, nil
 	}) {
-		goto L144
+		goto L150
 	}
 	if !p.Bind(0, func(c *rt.TActCtx) (any, any) {
-		tv1, tf1 := c.P.ActionLength(k36)
+		tv1, tf1 := c.P.ActionLength(k41)
 		if tf1 != nil {
 			return nil, tf1
 		}
 		return tv1, nil
 	}) {
-		goto L144
+		goto L150
 	}
-	x147 = p.Pos
+	x153 = p.Pos
 	p.Silent++
 	if _, ok = u156(p); !ok {
-		goto L148
+		goto L154
 	}
-	x151 = p.Pos
-	x150 = p.RunHot(28)
-	if x150 {
+	x157 = p.Pos
+	x156 = p.RunHot(28)
+	if x156 {
 		p.RunBegin(28, false, true)
 	}
 	for {
-		if x150 {
+		if x156 {
 			if p.SkipHit() {
 				break
 			}
@@ -26261,16 +26314,16 @@ L117:
 		if p.Units > p.UnitsCheck {
 			p.PollUnits()
 		}
-		x153 = p.Pos
-		k154 = nil
-		x157 = p.Pos
 		x159 = p.Pos
-		x158 = p.RunHot(29)
-		if x158 {
+		k160 = nil
+		x163 = p.Pos
+		x165 = p.Pos
+		x164 = p.RunHot(29)
+		if x164 {
 			p.RunBegin(29, false, false)
 		}
 		for {
-			if x158 {
+			if x164 {
 				if p.SkipHit() {
 					break
 				}
@@ -26279,32 +26332,32 @@ L117:
 			if p.Units > p.UnitsCheck {
 				p.PollUnits()
 			}
-			x161 = p.Pos
+			x167 = p.Pos
 			if p.Pos < len(p.In) && p.In[p.Pos] == 32 {
 				p.Pos++
 				p.Units += 1
 			} else if _, ok = p.Parser.MatchLiteralLogical(lit55, " ", 31, false); !ok {
-				goto L162
+				goto L168
 			}
-			if p.Pos == x161 {
+			if p.Pos == x167 {
 				break
 			}
 			continue
-		L162:
-			p.Pos = x161
+		L168:
+			p.Pos = x167
 			break
 		}
-		if x158 {
+		if x164 {
 			p.SkipEnd()
 		} else {
-			if p.Pos-x159 >= rt.RunHotSpan {
-				p.RunWalked(29, x159)
+			if p.Pos-x165 >= rt.RunHotSpan {
+				p.RunWalked(29, x165)
 			}
 		}
-		v163 = p.NewMatchOrdinary(x157, p.Pos, p.Text(x157, p.Pos), true)
-		k154 = v163
+		v169 = p.NewMatchOrdinary(x163, p.Pos, p.Text(x163, p.Pos), true)
+		k160 = v169
 		if !p.Predicate(func(c *rt.TActCtx) (any, any) {
-			tv1, tf1 := c.P.ActionLength(k154)
+			tv1, tf1 := c.P.ActionLength(k160)
 			if tf1 != nil {
 				return nil, tf1
 			}
@@ -26315,33 +26368,33 @@ L117:
 			}
 			return tv3, nil
 		}) {
-			goto L155
+			goto L161
 		}
 		if _, ok = s151(p); !ok {
-			goto L155
+			goto L161
 		}
-		if p.Pos == x153 {
+		if p.Pos == x159 {
 			break
 		}
 		continue
-	L155:
-		p.Pos = x153
+	L161:
+		p.Pos = x159
 		break
 	}
-	if x150 {
+	if x156 {
 		p.SkipEnd()
 	} else {
-		if p.Pos-x151 >= rt.RunHotSpan {
-			p.RunWalked(28, x151)
+		if p.Pos-x157 >= rt.RunHotSpan {
+			p.RunWalked(28, x157)
 		}
 	}
-	x165 = p.Pos
-	x164 = p.RunHot(30)
-	if x164 {
+	x171 = p.Pos
+	x170 = p.RunHot(30)
+	if x170 {
 		p.RunBegin(30, false, false)
 	}
 	for {
-		if x164 {
+		if x170 {
 			if p.SkipHit() {
 				break
 			}
@@ -26350,60 +26403,60 @@ L117:
 		if p.Units > p.UnitsCheck {
 			p.PollUnits()
 		}
-		x167 = p.Pos
+		x173 = p.Pos
 		if p.Pos < len(p.In) && p.In[p.Pos] == 32 {
 			p.Pos++
 			p.Units += 1
 		} else if _, ok = p.Parser.MatchLiteralLogical(lit55, " ", 31, false); !ok {
-			goto L168
+			goto L174
 		}
-		if p.Pos == x167 {
+		if p.Pos == x173 {
 			break
 		}
 		continue
-	L168:
-		p.Pos = x167
+	L174:
+		p.Pos = x173
 		break
 	}
-	if x164 {
+	if x170 {
 		p.SkipEnd()
 	} else {
-		if p.Pos-x165 >= rt.RunHotSpan {
-			p.RunWalked(30, x165)
+		if p.Pos-x171 >= rt.RunHotSpan {
+			p.RunWalked(30, x171)
 		}
 	}
-	x169 = p.Pos
+	x175 = p.Pos
 	p.Silent++
 	p.LookBegin(19)
 	if _, ok = s151(p); !ok {
-		goto L170
+		goto L176
 	}
 	p.LookEnd(true)
 	p.Silent--
-	p.Pos = x169
-	goto L148
-L170:
+	p.Pos = x175
+	goto L154
+L176:
 	p.LookEnd(false)
 	p.Silent--
-	p.Pos = x169
+	p.Pos = x175
 	p.Silent--
-	p.Pos = x147
+	p.Pos = x153
+	goto L155
+L154:
+	p.Silent--
+	p.Pos = x153
+	goto L150
+L155:
+	v177 = p.NewNodeOrdinary("tuple", x151, p.Pos, x152)
+	_, _ = p.ShapeSingle(sh91, v177, x146)
 	goto L149
-L148:
-	p.Silent--
-	p.Pos = x147
-	goto L144
-L149:
-	v171 = p.NewNodeOrdinary("tuple", x145, p.Pos, x146)
-	_, _ = p.ShapeSingle(sh91, v171, x140)
-	goto L143
-L144:
-	p.Pos = x140
-	p.Env = x141
-	x174 = p.Pos
-	x175 = p.NewVals(0)[:0]
+L150:
+	p.Pos = x146
+	p.Env = x147
+	x180 = p.Pos
+	x181 = p.NewVals(0)[:0]
 	if !p.Predicate(func(c *rt.TActCtx) (any, any) {
-		tv1, tf1 := c.P.ActionLength(k36)
+		tv1, tf1 := c.P.ActionLength(k41)
 		if tf1 != nil {
 			return nil, tf1
 		}
@@ -26414,7 +26467,7 @@ L144:
 		}
 		return tv3, nil
 	}) {
-		goto L173
+		goto L179
 	}
 	if !p.Bind(0, func(c *rt.TActCtx) (any, any) {
 		tv1 := c.Var(0)
@@ -26424,20 +26477,20 @@ L144:
 		}
 		return tv2, nil
 	}) {
-		goto L173
+		goto L179
 	}
-	x176 = p.Pos
+	x182 = p.Pos
 	p.Silent++
 	if _, ok = u156(p); !ok {
-		goto L177
+		goto L183
 	}
-	x180 = p.Pos
-	x179 = p.RunHot(31)
-	if x179 {
+	x186 = p.Pos
+	x185 = p.RunHot(31)
+	if x185 {
 		p.RunBegin(31, false, true)
 	}
 	for {
-		if x179 {
+		if x185 {
 			if p.SkipHit() {
 				break
 			}
@@ -26446,32 +26499,32 @@ L144:
 		if p.Units > p.UnitsCheck {
 			p.PollUnits()
 		}
-		x182 = p.Pos
-		x183 = p.Env
-		k184 = nil
-		x186 = p.Pos
+		x188 = p.Pos
+		x189 = p.Env
+		k190 = nil
+		x192 = p.Pos
 		p.Silent++
 		p.LookBegin(20)
 		if !p.AtEndBatchOrdinary() {
 			p.Expect(p.Pos, rt.IdEndInput)
-			goto L187
+			goto L193
 		}
 		p.LookEnd(true)
 		p.Silent--
-		p.Pos = x186
-		goto L185
-	L187:
+		p.Pos = x192
+		goto L191
+	L193:
 		p.LookEnd(false)
 		p.Silent--
-		p.Pos = x186
-		x189 = p.Pos
-		x191 = p.Pos
-		x190 = p.RunHot(32)
-		if x190 {
+		p.Pos = x192
+		x195 = p.Pos
+		x197 = p.Pos
+		x196 = p.RunHot(32)
+		if x196 {
 			p.RunBegin(32, false, false)
 		}
 		for {
-			if x190 {
+			if x196 {
 				if p.SkipHit() {
 					break
 				}
@@ -26480,50 +26533,50 @@ L144:
 			if p.Units > p.UnitsCheck {
 				p.PollUnits()
 			}
-			x193 = p.Pos
+			x199 = p.Pos
 			if p.Pos < len(p.In) && p.In[p.Pos] == 32 {
 				p.Pos++
 				p.Units += 1
 			} else if _, ok = p.Parser.MatchLiteralLogical(lit55, " ", 31, false); !ok {
-				goto L194
+				goto L200
 			}
-			if p.Pos == x193 {
+			if p.Pos == x199 {
 				break
 			}
 			continue
-		L194:
-			p.Pos = x193
+		L200:
+			p.Pos = x199
 			break
 		}
-		if x190 {
+		if x196 {
 			p.SkipEnd()
 		} else {
-			if p.Pos-x191 >= rt.RunHotSpan {
-				p.RunWalked(32, x191)
+			if p.Pos-x197 >= rt.RunHotSpan {
+				p.RunWalked(32, x197)
 			}
 		}
-		v195 = p.NewMatchOrdinary(x189, p.Pos, p.Text(x189, p.Pos), true)
-		k184 = v195
-		x196 = p.Pos
+		v201 = p.NewMatchOrdinary(x195, p.Pos, p.Text(x195, p.Pos), true)
+		k190 = v201
+		x202 = p.Pos
 		if _, ok = s151(p); !ok {
-			goto L198
+			goto L204
 		}
-		goto L197
-	L198:
-		p.Pos = x196
+		goto L203
+	L204:
+		p.Pos = x202
 		if !p.AtEndBatchOrdinary() {
 			p.Expect(p.Pos, rt.IdEndInput)
-			goto L199
+			goto L205
 		}
-		goto L197
-	L199:
-		p.Pos = x196
-		goto L185
-	L197:
-		x200 = p.Pos
-		x201 = p.Env
+		goto L203
+	L205:
+		p.Pos = x202
+		goto L191
+	L203:
+		x206 = p.Pos
+		x207 = p.Env
 		if !p.Predicate(func(c *rt.TActCtx) (any, any) {
-			tv1, tf1 := c.P.ActionLength(k184)
+			tv1, tf1 := c.P.ActionLength(k190)
 			if tf1 != nil {
 				return nil, tf1
 			}
@@ -26534,89 +26587,91 @@ L144:
 			}
 			return tv3, nil
 		}) {
-			goto L202
+			goto L208
 		}
 		if !p.Bind(0, func(c *rt.TActCtx) (any, any) {
-			tv1, tf1 := c.P.ActionLength(k184)
+			tv1, tf1 := c.P.ActionLength(k190)
 			if tf1 != nil {
 				return nil, tf1
 			}
 			return tv1, nil
 		}) {
-			goto L202
+			goto L208
 		}
-		goto L203
-	L202:
-		p.Pos = x200
-		p.Env = x201
-	L203:
-		if p.Pos == x182 {
+		goto L209
+	L208:
+		p.Pos = x206
+		p.Env = x207
+	L209:
+		if p.Pos == x188 {
 			break
 		}
 		continue
-	L185:
-		p.Pos = x182
-		p.Env = x183
+	L191:
+		p.Pos = x188
+		p.Env = x189
 		break
 	}
-	if x179 {
+	if x185 {
 		p.SkipEnd()
 	} else {
-		if p.Pos-x180 >= rt.RunHotSpan {
-			p.RunWalked(31, x180)
+		if p.Pos-x186 >= rt.RunHotSpan {
+			p.RunWalked(31, x186)
 		}
 	}
 	p.Silent--
-	p.Pos = x176
-	goto L178
-L177:
+	p.Pos = x182
+	goto L184
+L183:
 	p.Silent--
-	p.Pos = x176
-	goto L173
-L178:
-	v204 = p.NewNodeOrdinary("tuple", x174, p.Pos, x175)
-	_, _ = p.ShapeSingle(sh91, v204, x140)
-	goto L143
-L173:
-	p.Pos = x140
-	p.Env = x141
-	goto L112
-L143:
-	v206 = p.NewNodeOrdinary("tuple", x113, p.Pos, x114)
-	v207, _ = p.ShapeSingle(sh91, v206, x34)
-	v38 = v207
-	goto L39
-L112:
-	p.Pos = x34
-	p.Env = x35
-	k36 = x37
+	p.Pos = x182
+	goto L179
+L184:
+	v210 = p.NewNodeOrdinary("tuple", x180, p.Pos, x181)
+	_, _ = p.ShapeSingle(sh91, v210, x146)
+	goto L149
+L179:
+	p.Pos = x146
+	p.Env = x147
+	goto L118
+L149:
+	v212 = p.NewNodeOrdinary("tuple", x119, p.Pos, x120)
+	v213, _ = p.ShapeSingle(sh91, v212, x39)
+	v44 = v213
+	goto L45
+L118:
+	p.Pos = x39
+	p.Env = x40
+	k41 = x42
+	k12 = x43
 	goto fail
-L39:
-	x11 = append(x11, v38)
-	x210 = p.Pos
+L45:
+	x15 = append(x15, v44)
+	x216 = p.Pos
 	ch, size, ok = p.NextOrdinary()
 	if !ok || !(ch == 43 || ch == 45) {
 		p.Expect(p.Pos, 38)
-		goto L212
+		goto L218
 	}
-	x214 = p.Pos
+	x220 = p.Pos
 	p.Pos += size
 	p.Units += uint64(size)
-	v215 = p.NewMatchOrdinary(x214, p.Pos, p.Text(x214, p.Pos), true)
-	v211 = v215
-	goto L213
-L212:
-	p.Pos = x210
-	v211 = nil
-L213:
-	k208 = v211
-	x11 = append(x11, v211)
+	v221 = p.NewMatchOrdinary(x220, p.Pos, p.Text(x220, p.Pos), true)
+	v217 = v221
+	goto L219
+L218:
+	p.Pos = x216
+	v217 = nil
+L219:
+	k214 = v217
+	k13 = v217
+	x15 = append(x15, v217)
 	if !p.Predicate(func(c *rt.TActCtx) (any, any) {
-		tv1, tf1 := c.P.ActionLength(k26)
+		tv1, tf1 := c.P.ActionLength(k31)
 		if tf1 != nil {
 			return nil, tf1
 		}
-		tv2, tf2 := c.P.ActionLength(k208)
+		tv2, tf2 := c.P.ActionLength(k214)
 		if tf2 != nil {
 			return nil, tf2
 		}
@@ -26632,31 +26687,32 @@ L213:
 	}) {
 		goto fail
 	}
-	if v216, ok = u132(p); !ok {
+	if v222, ok = u132(p); !ok {
 		goto fail
 	}
-	x11 = append(x11, v216)
-	if v217, ok = s65(p); !ok {
+	x15 = append(x15, v222)
+	if v223, ok = s65(p); !ok {
 		goto fail
 	}
-	x11 = append(x11, v217)
-	v218 = p.NewNodeOrdinary("tuple", x10, p.Pos, x11)
-	v219 = p.ShapeCapture(sh93, v218, x9)
-	k8 = v219
-	x220 = p.Pos
+	x15 = append(x15, v223)
+	v224 = p.NewNodeOrdinary("tuple", x14, p.Pos, x15)
+	v225 = p.ShapeCapture(sh93, v224, x9)
+	v226 = p.AttachCaptures(v225, scope272, []any{k10, k11, k12, k13}, x9, p.Pos)
+	k8 = v226
+	x227 = p.Pos
 	if _, ok = u157(p); !ok {
-		goto L221
+		goto L228
 	}
-	goto L222
-L221:
-	p.Pos = x220
-L222:
+	goto L229
+L228:
+	p.Pos = x227
+L229:
 	c = p.UseCtx(rt.TActCtx{P: p, Start: start, End: p.Pos, Cbase: len(p.Created)})
 	p.Where = "s_l_block_scalar"
 	{
 		var tr278 any
 		{
-			tv1, tf1 := c.P.ActionLength(k13)
+			tv1, tf1 := c.P.ActionLength(k17)
 			if tf1 != nil {
 				c.ActionRaise(tf1)
 			}
@@ -26777,7 +26833,7 @@ func s65(p *rt.TParser) (any, bool) {
 		}
 		x17 = append(x17, v19)
 		v20 = p.NewNodeOrdinary("tuple", x16, p.Pos, x17)
-		v21 = p.ScopeValue(sh96, v20, x14)
+		v21 = p.ScopeValue(sh97, v20, x14)
 		if x12 {
 			p.SkipValue(v21)
 		} else {
@@ -26812,7 +26868,7 @@ L26:
 		p.Expect(p.Pos, rt.IdEndInput)
 		goto L28
 	}
-	v29, _ = p.ShapeSingle(sh97, nil, x23)
+	v29, _ = p.ShapeSingle(sh98, nil, x23)
 	v24 = v29
 	goto L25
 L28:
@@ -26821,7 +26877,7 @@ L28:
 L25:
 	x8 = append(x8, v24)
 	v30 = p.NewNodeOrdinary("tuple", x7, p.Pos, x8)
-	v31, _ = p.ShapeSingle(sh98, v30, x3)
+	v31, _ = p.ShapeSingle(sh99, v30, x3)
 	v4 = v31
 	goto L6
 L5:
@@ -26872,7 +26928,7 @@ L6:
 	}
 	x2 = append(x2, v40)
 	v41 = p.NewNodeOrdinary("tuple", x1, p.Pos, x2)
-	v = p.ScopeValue(sh96, v41, start)
+	v = p.ScopeValue(sh97, v41, start)
 	if n := rt.AsTval(v); n != nil {
 		n.TSetFresh(false)
 	}
@@ -27014,7 +27070,7 @@ L13:
 	}) {
 		goto L26
 	}
-	v27, _ = p.ShapeSingle(sh97, nil, x23)
+	v27, _ = p.ShapeSingle(sh98, nil, x23)
 	v24 = v27
 	goto L25
 L26:
@@ -27091,8 +27147,8 @@ L25:
 	}
 	x2 = append(x2, v42)
 	v43 = p.NewNodeOrdinary("tuple", x1, p.Pos, x2)
-	v = p.ScopeValue(sh190, v43, start)
-	v = p.AttachCaptures(v, scope271, []any{k14}, start, p.Pos)
+	v = p.ScopeValue(sh191, v43, start)
+	v = p.AttachCaptures(v, scope273, []any{k14}, start, p.Pos)
 	if n := rt.AsTval(v); n != nil {
 		n.TSetFresh(false)
 	}
@@ -27206,7 +27262,7 @@ L17:
 		p.Expect(p.Pos, rt.IdEndInput)
 		goto L19
 	}
-	v20, _ = p.ShapeSingle(sh97, nil, x14)
+	v20, _ = p.ShapeSingle(sh98, nil, x14)
 	v15 = v20
 	goto L16
 L19:
@@ -27215,8 +27271,8 @@ L19:
 L16:
 	x2 = append(x2, v15)
 	v21 = p.NewNodeOrdinary("tuple", x1, p.Pos, x2)
-	v = p.ScopeValue(sh96, v21, start)
-	v = p.AttachCaptures(v, scope272, []any{k5}, start, p.Pos)
+	v = p.ScopeValue(sh97, v21, start)
+	v = p.AttachCaptures(v, scope274, []any{k5}, start, p.Pos)
 	if n := rt.AsTval(v); n != nil {
 		n.TSetFresh(false)
 	}
@@ -27644,7 +27700,7 @@ L5:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 91 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit109, "[", 49, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit110, "[", 49, false); !ok {
 		goto fail
 	}
 	x11 = p.Pos
@@ -27732,7 +27788,7 @@ L25:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 93 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit110, "]", 50, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit111, "]", 50, false); !ok {
 		goto fail
 	}
 	c = p.UseCtx(rt.TActCtx{P: p, Start: start, End: p.Pos, Cbase: len(p.Created)})
@@ -27817,7 +27873,7 @@ L6:
 		if p.Pos < len(p.In) && p.In[p.Pos] == 44 {
 			p.Pos++
 			p.Units += 1
-		} else if _, ok = p.Parser.MatchLiteralLogical(lit113, ",", 51, false); !ok {
+		} else if _, ok = p.Parser.MatchLiteralLogical(lit114, ",", 51, false); !ok {
 			goto L15
 		}
 		x18 = p.Pos
@@ -27843,7 +27899,7 @@ L6:
 	L25:
 		v26 = p.NewNodeOrdinary("tuple", x16, p.Pos, x17)
 		v27 = p.ScopeValue(sh4, v26, x13)
-		v28 = p.AttachCaptures(v27, scope273, []any{k14}, x13, p.Pos)
+		v28 = p.AttachCaptures(v27, scope275, []any{k14}, x13, p.Pos)
 		if x11 {
 			p.SkipValue(v28)
 		} else {
@@ -27870,7 +27926,7 @@ L6:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 44 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit113, ",", 51, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit114, ",", 51, false); !ok {
 		goto L31
 	}
 	x33 = p.Pos
@@ -28035,7 +28091,7 @@ L5:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 123 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit116, "{", 52, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit117, "{", 52, false); !ok {
 		goto fail
 	}
 	x11 = p.Pos
@@ -28123,7 +28179,7 @@ L25:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 125 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit117, "}", 53, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit118, "}", 53, false); !ok {
 		goto fail
 	}
 	c = p.UseCtx(rt.TActCtx{P: p, Start: start, End: p.Pos, Cbase: len(p.Created)})
@@ -28195,7 +28251,7 @@ L6:
 		if p.Pos < len(p.In) && p.In[p.Pos] == 44 {
 			p.Pos++
 			p.Units += 1
-		} else if _, ok = p.Parser.MatchLiteralLogical(lit113, ",", 51, false); !ok {
+		} else if _, ok = p.Parser.MatchLiteralLogical(lit114, ",", 51, false); !ok {
 			goto L13
 		}
 		x14 = p.Pos
@@ -28233,7 +28289,7 @@ L6:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 44 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit113, ",", 51, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit114, ",", 51, false); !ok {
 		goto L24
 	}
 	x26 = p.Pos
@@ -29706,7 +29762,7 @@ L4:
 		p.Expect(p.Pos, rt.IdBeginLine)
 		goto L14
 	}
-	v15, _ = p.ShapeSingle(sh97, nil, x1)
+	v15, _ = p.ShapeSingle(sh98, nil, x1)
 	v2 = v15
 	goto L3
 L14:
@@ -29759,7 +29815,7 @@ L12:
 L13:
 	x8 = append(x8, v11)
 	v15 = p.NewNodeOrdinary("tuple", x7, p.Pos, x8)
-	v16, _ = p.ShapeSingle(sh96, v15, x3)
+	v16, _ = p.ShapeSingle(sh97, v15, x3)
 	v4 = v16
 	goto L6
 L5:
@@ -29772,7 +29828,7 @@ L6:
 	}
 	x2 = append(x2, v17)
 	v18 = p.NewNodeOrdinary("tuple", x1, p.Pos, x2)
-	v = p.ScopeValue(sh96, v18, start)
+	v = p.ScopeValue(sh97, v18, start)
 	if n := rt.AsTval(v); n != nil {
 		n.TSetFresh(false)
 	}
@@ -29830,7 +29886,7 @@ func s134(p *rt.TParser) (any, bool) {
 	v13 = p.NewNodeOrdinary("list", x5, p.Pos, p.ScanKids(72, x5, x7, x6))
 	x2 = append(x2, v13)
 	v14 = p.NewNodeOrdinary("tuple", x1, p.Pos, x2)
-	v = p.ScopeValue(sh96, v14, start)
+	v = p.ScopeValue(sh97, v14, start)
 	if n := rt.AsTval(v); n != nil {
 		n.TSetFresh(false)
 	}
@@ -29855,7 +29911,7 @@ func s135(p *rt.TParser) (any, bool) {
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 13 && p.In[p.Pos+1] == 10 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit147, "\r\n", 73, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit148, "\r\n", 73, false); !ok {
 		goto L5
 	}
 	v7 = p.NewMatchOrdinary(x6, p.Pos, "\r\n", true)
@@ -29872,7 +29928,7 @@ L4:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 13 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit148, "\r", 74, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit149, "\r", 74, false); !ok {
 		goto L9
 	}
 	v11 = p.NewMatchOrdinary(x10, p.Pos, "\r", true)
@@ -29889,7 +29945,7 @@ L8:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 10 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit149, "\n", 75, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit150, "\n", 75, false); !ok {
 		goto L13
 	}
 	v15 = p.NewMatchOrdinary(x14, p.Pos, "\n", true)
@@ -29902,7 +29958,7 @@ L12:
 		p.Expect(p.Pos, rt.IdEndInput)
 		goto L16
 	}
-	v17, _ = p.ShapeSingle(sh97, nil, x1)
+	v17, _ = p.ShapeSingle(sh98, nil, x1)
 	v2 = v17
 	goto L3
 L16:
@@ -29934,7 +29990,7 @@ func s137(p *rt.TParser) (any, bool) {
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 13 && p.In[p.Pos+1] == 10 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit147, "\r\n", 73, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit148, "\r\n", 73, false); !ok {
 		goto L5
 	}
 	v7 = p.NewMatchOrdinary(x6, p.Pos, "\r\n", true)
@@ -29951,7 +30007,7 @@ L4:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 13 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit148, "\r", 74, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit149, "\r", 74, false); !ok {
 		goto L9
 	}
 	v11 = p.NewMatchOrdinary(x10, p.Pos, "\r", true)
@@ -29968,7 +30024,7 @@ L8:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 10 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit149, "\n", 75, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit150, "\n", 75, false); !ok {
 		goto L13
 	}
 	v15 = p.NewMatchOrdinary(x14, p.Pos, "\n", true)
@@ -30037,7 +30093,7 @@ func v140(p *rt.TParser) (any, bool) {
 	if p.Pos < len(p.In) && p.In[p.Pos] == 65279 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit153, "\ufeff", 6, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit154, "\ufeff", 6, false); !ok {
 		goto L4
 	}
 	x6 = p.Pos
@@ -30399,7 +30455,7 @@ L3:
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 33 && p.In[p.Pos+1] == 33 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit157, "!!", 20, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit158, "!!", 20, false); !ok {
 		goto L8
 	}
 	goto L2
@@ -30778,7 +30834,7 @@ func s151(p *rt.TParser) (any, bool) {
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 13 && p.In[p.Pos+1] == 10 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit147, "\r\n", 73, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit148, "\r\n", 73, false); !ok {
 		goto L4
 	}
 	goto L2
@@ -30792,7 +30848,7 @@ L3:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 13 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit148, "\r", 74, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit149, "\r", 74, false); !ok {
 		goto L6
 	}
 	goto L2
@@ -30806,7 +30862,7 @@ L5:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 10 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit149, "\n", 75, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit150, "\n", 75, false); !ok {
 		goto L8
 	}
 	goto L2
@@ -31538,7 +31594,7 @@ func s162(p *rt.TParser) (any, bool) {
 	if p.Pos < len(p.In) && p.In[p.Pos] == 34 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit170, "\"", 60, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit171, "\"", 60, false); !ok {
 		goto fail
 	}
 	x1 = p.Pos
@@ -31613,7 +31669,7 @@ L2:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 34 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit170, "\"", 60, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit171, "\"", 60, false); !ok {
 		goto fail
 	}
 	v = nil
@@ -31678,7 +31734,7 @@ func s164(p *rt.TParser) (any, bool) {
 	if p.Pos < len(p.In) && p.In[p.Pos] == 39 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit173, "'", 68, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit174, "'", 68, false); !ok {
 		goto fail
 	}
 	x1 = p.Pos
@@ -31753,7 +31809,7 @@ L2:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 39 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit173, "'", 68, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit174, "'", 68, false); !ok {
 		goto fail
 	}
 	v = nil
@@ -31787,7 +31843,7 @@ L5:
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 39 && p.In[p.Pos+1] == 39 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit175, "''", 70, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit176, "''", 70, false); !ok {
 		goto L8
 	}
 	goto L2
@@ -32284,7 +32340,7 @@ func s173(p *rt.TParser) (any, bool) {
 	if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 13 && p.In[p.Pos+1] == 10 {
 		p.Pos += 2
 		p.Units += 2
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit147, "\r\n", 73, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit148, "\r\n", 73, false); !ok {
 		goto L4
 	}
 	goto L2
@@ -32298,7 +32354,7 @@ L3:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 13 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit148, "\r", 74, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit149, "\r", 74, false); !ok {
 		goto L6
 	}
 	goto L2
@@ -32312,7 +32368,7 @@ L5:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 10 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit149, "\n", 75, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit150, "\n", 75, false); !ok {
 		goto L8
 	}
 	goto L2
@@ -32581,7 +32637,7 @@ func s176(p *rt.TParser) (any, bool) {
 		if p.Pos < len(p.In) && p.In[p.Pos] == 34 {
 			p.Pos++
 			p.Units += 1
-		} else if _, ok = p.Parser.MatchLiteralLogical(lit170, "\"", 60, false); !ok {
+		} else if _, ok = p.Parser.MatchLiteralLogical(lit171, "\"", 60, false); !ok {
 			goto L13
 		}
 		p.LookEnd(true)
@@ -32727,7 +32783,7 @@ func v178(p *rt.TParser) (any, bool) {
 	if p.Pos < len(p.In) && p.In[p.Pos] == 92 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit181, "\\", 62, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit182, "\\", 62, false); !ok {
 		goto fail
 	}
 	x1 = p.Pos
@@ -32747,7 +32803,7 @@ L5:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 120 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit182, "x", 64, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit183, "x", 64, false); !ok {
 		goto L8
 	}
 	x9 = 0
@@ -32782,7 +32838,7 @@ L7:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 117 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit183, "u", 65, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit184, "u", 65, false); !ok {
 		goto L14
 	}
 	x15 = 0
@@ -32817,7 +32873,7 @@ L13:
 	if p.Pos < len(p.In) && p.In[p.Pos] == 85 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit184, "U", 66, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit185, "U", 66, false); !ok {
 		goto L20
 	}
 	x21 = 0
@@ -32913,7 +32969,7 @@ func s179(p *rt.TParser) (any, bool) {
 		if p.Pos < len(p.In) && p.In[p.Pos] == 39 {
 			p.Pos++
 			p.Units += 1
-		} else if _, ok = p.Parser.MatchLiteralLogical(lit173, "'", 68, false); !ok {
+		} else if _, ok = p.Parser.MatchLiteralLogical(lit174, "'", 68, false); !ok {
 			goto L13
 		}
 		p.LookEnd(true)
@@ -33022,7 +33078,7 @@ func s180(p *rt.TParser) (any, bool) {
 		if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 39 && p.In[p.Pos+1] == 39 {
 			p.Pos += 2
 			p.Units += 2
-		} else if _, ok = p.Parser.MatchLiteralLogical(lit175, "''", 70, false); !ok {
+		} else if _, ok = p.Parser.MatchLiteralLogical(lit176, "''", 70, false); !ok {
 			goto L12
 		}
 		goto L7
@@ -33475,7 +33531,7 @@ func s184(p *rt.TParser) (any, bool) {
 	if p.Pos < len(p.In) && p.In[p.Pos] == 92 {
 		p.Pos++
 		p.Units += 1
-	} else if _, ok = p.Parser.MatchLiteralLogical(lit181, "\\", 62, false); !ok {
+	} else if _, ok = p.Parser.MatchLiteralLogical(lit182, "\\", 62, false); !ok {
 		goto L3
 	}
 	if _, ok = s151(p); !ok {
@@ -33594,7 +33650,7 @@ func v185(p *rt.TParser) (any, bool) {
 		if p.Pos+2 <= len(p.In) && p.In[p.Pos] == 39 && p.In[p.Pos+1] == 39 {
 			p.Pos += 2
 			p.Units += 2
-		} else if _, ok = p.Parser.MatchLiteralLogical(lit175, "''", 70, false); !ok {
+		} else if _, ok = p.Parser.MatchLiteralLogical(lit176, "''", 70, false); !ok {
 			goto L11
 		}
 		goto L7
