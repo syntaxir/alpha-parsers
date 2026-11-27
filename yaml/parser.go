@@ -33660,4 +33660,4 @@ func v185(p *rt.TParser) (any, bool) {
 
 const _ = types.SXIRSchema_42ab4583770a8b8f
 
-const _ = rt.Protocol36
+const _ = rt.Protocol37
